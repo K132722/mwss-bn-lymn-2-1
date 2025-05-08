@@ -1,4 +1,5 @@
-const steelData = {
+// Load saved data from localStorage or use default
+const steelData = JSON.parse(localStorage.getItem('steelData')) || {
   bundles: {
       "18": { weightPerBundle: 1.968, rodsPerBundle: 82 },
       "16": { weightPerBundle: 1.972, rodsPerBundle: 104 },
