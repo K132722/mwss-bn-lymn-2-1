@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الأسياخ</title>
+    <style>
+        :root {
+            --primary-dark: #0d1b2a;
+            --primary: #1b263b;
+            --secondary: #415a77;
+            --accent: #778da9;
+            --text: #e0e1dd;
+            --glass-bg: rgba(27, 38, 59, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, 'SF Arabic', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            min-height: 100vh;
+            color: var(--text);
+            direction: rtl;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            flex: 1;
+            text-align: right;
+            padding-left: 10px;
+        }
+
+        .form-group input {
+            width: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            text-align: center;
+            direction: ltr;
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .price-input {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .price-input label {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .buttons button {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            width: 48%;
+            border-radius: 8px;
+        }
+
+        #rodsResult {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .result-title {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .result-table th, 
+        .result-table td {
+            padding: 8px 5px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .result-table th {
+            background-color: rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+
+        .total-price {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .price-note {
+            text-align: center;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .signature {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 25px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            ← العودة للرئيسية
+        </button>
+
+        <h1>حاسبة الأسياخ</h1>
+
+        <div class="form-group">
+            <label for="rod-18">18 ملم</label>
+            <input type="number" id="rod-18" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="rod-16">16 ملم</label>
+            <input type="number" id="rod-16" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="rod-14">14 ملم</label>
+            <input type="number" id="rod-14" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="rod-12">12 ملم</label>
+            <input type="number" id="rod-12" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="rod-10">10 ملم</label>
+            <input type="number" id="rod-10" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="rod-8">8 ملم</label>
+            <input type="number" id="rod-8" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+
+        <div class="form-group price-input">
+            <label for="rodPrice">سعر الطن (ريال يمني)</label>
+            <input type="number" id="rodPrice" placeholder="400000" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+
+        <div class="buttons">
+            <button onclick="calculateRods()">حساب</button>
+            <button onclick="copyRodsResult()">نسخ النتيجة</button>
+        </div>
+
+        <div id="rodsResult">
+            <div class="result-title">نتيجة الحساب</div>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>المقاس</th>
+                        <th>العدد</th>
+                        <th>السعر</th>
+                    </tr>
+                </thead>
+                <tbody id="rodsResultBody"></tbody>
+            </table>
+            <div id="rodsTotal" class="total-price"></div>
+            <div class="price-note" id="rodsNote"></div>
+        </div>
+
+        <div class="signature">
+            تصميم وبرمجة المهندس / أبو جراح الخولاني
+        </div>
+    </div>
+
+    <script>
+        const steelData = {
+            rods: {
+                "18": 40,
+                "16": 50,
+                "14": 66,
+                "12": 90,
+                "10": 130,
+                "8": 200
+            }
+        };
+
+        function calculateRods() {
+            const pricePerTon = parseFloat(document.getElementById('rodPrice').value) || 400000;
+            let totalSum = 0;
+
+            const sizes = ['18', '16', '14', '12', '10', '8'];
+            const resultBody = document.getElementById('rodsResultBody');
+            resultBody.innerHTML = '';
+
+            sizes.forEach(size => {
+                const count = parseInt(document.getElementById('rod-' + size).value) || 0;
+                if (count > 0) {
+                    const rodsPerTon = steelData.rods[size];
+                    const pricePerRod = pricePerTon / rodsPerTon;
+                    const totalPriceItem = pricePerRod * count;
+                    totalSum += totalPriceItem;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${size} ملم</td>
+                        <td>${count}</td>
+                        <td>ر.ي ${totalPriceItem.toFixed(2)}</td>
+                    `;
+                    resultBody.appendChild(row);
+                }
+            });
+
+            if (resultBody.children.length === 0) {
+                alert("الرجاء إدخال الكميات أولاً");
+                return;
+            }
+
+            document.getElementById('rodsTotal').innerText = `الإجمالي الكلي: ${totalSum.toFixed(2)} ريال يمني`;
+            document.getElementById('rodsNote').innerText = `ملاحظة: هذا الحساب بسعر ${pricePerTon} ريال يمني للطن`;
+            document.getElementById('rodsResult').style.display = 'block';
+        }
+
+        function copyRodsResult() {
+            const resultText = document.getElementById('rodsResult').innerText;
+            if (resultText && !resultText.includes('الرجاء إدخال الكميات أولاً')) {
+                navigator.clipboard.writeText(resultText)
+                    .then(() => alert("تم نسخ النتيجة"))
+                    .catch(() => alert("فشل نسخ النتيجة"));
+            } else {
+                alert("لا توجد نتيجة لحسابها بعد");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,122 @@
-html {
-  height: 100%;
-  width: 100%;
+:root {
+  --primary-dark: #0d1b2a;
+  --primary: #1b263b;
+  --secondary: #415a77;
+  --accent: #778da9;
+  --text: #e0e1dd;
+  --glass-bg: rgba(27, 38, 59, 0.85);
+  --transition: all 0.3s ease;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, 'SF Arabic', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  min-height: 100vh;
+  color: var(--text);
+  direction: rtl;
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.institute-name {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 5px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+h1 {
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.main-btn {
+  background: var(--secondary);
+  border: none;
+  color: white;
+  padding: 15px 0;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 10px;
+}
+
+.main-btn:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.main-btn:active {
+  transform: translateY(0);
+}
+
+.signature {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 30px;
+  opacity: 0.7;
+}
+
+/* تنسيقات مشتركة للصفحات الأخرى */
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+  text-align: right;
+  padding-left: 10px;
+}
+
+input {
+  width: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  text-align: center;
+  direction: ltr;
+  background: rgba(0,0,0,0.2);
+  color: white;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: white;
+  padding: 10px 0;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* يمكنك إضافة المزيد من التنسيقات المشتركة هنا */
