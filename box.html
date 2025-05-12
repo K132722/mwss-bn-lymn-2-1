@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صندوق أبو جراح</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary-dark: #0a1423;
+            --primary: #16213e;
+            --secondary: #415a77;
+            --accent: #778da9;
+            --text: #f0f1f5;
+            --glass-bg: rgba(22, 33, 62, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --debit-color: #ff6b6b;
+            --credit-color: #51cf66;
+            --btn-glass: rgba(65, 90, 119, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
+        }
+
+        body {
+            background: 
+                linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),
+                url('IMG_4411.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: var(--text);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                var(--glass-highlight) 50%,
+                transparent 100%
+            );
+            animation: shine 8s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-10%, -10%); }
+            100% { transform: rotate(360deg) translate(-10%, -10%); }
+        }
+
+        .back-btn {
+            background: var(--btn-glass);
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 12px 0;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(119, 141, 169, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--glass-border);
+            width: 100%;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+
+        .date-display {
+            color: var(--accent);
+            font-size: 14px;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .history-btn {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.4s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .history-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(119, 141, 169, 0.3);
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .transactions-table th {
+            background-color: var(--secondary);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .transactions-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .transactions-table input {
+            width: 100%;
+            padding: 6px;
+            border: none;
+            background: transparent;
+            text-align: center;
+            color: white;
+            font-size: 12px !important;
+            max-width: 100%;
+            overflow: visible;
+        }
+
+        .description-input {
+            color: white !important;
+            font-size: 13px;
+        }
+
+        .credit-input {
+            color: var(--credit-color) !important;
+            font-weight: bold;
+            font-size: 12px !important;
+        }
+
+        .debit-input {
+            color: var(--debit-color) !important;
+            font-weight: bold;
+            font-size: 12px !important;
+        }
+
+        .balance-input {
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .buttons button {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 14px 0;
+            font-size: 16px;
+            flex: 1;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .buttons button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .save-btn {
+            background: var(--accent) !important;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .reset-btn {
+            background: #ff6b6b !important;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .final-balance {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .final-balance h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .final-balance-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .signature {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 300;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .signature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 25%;
+            width: 50%;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        /* نافذة السجل */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--primary);
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+        }
+
+        .close-modal {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.4s;
+            font-size: 14px;
+        }
+
+        .close-modal:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+        }
+
+        .history-item:hover {
+            background: var(--secondary);
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .buttons button {
+                padding: 12px 0;
+                font-size: 15px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <span>←</span> العودة للرئيسية
+        </button>
+
+        <div class="header">
+            <h1>صندوق أبو جراح</h1>
+            <div>
+                <div class="date-display" id="currentDateHijri"></div>
+                <div class="date-display" id="currentDateGregorian"></div>
+            </div>
+            <button class="history-btn" onclick="showHistoryModal()">عرض السجل</button>
+        </div>
+
+        <div class="form-group">
+            <label for="openingBalance">الرصيد الافتتاحي</label>
+            <input type="number" id="openingBalance" placeholder="أدخل الرصيد الافتتاحي" pattern="[0-9]*" inputmode="numeric">
+        </div>
+
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">الوصف</th>
+                    <th>دائن</th>
+                    <th>مدين</th>
+                    <th>الرصيد</th>
+                </tr>
+            </thead>
+            <tbody id="transactionsBody">
+                <!-- الصفوف ستضاف هنا ديناميكياً -->
+            </tbody>
+        </table>
+
+        <div class="buttons">
+            <button onclick="addTransaction()">إضافة حركة</button>
+            <button onclick="calculateBalance()">حساب الرصيد</button>
+        </div>
+
+        <button class="save-btn" onclick="saveData()">💾 حفظ البيانات</button>
+        <button class="reset-btn" onclick="resetBox()">🔄 إعادة تعيين الصندوق</button>
+
+        <div class="final-balance">
+            <h3>رصيد الصندوق الحالي:</h3>
+            <div class="final-balance-value" id="finalBalance">0.00</div>
+        </div>
+
+        <div class="signature">
+            تصميم وبرمجة المهندس / أبو جراح الخولاني
+        </div>
+    </div>
+
+    <!-- نافذة عرض السجل -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <h3 style="text-align:center;color:var(--accent);margin-bottom:20px;">سجل الأيام السابقة</h3>
+            <div id="historyList"></div>
+            <button class="close-modal" onclick="closeModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        // البيانات المخزنة
+        let appData = {
+            currentDate: '',
+            dailyData: {},
+            lastBalance: "0.00",
+            lastSavedDate: '',
+            settings: {
+                bgImage: 'IMG_4411.png',
+                fontFamily: 'Tajawal',
+                primaryColor: '#16213e',
+                secondaryColor: '#415a77'
+            }
+        };
+
+        // عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            updateCurrentDate();
+            loadData();
+            addTransaction();
+
+            document.getElementById('openingBalance').addEventListener('input', calculateBalance);
+        });
+
+        // تحميل الإعدادات
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('abujarrahBoxSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                appData.settings = {...appData.settings, ...settings};
+                applySettings();
+            }
+        }
+
+        // تطبيق الإعدادات
+        function applySettings() {
+            document.body.style.background = `
+                linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),
+                url('${appData.settings.bgImage}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = 'cover';
+            document.documentElement.style.setProperty('--primary', appData.settings.primaryColor);
+            document.documentElement.style.setProperty('--secondary', appData.settings.secondaryColor);
+        }
+
+        // تحديث التاريخ الهجري والميلادي
+        function updateCurrentDate() {
+            const now = new Date();
+            appData.currentDate = now.toISOString().split('T')[0];
+
+            const hijriOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hijriOptions).format(now);
+            document.getElementById('currentDateHijri').textContent = 'تاريخ هجري: ' + hijriDate;
+
+            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const gregorianDate = new Intl.DateTimeFormat('ar-EG', gregorianOptions).format(now);
+            document.getElementById('currentDateGregorian').textContent = 'تاريخ ميلادي: ' + gregorianDate;
+
+            checkDayChange();
+        }
+
+        // التحقق من تغيير اليوم
+        function checkDayChange() {
+            const savedData = localStorage.getItem('abujarrahBoxData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                appData.lastSavedDate = parsedData.lastSavedDate || '';
+
+                if (appData.lastSavedDate && appData.lastSavedDate !== appData.currentDate) {
+                    if (parsedData.dailyData[appData.lastSavedDate]) {
+                        const lastDayData = parsedData.dailyData[appData.lastSavedDate];
+                        document.getElementById('openingBalance').value = lastDayData.finalBalance;
+                        appData.lastBalance = lastDayData.finalBalance;
+                    }
+                }
+            }
+        }
+
+        // إضافة حركة جديدة
+        function addTransaction(transaction = {}) {
+            const tbody = document.getElementById('transactionsBody');
+            const newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                <td><input type="text" class="description-input" placeholder="وصف الحركة" value="${transaction.description || ''}"></td>
+                <td><input type="number" class="credit-input" placeholder="0.00" oninput="handleTransactionInput(this)" 
+                    pattern="[0-9]*" inputmode="numeric" value="${transaction.credit || ''}"></td>
+                <td><input type="number" class="debit-input" placeholder="0.00" oninput="handleTransactionInput(this)" 
+                    pattern="[0-9]*" inputmode="numeric" value="${transaction.debit || ''}"></td>
+                <td><input type="number" class="balance-input" readonly value="${transaction.balance || ''}"></td>
+            `;
+
+            tbody.appendChild(newRow);
+
+            if (transaction.credit && transaction.credit !== '0') {
+                newRow.querySelector('.debit-input').disabled = true;
+            } else if (transaction.debit && transaction.debit !== '0') {
+                newRow.querySelector('.credit-input').disabled = true;
+            }
+        }
+
+        // معالجة إدخال الحركات المالية
+        function handleTransactionInput(input) {
+            const row = input.closest('tr');
+            const creditInput = row.querySelector('.credit-input');
+            const debitInput = row.querySelector('.debit-input');
+
+            if (input === creditInput && creditInput.value !== '') {
+                debitInput.disabled = true;
+                debitInput.value = '';
+            } else if (input === debitInput && debitInput.value !== '') {
+                creditInput.disabled = true;
+                creditInput.value = '';
+            } else {
+                creditInput.disabled = false;
+                debitInput.disabled = false;
+            }
+
+            calculateBalance();
+        }
+
+        // حساب جميع الأرصدة
+        function calculateBalance() {
+            const openingBalance = parseFloat(document.getElementById('openingBalance').value) || 0;
+            let currentBalance = openingBalance;
+
+            document.querySelectorAll('#transactionsBody tr').forEach((row) => {
+                const credit = parseFloat(row.querySelector('.credit-input').value) || 0;
+                const debit = parseFloat(row.querySelector('.debit-input').value) || 0;
+
+                currentBalance += credit - debit;
+                row.querySelector('.balance-input').value = currentBalance.toFixed(2);
+            });
+
+            document.getElementById('finalBalance').textContent = currentBalance.toFixed(2);
+            return currentBalance;
+        }
+
+        // حفظ البيانات
+        function saveData() {
+            const finalBalance = calculateBalance();
+
+            const todayData = {
+                openingBalance: document.getElementById('openingBalance').value,
+                finalBalance: finalBalance.toFixed(2),
+                transactions: []
+            };
+
+            document.querySelectorAll('#transactionsBody tr').forEach(row => {
+                todayData.transactions.push({
+                    description: row.querySelector('.description-input').value,
+                    credit: row.querySelector('.credit-input').value,
+                    debit: row.querySelector('.debit-input').value,
+                    balance: row.querySelector('.balance-input').value
+                });
+            });
+
+            appData.dailyData[appData.currentDate] = todayData;
+            appData.lastBalance = finalBalance.toFixed(2);
+            appData.lastSavedDate = appData.currentDate;
+
+            localStorage.setItem('abujarrahBoxData', JSON.stringify(appData));
+
+            alert('تم حفظ البيانات بنجاح');
+        }
+
+        // تحميل البيانات المحفوظة
+        function loadData() {
+            const savedData = localStorage.getItem('abujarrahBoxData');
+            if (savedData) {
+                appData = JSON.parse(savedData);
+
+                if (appData.dailyData[appData.currentDate]) {
+                    loadDayData(appData.currentDate);
+                } 
+                else if (appData.lastBalance) {
+                    document.getElementById('openingBalance').value = appData.lastBalance;
+                    document.getElementById('finalBalance').textContent = appData.lastBalance;
+                }
+            }
+        }
+
+        // عرض نافذة السجل
+        function showHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+
+            const sortedDates = Object.keys(appData.dailyData).sort().reverse();
+
+            if (sortedDates.length === 0) {
+                historyList.innerHTML = '<p style="text-align:center;color:var(--text);">لا توجد بيانات سابقة</p>';
+            } else {
+                sortedDates.forEach(date => {
+                    const dayData = appData.dailyData[date];
+                    const dateObj = new Date(date);
+                    const dateStr = dateObj.toLocaleDateString('ar-EG', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        weekday: 'long'
+                    });
+
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <div><strong>${dateStr}</strong></div>
+                        <div>الرصيد الافتتاحي: ${dayData.openingBalance}</div>
+                        <div>الرصيد الختامي: ${dayData.finalBalance}</div>
+                        <small style="color:var(--accent);">${dayData.transactions.length} حركة</small>
+                    `;
+
+                    historyItem.onclick = function() {
+                        loadDayData(date);
+                        closeModal();
+                    };
+
+                    historyList.appendChild(historyItem);
+                });
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // إغلاق النافذة
+        function closeModal() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+        // تحميل بيانات يوم معين
+        function loadDayData(date) {
+            const dayData = appData.dailyData[date];
+            if (!dayData) return;
+
+            document.getElementById('openingBalance').value = dayData.openingBalance;
+            document.getElementById('transactionsBody').innerHTML = '';
+
+            dayData.transactions.forEach(transaction => {
+                addTransaction(transaction);
+            });
+
+            document.getElementById('finalBalance').textContent = dayData.finalBalance;
+        }
+
+        // إعادة تعيين الصندوق
+        function resetBox() {
+            if (confirm('هل أنت متأكد من أنك تريد إعادة تعيين الصندوق؟ سيتم مسح جميع البيانات الحالية!')) {
+                document.getElementById('openingBalance').value = '0';
+                document.getElementById('transactionsBody').innerHTML = '';
+                document.getElementById('finalBalance').textContent = '0.00';
+                addTransaction();
+                calculateBalance();
+                alert('تم إعادة تعيين الصندوق بنجاح');
+            }
+        }
+    </script>
+</body>
+</html>

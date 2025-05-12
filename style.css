@@ -1,22 +1,29 @@
 :root {
-  --primary-dark: #0d1b2a;
-  --primary: #1b263b;
+  --primary-dark: #0a1423;
+  --primary: #16213e;
   --secondary: #415a77;
   --accent: #778da9;
-  --text: #e0e1dd;
-  --glass-bg: rgba(27, 38, 59, 0.85);
-  --transition: all 0.3s ease;
+  --text: #f0f1f5;
+  --glass-bg: rgba(22, 33, 62, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+  --btn-glass: rgba(65, 90, 119, 0.4);
+  --debit-color: #ff6b6b;
+  --credit-color: #51cf66;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, 'SF Arabic', sans-serif;
+  font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  background: 
+    linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),
+    url('IMG_4411.png') no-repeat center center fixed;
+  background-size: cover;
   min-height: 100vh;
   color: var(--text);
   direction: rtl;
@@ -27,96 +34,36 @@ body {
   max-width: 500px;
   margin: 0 auto;
   background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  overflow: hidden;
 }
 
-.institute-name {
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 5px;
-  color: var(--accent);
-  font-weight: bold;
+.container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    var(--glass-highlight) 50%,
+    transparent 100%
+  );
+  animation: shine 8s infinite linear;
+  z-index: -1;
 }
 
-h1 {
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 25px;
-  font-size: 24px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+@keyframes shine {
+  0% { transform: rotate(0deg) translate(-10%, -10%); }
+  100% { transform: rotate(360deg) translate(-10%, -10%); }
 }
 
-.main-btn {
-  background: var(--secondary);
-  border: none;
-  color: white;
-  padding: 15px 0;
-  font-size: 16px;
-  font-weight: bold;
-  width: 100%;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--transition);
-  margin-bottom: 10px;
-}
-
-.main-btn:hover {
-  background: var(--accent);
-  transform: translateY(-2px);
-}
-
-.main-btn:active {
-  transform: translateY(0);
-}
-
-.signature {
-  text-align: center;
-  font-size: 12px;
-  margin-top: 30px;
-  opacity: 0.7;
-}
-
-/* تنسيقات مشتركة للصفحات الأخرى */
-.form-group {
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-label {
-  font-size: 16px;
-  font-weight: 500;
-  flex: 1;
-  text-align: right;
-  padding-left: 10px;
-}
-
-input {
-  width: 100px;
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  text-align: center;
-  direction: ltr;
-  background: rgba(0,0,0,0.2);
-  color: white;
-}
-
-.back-btn {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: white;
-  padding: 10px 0;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-/* يمكنك إضافة المزيد من التنسيقات المشتركة هنا */
+/* باقي التنسيقات بنفس النمط */

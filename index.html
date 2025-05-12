@@ -15,7 +15,7 @@
             --glass-bg: rgba(22, 33, 62, 0.7);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-highlight: rgba(255, 255, 255, 0.15);
-            --btn-glass: rgba(65, 90, 119, 0.4); /* اللون الحالي */
+            --btn-glass: rgba(65, 90, 119, 0.4);
         }
 
         * {
@@ -110,29 +110,28 @@
             font-weight: 700;
         }
 
-        /* تصميم الأزرار الزجاجية الأصلي مع الحفاظ على اللون الحالي */
         .main-btn {
             background: linear-gradient(135deg, var(--secondary), var(--primary));
             border: none;
             color: white;
-            padding: 18px 0;
-            font-size: 18px;
-            font-weight: 600;
+            padding: 22px 0; /* زيادة الحشو لتحسين المظهر */
+            font-size: 22px; /* تكبير حجم الخط */
+            font-weight: 700; /* زيادة سماكة الخط */
             width: 100%;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             box-shadow: 
                 0 4px 15px rgba(0, 0, 0, 0.35),
                 inset 0 1px 1px rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 1;
         }
 
         .main-btn::before {
@@ -161,11 +160,6 @@
 
         .main-btn:hover::before {
             left: 100%;
-        }
-
-        .main-btn span {
-            font-size: 22px;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
         }
 
         .signature {
@@ -200,8 +194,8 @@
             }
 
             .main-btn {
-                padding: 16px 0;
-                font-size: 16px;
+                padding: 20px 0;
+                font-size: 20px;
             }
         }
     </style>
@@ -213,13 +207,12 @@
         <h1>حاسبة أسعار الحديد</h1>
 
         <button onclick="window.location.href='bundles.html'" class="main-btn">
-            <span>📦</span> حاسبة البنادل
+            حاسبة البنادل
         </button>
 
         <button onclick="window.location.href='rods.html'" class="main-btn">
-            <span>📏</span> حاسبة الأسياخ
+            حاسبة الأسياخ
         </button>
-
 
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني

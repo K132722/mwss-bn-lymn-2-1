@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب العمال</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <span>←</span> العودة للرئيسية
+        </button>
+
+        <h1>حساب العمال</h1>
+
+        <div class="input-section">
+            <div class="workers-grid">
+                <div class="header-cell">العامل</div>
+                <div class="header-cell">الأسبوعي</div>
+                <div class="header-cell">المسحوبات</div>
+                <div class="header-cell">جريد 40</div>
+                <div class="header-cell">جريد 60</div>
+
+                <div class="worker-cell">وليد</div>
+                <input type="number" id="w-week" value="20000" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="w-draw" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="w-g40" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="w-g60" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+
+                <div class="worker-cell">صادق</div>
+                <input type="number" id="s-week" value="20000" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="s-draw" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="s-g40" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="s-g60" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+
+                <div class="worker-cell">مجدي</div>
+                <input type="number" id="m-week" value="20000" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="m-draw" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="m-g40" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+                <input type="number" id="m-g60" placeholder="0" pattern="[0-9]*" inputmode="numeric">
+            </div>
+        </div>
+
+        <div class="additional-section">
+            <h2>الحسابات الإضافية</h2>
+            <div class="additional-inputs">
+                <input type="text" id="add-desc" placeholder="وصف الحساب">
+                <input type="number" id="add-amount" placeholder="المبلغ بالريال" pattern="[0-9]*" inputmode="numeric">
+            </div>
+            <div class="workers-checkboxes">
+                <label><input type="checkbox" id="add-w"> وليد</label>
+                <label><input type="checkbox" id="add-s"> صادق</label>
+                <label><input type="checkbox" id="add-m"> مجدي</label>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button onclick="resetWorkersForm()">إعادة تعيين</button>
+            <button onclick="calculateWorkers()">حساب النتائج</button>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <h2>كشف الحساب</h2>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>العامل</th>
+                        <th>الأسبوعي</th>
+                        <th>المسحوبات</th>
+                        <th>جريد 40</th>
+                        <th>جريد 60</th>
+                        <th>إضافي</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+            </table>
+        </div>
+
+        <div class="signature">
+            تصميم وبرمجة المهندس / أبو جراح الخولاني
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
