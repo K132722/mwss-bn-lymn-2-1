@@ -1,16 +1,19 @@
 
-const CACHE_NAME = 'bina-yemen-v5';
+const CACHE_NAME = 'bina-yemen-v6';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/bundles.html',
   '/rods.html',
+  '/workers.html',
+  '/box.html',
   '/style.css',
   '/script.js',
   '/IMG_4411.png',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
-  '/manifest.json'
+  '/manifest.json',
+  'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap'
 ];
 
 self.addEventListener('install', event => {
@@ -18,6 +21,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(ASSETS_TO_CACHE))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('fetch', event => {
@@ -38,6 +42,9 @@ self.addEventListener('fetch', event => {
                 cache.put(event.request, responseToCache);
               });
             return response;
+          })
+          .catch(() => {
+            return new Response('Offline content not available');
           });
       })
   );
@@ -55,4 +62,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  self.clients.claim();
 });

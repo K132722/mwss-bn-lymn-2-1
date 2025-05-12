@@ -1,7 +1,8 @@
+
 {
   "name": "مؤسسة بناء اليمن",
   "short_name": "حاسبة الحديد",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#1b263b",
   "theme_color": "#415a77",
@@ -10,13 +11,20 @@
     {
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "lang": "ar"
+  "lang": "ar",
+  "dir": "rtl",
+  "orientation": "any",
+  "categories": ["business", "utilities"],
+  "prefer_related_applications": false,
+  "scope": "/"
 }
