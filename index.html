@@ -227,6 +227,24 @@
     </div>
 
     <script>
+        // وظيفة لتغيير اسم التطبيق
+        function changeAppName(newName) {
+            const manifestData = {
+                name: newName,
+                short_name: newName
+            };
+            localStorage.setItem('customAppName', JSON.stringify(manifestData));
+        }
+
+        // تحميل الاسم المخصص عند بدء التطبيق
+        window.addEventListener('load', () => {
+            const customName = localStorage.getItem('customAppName');
+            if (customName) {
+                const nameData = JSON.parse(customName);
+                document.title = nameData.name;
+            }
+        });
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
