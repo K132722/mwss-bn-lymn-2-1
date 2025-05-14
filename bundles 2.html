@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة البنادل</title>
+    <style>
+        :root {
+            --primary-dark: #0a1423;
+            --primary: #16213e;
+            --secondary: #415a77;
+            --accent: #778da9;
+            --text: #f0f1f5;
+            --glass-bg: rgba(22, 33, 62, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --btn-glass: rgba(65, 90, 119, 0.4);
+            --highlight: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
+        }
+
+        body {
+            background: 
+                linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),
+                url('IMG_4411.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: var(--text);
+            direction: rtl;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                var(--glass-highlight) 50%,
+                transparent 100%
+            );
+            animation: shine 8s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-10%, -10%); }
+            100% { transform: rotate(360deg) translate(-10%, -10%); }
+        }
+
+        .back-btn {
+            background: var(--btn-glass);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 14px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(65, 90, 119, 0.6);
+        }
+
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            flex: 1;
+            text-align: right;
+            padding-left: 10px;
+        }
+
+        .form-group input {
+            width: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid var(--glass-border);
+            border-radius: 8px;
+            text-align: center;
+            direction: ltr;
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .price-input {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .price-input label {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .buttons button {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            width: 32%;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+        }
+
+        .buttons button:hover {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            transform: translateY(-2px);
+        }
+
+        #bundlesResult {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            max-width: 100%;
+            overflow-x: visible;
+            position: relative;
+        }
+
+        .result-title {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .result-table th, 
+        .result-table td {
+            padding: 8px 5px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: clip;
+            min-width: 60px;
+        }
+
+        .result-table th {
+            background-color: rgba(0,0,0,0.2);
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .total-info {
+            margin: 10px 0;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .total-info div {
+            margin-bottom: 5px;
+        }
+
+        .price-note {
+            text-align: center;
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        .signature {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 25px;
+            opacity: 0.7;
+        }
+
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #97C09A;
+            margin: 10px 0;
+        }
+
+        .price-in-words {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .result-table {
+                font-size: 12px;
+                display: table;
+                width: 100%;
+            }
+
+            .result-table th, 
+            .result-table td {
+                padding: 6px 3px;
+                min-width: 55px;
+                font-size: 12px;
+            }
+
+            .total-info, .price-note {
+                font-size: 13px;
+            }
+
+            .buttons button {
+                font-size: 14px;
+                padding: 10px 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            ← العودة للرئيسية
+        </button>
+
+        <h1>حاسبة البنادل</h1>
+
+        <div class="form-group">
+            <label for="size-20">20 ملم</label>
+            <input type="number" id="size-20" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-18">18 ملم</label>
+            <input type="number" id="size-18" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-16">16 ملم</label>
+            <input type="number" id="size-16" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-14">14 ملم</label>
+            <input type="number" id="size-14" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-12">12 ملم</label>
+            <input type="number" id="size-12" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-10">10 ملم</label>
+            <input type="number" id="size-10" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+        <div class="form-group">
+            <label for="size-8">8 ملم</label>
+            <input type="number" id="size-8" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+
+        <div class="form-group price-input">
+            <label for="price">سعر الطن (ريال سعودي)</label>
+            <input type="number" id="price" placeholder="3000" min="0" pattern="[0-9]*" inputmode="numeric">
+        </div>
+
+        <div class="buttons">
+            <button onclick="calculateBundles()">حساب</button>
+            <button onclick="copyBundlesResult()">نسخ النتيجة</button>
+            <button onclick="printResult()">مشاركة</button>
+        </div>
+
+        <div id="bundlesResult">
+            <div class="result-title">نتيجة الحساب</div>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th style="width: 15%">المقاس</th>
+                        <th style="width: 20%">البنادل</th>
+                        <th style="width: 25%">الأسياخ</th>
+                        <th style="width: 20%">الوزن (طن)</th>
+                        <th style="width: 20%">السعر (ر.س)</th>
+                    </tr>
+                </thead>
+                <tbody id="bundlesResultBody"></tbody>
+            </table>
+            <div id="bundlesTotal" class="total-info"></div>
+            <div class="price-note" id="bundlesNote"></div>
+        </div>
+
+        <div class="signature">
+            تصميم وبرمجة المهندس / أبو جراح الخولاني
+        </div>
+    </div>
+
+    <script>
+        const steelData = {
+            bundles: {
+                "20": { weightPerBundle: 1.956, rodsPerBundle: 66 },
+                "18": { weightPerBundle: 1.968, rodsPerBundle: 82 },
+                "16": { weightPerBundle: 1.972, rodsPerBundle: 104 },
+                "14": { weightPerBundle: 1.975, rodsPerBundle: 136 },
+                "12": { weightPerBundle: 1.918, rodsPerBundle: 180 },
+                "10": { weightPerBundle: 1.999, rodsPerBundle: 270 },
+                "8": { weightPerBundle: 1.991, rodsPerBundle: 420 }
+            }
+        };
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function numberToArabicWords(number) {
+            const numberParts = number.toString().split('.');
+            const integerPart = Math.floor(number);
+            const decimalPart = numberParts.length > 1 ? numberParts[1].padEnd(2, '0').substring(0, 2) : '00';
+
+            const units = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'];
+            const tens = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+            const hundreds = ['', 'مائة', 'مئتان', 'ثلاثمائة', 'أربعمائة', 'خمسمائة', 'ستمائة', 'سبعمائة', 'ثمانمائة', 'تسعمائة'];
+
+            function convertIntegerToWords(num) {
+                if (num === 0) return 'صفر';
+
+                let words = '';
+
+                if (num >= 1000000000) {
+                    const billions = Math.floor(num / 1000000000);
+                    words += (billions === 1 ? 'مليار' :
+                        billions === 2 ? 'ملياران' :
+                            convertIntegerToWords(billions) + ' مليار');
+                    const remainder = num % 1000000000;
+                    if (remainder > 0) {
+                        words += ' و' + convertIntegerToWords(remainder);
+                    }
+                } else if (num >= 1000000) {
+                    const millions = Math.floor(num / 1000000);
+                    words += (millions === 1 ? 'مليون' :
+                        millions === 2 ? 'مليونان' :
+                            convertIntegerToWords(millions) + ' مليون');
+                    const remainder = num % 1000000;
+                    if (remainder > 0) {
+                        words += ' و' + convertIntegerToWords(remainder);
+                    }
+                } else if (num >= 1000) {
+                    const thousands = Math.floor(num / 1000);
+                    words += (thousands === 1 ? 'ألف' :
+                        thousands === 2 ? 'ألفان' :
+                            convertIntegerToWords(thousands) + ' ألف');
+                    const remainder = num % 1000;
+                    if (remainder > 0) {
+                        words += ' و' + convertIntegerToWords(remainder);
+                    }
+                } else if (num >= 100) {
+                    const hundred = Math.floor(num / 100);
+                    words += hundreds[hundred];
+                    const remainder = num % 100;
+                    if (remainder > 0) {
+                        words += ' و' + convertIntegerToWords(remainder);
+                    }
+                } else if (num > 0) {
+                    if (num < 10) {
+                        words += units[num];
+                    } else if (num < 20) {
+                        if (num === 10) words += 'عشرة';
+                        else if (num === 11) words += 'أحد عشر';
+                        else if (num === 12) words += 'اثنا عشر';
+                        else words += units[num % 10] + ' عشر';
+                    } else {
+                        const unit = num % 10;
+                        const ten = Math.floor(num / 10);
+                        if (unit === 0) {
+                            words += tens[ten];
+                        } else {
+                            words += units[unit] + ' و' + tens[ten];
+                        }
+                    }
+                }
+
+                return words;
+            }
+
+            let result = '';
+
+            if (integerPart > 0) {
+                result += convertIntegerToWords(integerPart) + ' ريال سعودي';
+            }
+
+            const decimal = parseInt(decimalPart);
+            if (decimal > 0) {
+                if (result !== '') result += ' و';
+                result += convertIntegerToWords(decimal) + ' هللة';
+            }
+
+            if (result === '') {
+                result = 'صفر ريال سعودي';
+            }
+
+            return result + ' فقط لا غير';
+        }
+
+        function calculateBundles() {
+            const pricePerTon = parseFloat(document.getElementById('price').value) || 3000;
+            let totalWeight = 0;
+            let totalPrice = 0;
+            let totalBundles = 0;
+            let totalRods = 0;
+
+            const sizes = ['20', '18', '16', '14', '12', '10', '8'];
+            const resultBody = document.getElementById('bundlesResultBody');
+            resultBody.innerHTML = '';
+
+            sizes.forEach(size => {
+                const bundleCount = parseInt(document.getElementById('size-' + size).value) || 0;
+                if (bundleCount > 0) {
+                    totalBundles += bundleCount;
+                    const bundleData = steelData.bundles[size];
+                    const rodsCount = bundleData.rodsPerBundle * bundleCount;
+                    const weight = (bundleData.weightPerBundle * bundleCount).toFixed(3);
+                    const price = (weight * pricePerTon).toFixed(2);
+
+                    totalWeight += parseFloat(weight);
+                    totalPrice += parseFloat(price);
+                    totalRods += rodsCount;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${size} ملم</td>
+                        <td>${formatNumber(bundleCount)}</td>
+                        <td>${formatNumber(rodsCount)}</td>
+                        <td>${weight}</td>
+                        <td>${formatNumber(price)}</td>
+                    `;
+                    resultBody.appendChild(row);
+                }
+            });
+
+            if (resultBody.children.length === 0) {
+                alert("الرجاء إدخال الكميات أولاً");
+                return;
+            }
+
+            const priceInWords = numberToArabicWords(totalPrice);
+            const fontSize = Math.max(12, 16 - Math.floor(priceInWords.length / 20));
+
+            document.getElementById('bundlesTotal').innerHTML = `
+                <div>إجمالي البنادل: ${formatNumber(totalBundles)}</div>
+                <div>الوزن الإجمالي⚖️: ${totalWeight.toFixed(3)} طن</div>
+                <div class="total-price">السعر الإجمالي💵: ${formatNumber(totalPrice.toFixed(2))} ر.س</div>
+                <div class="price-in-words" style="font-size: ${fontSize}px">${priceInWords}</div>
+            `;
+
+            document.getElementById('bundlesNote').innerText = `ملاحظة: هذا الحساب بسعر ${formatNumber(pricePerTon)} ريال سعودي للطن`;
+            document.getElementById('bundlesResult').style.display = 'block';
+        }
+
+        function copyBundlesResult() {
+            const resultText = document.getElementById('bundlesResult').innerText;
+            if (resultText && !resultText.includes('الرجاء إدخال الكميات أولاً')) {
+                navigator.clipboard.writeText(resultText)
+                    .then(() => alert("تم نسخ النتيجة"))
+                    .catch(() => alert("فشل نسخ النتيجة"));
+            } else {
+                alert("لا توجد نتيجة لحسابها بعد");
+            }
+        }
+
+        function printResult() {
+            const resultElement = document.getElementById('bundlesResult');
+            if (resultElement.style.display === 'none') {
+                alert("لا توجد نتيجة للطباعة. الرجاء إجراء الحساب أولاً");
+                return;
+            }
+
+            html2canvas(resultElement, {
+                backgroundColor: '#16213e',
+                scale: 5
+            }).then(canvas => {
+                const image = canvas.toDataURL('image/png');
+
+                // إنشاء عنصر خفي للتحميل التلقائي
+                const downloadLink = document.createElement('a');
+                downloadLink.href = image;
+                downloadLink.download = 'حساب_البنادل.png';
+                downloadLink.style.display = 'none';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                // بعد الحفظ، عرض خيار المشاركة
+                setTimeout(() => {
+                    if (navigator.share) {
+                        canvas.toBlob(function(blob) {
+                            const file = new File([blob], "حساب_البنادل.png", { type: "image/png" });
+                            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                                navigator.share({
+                                    title: 'نتيجة حساب البنادل',
+                                    files: [file]
+                                }).catch(err => console.log('Error sharing:', err));
+                            }
+                        });
+                    }
+                }, 1000);
+            });
+        }
+    </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</body>
+</html>
