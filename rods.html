@@ -243,6 +243,112 @@
             max-width: 100%;
         }
 
+        /* الأنماط الجديدة */
+        .custom-item {
+            background: rgba(119, 141, 169, 0.2) !important;
+            border-left: 3px solid var(--highlight) !important;
+            margin: 8px 0;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .custom-item input {
+            background: rgba(0,0,0,0.3) !important;
+        }
+
+        #additionalItemsContainer {
+            margin-top: 15px;
+        }
+
+        .add-item-btn {
+            background: var(--btn-glass) !important;
+            border: 1px dashed var(--glass-border) !important;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 12px;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-item-btn:hover {
+            border-style: solid;
+            background: var(--glass-highlight) !important;
+        }
+
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .dialog-box {
+            background: var(--primary);
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .wire-table {
+            margin-top: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .dialog-box h3 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .dialog-box select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .dialog-box .form-group {
+            margin-bottom: 15px;
+        }
+
+        .dialog-box .form-group label {
+            font-size: 14px;
+        }
+
+        .dialog-box .form-group input {
+            width: 100px;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .dialog-box .buttons {
+            margin-top: 15px;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -268,6 +374,15 @@
             .buttons button {
                 font-size: 14px;
                 padding: 10px 0;
+            }
+
+            .add-item-btn {
+                font-size: 13px;
+                padding: 10px;
+            }
+
+            .dialog-box {
+                padding: 15px;
             }
         }
     </style>
@@ -310,6 +425,14 @@
             <input type="number" id="rod-8" placeholder="0" min="0" pattern="[0-9]*" inputmode="numeric">
         </div>
 
+        <!-- زر إضافة صنف جديد -->
+        <button class="add-item-btn" onclick="showAddItemDialog()">
+            <span style="font-size: 18px;">＋</span> إضافة صنف آخر بسعر آخر
+        </button>
+
+        <!-- حاوية العناصر المضافة -->
+        <div id="additionalItemsContainer"></div>
+
         <div class="form-group price-input">
             <label for="rodPrice">سعر الطن (ريال يمني)</label>
             <input type="number" id="rodPrice" placeholder="400000" min="0" pattern="[0-9]*" inputmode="numeric">
@@ -322,7 +445,7 @@
         </div>
 
         <div id="rodsResult">
-            <div class="result-title">نتيجة الحساب</div>
+            <div class="result-title">نتيجة حساب الأسياخ</div>
             <table class="result-table">
                 <thead>
                     <tr>
@@ -334,12 +457,54 @@
                 </thead>
                 <tbody id="rodsResultBody"></tbody>
             </table>
+
+            <!-- جدول سلك التربيط -->
+            <div class="wire-table" id="wireResults" style="display: none;">
+                <div class="result-title">نتيجة سلك التربيط</div>
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>الصنف</th>
+                            <th>عدد اللفات</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wireResultBody"></tbody>
+                </table>
+            </div>
+
             <div id="rodsTotal" class="total-info"></div>
             <div class="price-note" id="rodsNote"></div>
         </div>
 
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني
+        </div>
+    </div>
+
+    <!-- طبقة الحوار لإضافة أصناف جديدة -->
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog-box">
+            <h3>اختر الصنف للإضافة</h3>
+            <select id="itemType">
+                <option value="8">8 ملم</option>
+                <option value="10">10 ملم</option>
+                <option value="12">12 ملم</option>
+                <option value="14">14 ملم</option>
+                <option value="16">16 ملم</option>
+                <option value="18">18 ملم</option>
+                <option value="20">20 ملم</option>
+                <option value="wire">سلك تربيط</option>
+            </select>
+
+            <div id="inputFields">
+                <!-- الحقول ستضاف هنا ديناميكيًا -->
+            </div>
+
+            <div class="buttons">
+                <button onclick="addCustomItem()">إضافة</button>
+                <button onclick="hideDialog()">إلغاء</button>
+            </div>
         </div>
     </div>
 
@@ -355,6 +520,9 @@
                 "8": 200
             }
         };
+
+        let customItems = [];
+        let wireItems = [];
 
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -449,6 +617,109 @@
             return result + ' فقط لا غير';
         }
 
+        function showAddItemDialog() {
+            document.getElementById('dialogOverlay').style.display = 'flex';
+            document.getElementById('itemType').dispatchEvent(new Event('change'));
+        }
+
+        function hideDialog() {
+            document.getElementById('dialogOverlay').style.display = 'none';
+        }
+
+        document.getElementById('itemType').addEventListener('change', function() {
+            const type = this.value;
+            const inputFields = document.getElementById('inputFields');
+            inputFields.innerHTML = '';
+
+            if (type === 'wire') {
+                inputFields.innerHTML = `
+                    <div class="form-group">
+                        <label>عدد اللفات:</label>
+                        <input type="number" id="wireQty" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>سعر اللفة (ريال يمني):</label>
+                        <input type="number" id="wirePrice" placeholder="0" min="0">
+                    </div>
+                `;
+            } else {
+                inputFields.innerHTML = `
+                    <div class="form-group">
+                        <label>الكمية:</label>
+                        <input type="number" id="customQty" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>السعر الخاص للطن (ريال يمني):</label>
+                        <input type="number" id="customPrice" placeholder="${document.getElementById('rodPrice').value || '400000'}" min="0">
+                    </div>
+                `;
+            }
+        });
+
+        function addCustomItem() {
+            const type = document.getElementById('itemType').value;
+
+            if (type === 'wire') {
+                const qty = parseInt(document.getElementById('wireQty').value) || 0;
+                const price = parseInt(document.getElementById('wirePrice').value) || 0;
+
+                if(qty <= 0 || price <= 0) {
+                    alert("الرجاء إدخال قيم صحيحة لعدد اللفات وسعر اللفة");
+                    return;
+                }
+
+                wireItems.push({qty, price});
+                updateWireDisplay();
+            } else {
+                const qty = parseInt(document.getElementById('customQty').value) || 0;
+                const price = parseInt(document.getElementById('customPrice').value) || 0;
+
+                if(qty <= 0 || price <= 0) {
+                    alert("الرجاء إدخال قيم صحيحة للكمية والسعر");
+                    return;
+                }
+
+                customItems.push({size: type, qty, price});
+                updateCustomItemsDisplay();
+            }
+
+            hideDialog();
+        }
+
+        function updateCustomItemsDisplay() {
+            const container = document.getElementById('additionalItemsContainer');
+            container.innerHTML = customItems.map((item, index) => `
+                <div class="form-group custom-item" data-index="${index}">
+                    <label>${item.size} ملم (مخصص)</label>
+                    <input type="number" value="${item.qty}" disabled>
+                    <button onclick="removeCustomItem(${index})" style="background: transparent; border: none; color: #ff6b6b; margin-right: 5px; font-size: 16px;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function removeCustomItem(index) {
+            customItems.splice(index, 1);
+            updateCustomItemsDisplay();
+        }
+
+        function updateWireDisplay() {
+            const container = document.getElementById('wireResultBody');
+            container.innerHTML = wireItems.map((item, index) => `
+                <tr style="background: rgba(151, 192, 154, 0.1);">
+                    <td>سلك تربيط <button onclick="removeWireItem(${index})" style="background: transparent; border: none; color: #ff6b6b; margin-right: 5px; font-size: 14px;">×</button></td>
+                    <td>${item.qty}</td>
+                    <td>ر.ي ${formatNumber(item.qty * item.price)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('wireResults').style.display = wireItems.length ? 'block' : 'none';
+        }
+
+        function removeWireItem(index) {
+            wireItems.splice(index, 1);
+            updateWireDisplay();
+        }
+
         function calculateRods() {
             const pricePerTon = parseFloat(document.getElementById('rodPrice').value) || 400000;
             let totalSum = 0;
@@ -458,6 +729,7 @@
             const resultBody = document.getElementById('rodsResultBody');
             resultBody.innerHTML = '';
 
+            // حساب الأسياخ الأساسية
             sizes.forEach(size => {
                 const count = parseInt(document.getElementById('rod-' + size).value) || 0;
                 if (count > 0) {
@@ -480,7 +752,35 @@
                 }
             });
 
-            if (resultBody.children.length === 0) {
+            // حساب الأسياخ المخصصة
+            customItems.forEach(item => {
+                const rodsPerTon = steelData.rods[item.size];
+                const weightInTon = (1 / rodsPerTon) * item.qty;
+                const pricePerRod = item.price / rodsPerTon;
+                const totalPriceItem = pricePerRod * item.qty;
+
+                totalSum += totalPriceItem;
+                totalWeight += weightInTon;
+
+                const row = document.createElement('tr');
+                row.style.background = 'rgba(151, 192, 154, 0.1)';
+                row.innerHTML = `
+                    <td>${item.size} ملم (مخصص)</td>
+                    <td>${item.qty}</td>
+                    <td>${weightInTon.toFixed(3)}</td>
+                    <td>ر.ي ${formatNumber(totalPriceItem.toFixed(2))}</td>
+                `;
+                resultBody.appendChild(row);
+            });
+
+            // حساب سلك التربيط
+            let wireTotal = 0;
+            wireItems.forEach(item => {
+                wireTotal += item.qty * item.price;
+            });
+            totalSum += wireTotal;
+
+            if (resultBody.children.length === 0 && wireItems.length === 0) {
                 alert("الرجاء إدخال الكميات أولاً");
                 return;
             }
@@ -490,23 +790,48 @@
 
             document.getElementById('rodsTotal').innerHTML = `
                 <div>إجمالي الكمية بالطن ⚖️: ${totalWeight.toFixed(3)} طن</div>
+                ${wireItems.length > 0 ? `<div>إجمالي سلك التربيط: ${wireItems.reduce((sum, item) => sum + item.qty, 0)} لفة</div>` : ''}
                 <div class="total-price">إجمالي سعر الكمية💵: ر.ي ${formatNumber(totalSum.toFixed(2))}</div>
                 <div class="price-in-words" style="font-size: ${fontSize}px">${priceInWords}</div>
             `;
 
-            document.getElementById('rodsNote').innerText = `ملاحظة: هذا الحساب بسعر ${formatNumber(pricePerTon)} ريال يمني للطن`;
+            document.getElementById('rodsNote').innerText = `ملاحظة: هذا الحساب بسعر ${formatNumber(pricePerTon)} ريال يمني للطن للأسياخ الأساسية`;
             document.getElementById('rodsResult').style.display = 'block';
         }
 
         function copyRodsResult() {
-            const resultText = document.getElementById('rodsResult').innerText;
-            if (resultText && !resultText.includes('الرجاء إدخال الكميات أولاً')) {
-                navigator.clipboard.writeText(resultText)
-                    .then(() => alert("تم نسخ النتيجة"))
-                    .catch(() => alert("فشل نسخ النتيجة"));
-            } else {
+            const resultElement = document.getElementById('rodsResult');
+            if (resultElement.style.display === 'none') {
                 alert("لا توجد نتيجة لحسابها بعد");
+                return;
             }
+
+            let resultText = "نتيجة حساب الأسياخ\n";
+            resultText += "------------------------\n";
+
+            // جمع بيانات الأسياخ
+            const rows = document.querySelectorAll('#rodsResultBody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                resultText += `${cells[0].textContent}\t${cells[1].textContent}\t${cells[2].textContent}\t${cells[3].textContent}\n`;
+            });
+
+            // جمع بيانات سلك التربيط
+            if (wireItems.length > 0) {
+                resultText += "\nنتيجة سلك التربيط\n";
+                resultText += "------------------------\n";
+                wireItems.forEach(item => {
+                    resultText += `سلك تربيط\t${item.qty}\tر.ي ${formatNumber(item.qty * item.price)}\n`;
+                });
+            }
+
+            // جمع الإجماليات
+            resultText += "\n" + document.getElementById('rodsTotal').innerText.replace(/<[^>]*>/g, '') + "\n";
+            resultText += document.getElementById('rodsNote').innerText;
+
+            navigator.clipboard.writeText(resultText)
+                .then(() => alert("تم نسخ النتيجة"))
+                .catch(() => alert("فشل نسخ النتيجة"));
         }
 
         function printResult() {

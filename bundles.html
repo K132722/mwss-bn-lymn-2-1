@@ -166,9 +166,6 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             border: 1px solid var(--glass-border);
-            max-width: 100%;
-            overflow-x: visible;
-            position: relative;
         }
 
         .result-title {
@@ -179,38 +176,34 @@
             font-weight: bold;
         }
 
-        .result-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
-            table-layout: auto;
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            direction: rtl;
+            margin-bottom: 15px;
         }
 
-        .result-table th, 
-        .result-table td {
-            padding: 8px 4px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            white-space: nowrap;
-            overflow: visible;
-        }
-
-        .result-table th {
-            background-color: rgba(0,0,0,0.2);
+        .grid-header {
             font-weight: bold;
-            position: sticky;
-            top: 0;
-            font-size: 13px;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 8px 5px;
+            text-align: center;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
-        .result-table td {
-            font-size: calc(11px + (14 - 11) * (100vw - 320px) / (500 - 320));
-        }
-
-        @media screen and (min-width: 500px) {
-            .result-table td {
-                font-size: calc(12px + (14 - 12) * (100vw - 500px) / (800 - 500));
-            }
+        .grid-cell {
+            padding: 8px 5px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .total-info {
@@ -257,17 +250,13 @@
                 padding: 15px;
             }
 
-            .result-table {
+            .result-grid {
                 font-size: 12px;
-                display: table;
-                width: 100%;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
             }
 
-            .result-table th, 
-            .result-table td {
+            .grid-header, .grid-cell {
                 padding: 6px 3px;
-                min-width: 55px;
-                font-size: 12px;
             }
 
             .total-info, .price-note {
@@ -332,18 +321,13 @@
 
         <div id="bundlesResult">
             <div class="result-title">نتيجة الحساب</div>
-            <table class="result-table">
-                <thead>
-                    <tr>
-                        <th style="width: 15%">المقاس</th>
-                        <th style="width: 20%">البنادل</th>
-                        <th style="width: 25%">الأسياخ</th>
-                        <th style="width: 20%">الوزن (طن)</th>
-                        <th style="width: 20%">السعر (ر.س)</th>
-                    </tr>
-                </thead>
-                <tbody id="bundlesResultBody"></tbody>
-            </table>
+            <div class="result-grid" id="bundlesResultGrid">
+                <div class="grid-header">المقاس</div>
+                <div class="grid-header">البنادل</div>
+                <div class="grid-header">الأسياخ</div>
+                <div class="grid-header">الوزن (طن)</div>
+                <div class="grid-header">السعر (ر.س)</div>
+            </div>
             <div id="bundlesTotal" class="total-info"></div>
             <div class="price-note" id="bundlesNote"></div>
         </div>
@@ -467,8 +451,12 @@
             let totalRods = 0;
 
             const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-            const resultBody = document.getElementById('bundlesResultBody');
-            resultBody.innerHTML = '';
+            const resultGrid = document.getElementById('bundlesResultGrid');
+
+            // مسح المحتوى القديم مع الحفاظ على العناوين
+            while (resultGrid.children.length > 5) {
+                resultGrid.removeChild(resultGrid.lastChild);
+            }
 
             sizes.forEach(size => {
                 const bundleCount = parseInt(document.getElementById('size-' + size).value) || 0;
@@ -483,19 +471,35 @@
                     totalPrice += parseFloat(price);
                     totalRods += rodsCount;
 
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${size} ملم</td>
-                        <td>${formatNumber(bundleCount)}</td>
-                        <td>${formatNumber(rodsCount)}</td>
-                        <td>${weight}</td>
-                        <td>${formatNumber(price)}</td>
-                    `;
-                    resultBody.appendChild(row);
+                    // إضافة صف جديد للشبكة
+                    const sizeCell = document.createElement('div');
+                    sizeCell.className = 'grid-cell';
+                    sizeCell.textContent = `${size} ملم`;
+                    resultGrid.appendChild(sizeCell);
+
+                    const bundleCell = document.createElement('div');
+                    bundleCell.className = 'grid-cell';
+                    bundleCell.textContent = formatNumber(bundleCount);
+                    resultGrid.appendChild(bundleCell);
+
+                    const rodsCell = document.createElement('div');
+                    rodsCell.className = 'grid-cell';
+                    rodsCell.textContent = formatNumber(rodsCount);
+                    resultGrid.appendChild(rodsCell);
+
+                    const weightCell = document.createElement('div');
+                    weightCell.className = 'grid-cell';
+                    weightCell.textContent = weight;
+                    resultGrid.appendChild(weightCell);
+
+                    const priceCell = document.createElement('div');
+                    priceCell.className = 'grid-cell';
+                    priceCell.textContent = formatNumber(price);
+                    resultGrid.appendChild(priceCell);
                 }
             });
 
-            if (resultBody.children.length === 0) {
+            if (resultGrid.children.length <= 5) {
                 alert("الرجاء إدخال الكميات أولاً");
                 return;
             }
