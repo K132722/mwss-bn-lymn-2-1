@@ -181,26 +181,30 @@
         .result-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: clamp(10px, 3vw, 14px);
+            font-size: min(14px, 2.8vw);
             margin-bottom: 10px;
-            table-layout: fixed;
+            table-layout: auto;
         }
 
         .result-table th, 
         .result-table td {
-            padding: 8px 2px;
+            padding: 8px 4px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            min-width: 0;
+            width: auto;
+            font-variant-numeric: tabular-nums;
         }
 
-        .result-table th:nth-child(1) { width: 15%; }
-        .result-table th:nth-child(2) { width: 18%; }
-        .result-table th:nth-child(3) { width: 20%; }
-        .result-table th:nth-child(4) { width: 22%; }
-        .result-table th:nth-child(5) { width: 25%; }
+        .result-table th {
+            font-size: min(14px, 2.8vw);
+        }
+
+        .result-table td {
+            font-size: min(13px, 2.6vw);
+            font-feature-settings: "tnum";
+        }
 
         .result-table th {
             background-color: rgba(0,0,0,0.2);
