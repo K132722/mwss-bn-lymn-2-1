@@ -182,19 +182,17 @@
         .result-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
             margin-bottom: 10px;
+            table-layout: auto;
         }
 
         .result-table th, 
         .result-table td {
-            padding: 8px 5px;
+            padding: 8px 4px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             white-space: nowrap;
             overflow: visible;
-            text-overflow: clip;
-            min-width: 60px;
         }
 
         .result-table th {
@@ -202,6 +200,17 @@
             font-weight: bold;
             position: sticky;
             top: 0;
+            font-size: 13px;
+        }
+
+        .result-table td {
+            font-size: calc(11px + (14 - 11) * (100vw - 320px) / (500 - 320));
+        }
+
+        @media screen and (min-width: 500px) {
+            .result-table td {
+                font-size: calc(12px + (14 - 12) * (100vw - 500px) / (800 - 500));
+            }
         }
 
         .total-info {
