@@ -16,7 +16,6 @@
             --glass-highlight: rgba(255, 255, 255, 0.15);
             --btn-glass: rgba(65, 90, 119, 0.4);
             --highlight: #4CAF50;
-            --danger: #e74c3c;
         }
 
         * {
@@ -73,12 +72,6 @@
             100% { transform: rotate(360deg) translate(-10%, -10%); }
         }
 
-        .top-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
         .back-btn {
             background: var(--btn-glass);
             border: 1px solid var(--glass-border);
@@ -91,110 +84,79 @@
             transition: all 0.3s ease;
         }
 
-        .small-btn {
-            background: var(--btn-glass);
-            border: 1px solid var(--glass-border);
+        .back-btn:hover {
+            background: rgba(65, 90, 119, 0.6);
+        }
+
+        h1 {
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            flex: 1;
+            text-align: right;
+            padding-left: 10px;
+        }
+
+        .form-group input {
+            width: 100px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid var(--glass-border);
+            border-radius: 8px;
+            text-align: center;
+            direction: ltr;
+            background: rgba(0,0,0,0.2);
             color: white;
-                padding: 10px 0;
-                width: 100%;
-                margin-bottom: 15px;
-                border-radius: 14px;
-                font-size: 14px;
-                transition: all 0.3s ease;
-            }
+        }
 
-            .back-btn:hover {
-                background: rgba(65, 90, 119, 0.6);
-            }
+        .price-input {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--glass-border);
+        }
 
-            h1 {
-                color: var(--accent);
-                text-align: center;
-                margin-bottom: 20px;
-                font-size: 22px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid var(--glass-border);
-            }
+        .price-input label {
+            font-weight: bold;
+            color: var(--accent);
+        }
 
-            .form-group {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 12px;
-            }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
 
-            .form-group label {
-                font-size: 16px;
-                flex: 1;
-                text-align: right;
-                padding-left: 10px;
-            }
-
-            .form-group input {
-                width: 100px;
-                padding: 10px;
-                font-size: 16px;
-                border: 2px solid var(--glass-border);
-                border-radius: 8px;
-                text-align: center;
-                direction: ltr;
-                background: rgba(0,0,0,0.2);
-                color: white;
-            }
-
-            .price-input {
-                margin-top: 15px;
-                padding-top: 15px;
-                border-top: 1px solid var(--glass-border);
-            }
-
-            .price-input label {
-                font-weight: bold;
-                color: var(--accent);
-            }
-
-            .buttons {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 20px;
-                gap: 10px;
-            }
-
-            .buttons button {
+        .buttons button {
             background: linear-gradient(135deg, var(--secondary), var(--primary));
             border: 1px solid var(--glass-border);
             color: white;
-            padding: 22px 0;
-            font-size: 22px;
-            font-weight: 700;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
             width: 32%;
             border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .buttons button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transition: 0.6s;
         }
 
         .buttons button:hover {
             background: linear-gradient(135deg, var(--accent), var(--secondary));
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .buttons button:hover::before {
-            left: 100%;
+            transform: translateY(-2px);
         }
 
         #bundlesResult {
@@ -204,8 +166,7 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             border: 1px solid var(--glass-border);
-            max-width: 100%;
-            overflow-x: visible;
+            width: 100%;
             position: relative;
         }
 
@@ -222,6 +183,7 @@
             border-collapse: collapse;
             font-size: 14px;
             margin-bottom: 10px;
+            table-layout: fixed;
         }
 
         .result-table th, 
@@ -229,10 +191,8 @@
             padding: 8px 5px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            white-space: nowrap;
-            overflow: visible;
-            text-overflow: clip;
-            min-width: 60px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .result-table th {
@@ -280,209 +240,20 @@
             word-wrap: break-word;
             max-width: 100%;
         }
-        @media (max-width: 480px) {
-        .container {
-            padding: 15px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px) saturate(180%);
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .modal-title {
-            color: var(--accent);
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .close-modal {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-modal:hover {
-            color: var(--text);
-        }
-
-        .records-list {
-            list-style-type: none;
-        }
-
-        .record-item {
-            padding: 15px;
-            margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-        }
-
-        .record-content {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .record-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: var(--accent);
-            text-align: center;
-            font-size: 18px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .record-date {
-            font-size: 12px;
-            color: #aaa;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .record-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            gap: 8px;
-        }
-
-        .record-btn {
-            padding: 8px 12px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-        }
-
-        .edit-btn {
-            background: var(--accent);
-            color: white;
-        }
-
-        .share-btn {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .delete-btn {
-            background: var(--danger);
-            color: white;
-        }
-
-        .record-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .clear-records-btn {
-            background: var(--danger);
-            color: white;
-            padding: 10px;
-            width: 100%;
-            border-radius: 10px;
-            border: none;
-            margin-bottom: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .clear-records-btn:hover {
-            background: #c0392b;
-        }
-
-        .save-title-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: white;
-            direction: rtl;
-        }
-
-        .save-title-input::placeholder {
-            color: #aaa;
-        }
-
-        .record-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .record-table th, 
-        .record-table td {
-            padding: 6px 3px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            white-space: nowrap;
-            overflow: visible;
-            text-overflow: clip;
-            min-width: 60px;
-        }
-
-        .record-table th {
-            background-color: rgba(0,0,0,0.2);
-            font-weight: bold;
-        }
 
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
             }
 
-            .result-table, .record-table {
+            .result-table {
                 font-size: 12px;
             }
 
             .result-table th, 
-            .result-table td,
-            .record-table th,
-            .record-table td {
+            .result-table td {
                 padding: 6px 3px;
-                min-width: 55px;
+                font-size: 12px;
             }
 
             .total-info, .price-note {
@@ -493,40 +264,15 @@
                 font-size: 14px;
                 padding: 10px 0;
             }
-
-            .modal-content {
-                width: 95%;
-                padding: 15px;
-            }
-
-            .record-actions {
-                flex-direction: column;
-            }
-
-            .record-btn {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-
-            .record-item {
-                padding: 10px;
-            }
-
-            .record-content {
-                padding: 10px;
-            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="top-buttons">
-            <button class="back-btn" onclick="window.location.href='index.html'">
-                ← العودة للرئيسية
-            </button>
-            <button class="small-btn" id="showRecordsBtn">عرض السجلات</button>
-        </div>
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            ← العودة للرئيسية
+        </button>
 
         <h1>حاسبة البنادل</h1>
 
@@ -570,21 +316,16 @@
             <button onclick="printResult()">مشاركة</button>
         </div>
 
-        <div class="action-buttons" id="actionButtons">
-            <button id="saveBtn">حفظ</button>
-            <button id="resetBtn">إعادة تعيين</button>
-        </div>
-
         <div id="bundlesResult">
             <div class="result-title">نتيجة الحساب</div>
             <table class="result-table">
                 <thead>
                     <tr>
-                        <th style="width: 15%">المقاس</th>
-                        <th style="width: 20%">البنادل</th>
-                        <th style="width: 25%">الأسياخ</th>
-                        <th style="width: 20%">الوزن (طن)</th>
-                        <th style="width: 20%">السعر (ر.س)</th>
+                        <th>المقاس</th>
+                        <th>البنادل</th>
+                        <th>الأسياخ</th>
+                        <th>الوزن (طن)</th>
+                        <th>السعر (ر.س)</th>
                     </tr>
                 </thead>
                 <tbody id="bundlesResultBody"></tbody>
@@ -595,30 +336,6 @@
 
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني
-        </div>
-    </div>
-
-    <!-- Records Modal -->
-    <div id="recordsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title">السجلات المحفوظة</span>
-                <span class="close-modal">&times;</span>
-            </div>
-            <button id="clearRecordsBtn" class="clear-records-btn">حذف جميع السجلات</button>
-            <ul class="records-list" id="recordsList"></ul>
-        </div>
-    </div>
-
-    <!-- Save Title Modal -->
-    <div id="saveTitleModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title">حفظ النتيجة</span>
-                <span class="close-modal">&times;</span>
-            </div>
-            <input type="text" id="saveTitleInput" class="save-title-input" placeholder="أدخل عنواناً للسجل (اختياري)">
-            <button id="confirmSaveBtn" class="save-btn" style="width: 100%; padding: 12px; background: var(--highlight); color: white; border: none; border-radius: 10px; font-weight: bold;">تأكيد الحفظ</button>
         </div>
     </div>
 
@@ -634,71 +351,6 @@
                 "8": { weightPerBundle: 1.991, rodsPerBundle: 420 }
             }
         };
-
-        // DOM Elements
-        const showRecordsBtn = document.getElementById('showRecordsBtn');
-        const recordsModal = document.getElementById('recordsModal');
-        const saveTitleModal = document.getElementById('saveTitleModal');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-        const recordsList = document.getElementById('recordsList');
-        const clearRecordsBtn = document.getElementById('clearRecordsBtn');
-        const saveTitleInput = document.getElementById('saveTitleInput');
-        const confirmSaveBtn = document.getElementById('confirmSaveBtn');
-        const actionButtons = document.getElementById('actionButtons');
-        const saveBtn = document.getElementById('saveBtn');
-        const resetBtn = document.getElementById('resetBtn');
-
-        // Current calculation data
-        let currentCalculation = {
-            inputs: {},
-            result: {},
-            pricePerTon: 0
-        };
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load saved records
-            loadRecords();
-
-            // Event listeners
-            showRecordsBtn.addEventListener('click', () => {
-                recordsModal.style.display = 'block';
-            });
-
-            closeModalBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    recordsModal.style.display = 'none';
-                    saveTitleModal.style.display = 'none';
-                });
-            });
-
-            window.addEventListener('click', (e) => {
-                if (e.target === recordsModal || e.target === saveTitleModal) {
-                    recordsModal.style.display = 'none';
-                    saveTitleModal.style.display = 'none';
-                }
-            });
-
-            clearRecordsBtn.addEventListener('click', () => {
-                if (confirm('هل أنت متأكد أنك تريد حذف جميع السجلات؟ لا يمكن التراجع عن هذا الإجراء.')) {
-                    localStorage.removeItem('steelRecords');
-                    loadRecords();
-                }
-            });
-
-            saveBtn.addEventListener('click', () => {
-                if (document.getElementById('bundlesResult').style.display === 'none') {
-                    alert('الرجاء إجراء الحساب أولاً قبل الحفظ');
-                    return;
-                }
-                saveTitleModal.style.display = 'block';
-                saveTitleInput.focus();
-            });
-
-            resetBtn.addEventListener('click', resetInputs);
-
-            confirmSaveBtn.addEventListener('click', saveCalculation);
-        });
 
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -804,14 +456,6 @@
             const resultBody = document.getElementById('bundlesResultBody');
             resultBody.innerHTML = '';
 
-            // Store current inputs
-            currentCalculation.inputs = {};
-            sizes.forEach(size => {
-                const value = parseInt(document.getElementById('size-' + size).value) || 0;
-                currentCalculation.inputs[size] = value;
-            });
-            currentCalculation.inputs.price = pricePerTon;
-
             sizes.forEach(size => {
                 const bundleCount = parseInt(document.getElementById('size-' + size).value) || 0;
                 if (bundleCount > 0) {
@@ -854,19 +498,6 @@
 
             document.getElementById('bundlesNote').innerText = `ملاحظة: هذا الحساب بسعر ${formatNumber(pricePerTon)} ريال سعودي للطن`;
             document.getElementById('bundlesResult').style.display = 'block';
-            actionButtons.style.display = 'flex';
-
-            // Store current result
-            currentCalculation.result = {
-                totalBundles,
-                totalWeight,
-                totalPrice,
-                totalRods,
-                priceInWords,
-                pricePerTon,
-                tableContent: resultBody.innerHTML,
-                calculationDate: new Date().toLocaleString('ar-SA')
-            };
         }
 
         function copyBundlesResult() {
@@ -889,22 +520,20 @@
 
             html2canvas(resultElement, {
                 backgroundColor: '#16213e',
-                scale: 5,
-                logging: false,
-                allowTaint: true,
-                useCORS: true
+                scale: 5
             }).then(canvas => {
                 const image = canvas.toDataURL('image/png');
 
-                // إنشاء رابط تحميل
+                // إنشاء عنصر خفي للتحميل التلقائي
                 const downloadLink = document.createElement('a');
                 downloadLink.href = image;
                 downloadLink.download = 'حساب_البنادل.png';
+                downloadLink.style.display = 'none';
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
 
-                // مشاركة الصورة إذا كان المتصفح يدعم ذلك
+                // بعد الحفظ، عرض خيار المشاركة
                 setTimeout(() => {
                     if (navigator.share) {
                         canvas.toBlob(function(blob) {
@@ -912,275 +541,13 @@
                             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                                 navigator.share({
                                     title: 'نتيجة حساب البنادل',
-                                    files: [file],
-                                    text: 'نتيجة حساب البنادل'
+                                    files: [file]
                                 }).catch(err => console.log('Error sharing:', err));
                             }
-                        }, 'image/png');
+                        });
                     }
                 }, 1000);
             });
-        }
-
-        function resetInputs() {
-            const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-            sizes.forEach(size => {
-                document.getElementById('size-' + size).value = '';
-            });
-            document.getElementById('price').value = '3000';
-            document.getElementById('bundlesResult').style.display = 'none';
-            actionButtons.style.display = 'none';
-        }
-
-        function loadRecords() {
-            const records = JSON.parse(localStorage.getItem('steelRecords')) || [];
-            recordsList.innerHTML = '';
-
-            if (records.length === 0) {
-                recordsList.innerHTML = '<li style="text-align: center; padding: 20px; color: #aaa;">لا توجد سجلات محفوظة</li>';
-                return;
-            }
-
-            records.forEach((record, index) => {
-                const li = document.createElement('li');
-                li.className = 'record-item';
-
-                // إنشاء محتوى السجل بنفس تنسيق صفحة الإدخالات
-                li.innerHTML = `
-                    <div class="record-content">
-                        <div class="record-title">${record.title || 'نتيجة الحساب'}</div>
-                        <table class="record-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 15%">المقاس</th>
-                                    <th style="width: 20%">البنادل</th>
-                                    <th style="width: 25%">الأسياخ</th>
-                                    <th style="width: 20%">الوزن (طن)</th>
-                                    <th style="width: 20%">السعر (ر.س)</th>
-                                </tr>
-                            </thead>
-                            <tbody>${record.result.tableContent}</tbody>
-                        </table>
-                        <div style="margin: 10px 0; text-align: center; font-size: 15px;">
-                            <div>إجمالي البنادل: ${formatNumber(record.result.totalBundles)}</div>
-                            <div>الوزن الإجمالي⚖️: ${record.result.totalWeight.toFixed(3)} طن</div>
-                            <div style="font-size: 18px; font-weight: bold; color: #97C09A; margin: 10px 0;">
-                                السعر الإجمالي💵: ${formatNumber(record.result.totalPrice.toFixed(2))} ر.س
-                            </div>
-                            <div style="color: var(--accent); font-weight: bold; margin-bottom: 15px; word-wrap: break-word; max-width: 100%;">
-                                ${record.result.priceInWords}
-                            </div>
-                        </div>
-                        <div style="text-align: center; font-size: 14px; color: #aaa; margin-top: 10px;">
-                            ملاحظة: هذا الحساب بسعر ${formatNumber(record.result.pricePerTon)} ريال سعودي للطن
-                        </div>
-                        <div class="record-date">${record.calculationDate}</div>
-                    </div>
-                    <div class="record-actions">
-                        <button class="record-btn edit-btn" data-index="${index}">تعديل</button>
-                        <button class="record-btn share-btn" data-index="${index}">مشاركة</button>
-                        <button class="record-btn delete-btn" data-index="${index}">حذف</button>
-                    </div>
-                `;
-                recordsList.appendChild(li);
-            });
-
-            // إضافة مستمعات الأحداث للأزرار
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.getAttribute('data-index');
-                    editRecord(index);
-                });
-            });
-
-            document.querySelectorAll('.share-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.getAttribute('data-index');
-                    shareRecord(index);
-                });
-            });
-
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = e.target.getAttribute('data-index');
-                    deleteRecord(index);
-                });
-            });
-        }
-
-        function saveCalculation() {
-            const title = saveTitleInput.value.trim();
-            let defaultTitle = 'حساب كمية';
-            const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-
-            // إنشاء عنوان افتراضي بناءً على المدخلات
-            const bundleEntries = [];
-            sizes.forEach(size => {
-                const count = currentCalculation.inputs[size] || 0;
-                if (count > 0) {
-                    bundleEntries.push(`${count} بندل ${size}`);
-                }
-            });
-
-            if (bundleEntries.length > 0) {
-                defaultTitle += ' ' + bundleEntries.join(' و ');
-            } else {
-                defaultTitle += ' البنادل';
-            }
-
-            const finalTitle = title || defaultTitle;
-
-            // إعداد السجل للحفظ
-            const record = {
-                title: finalTitle,
-                ...currentCalculation,
-                calculationDate: new Date().toLocaleString('ar-SA')
-            };
-
-            // الحفظ في localStorage
-            const records = JSON.parse(localStorage.getItem('steelRecords')) || [];
-
-            // إذا كان هناك تعديل على سجل موجود، استبدله بدلاً من إضافة جديد
-            if (currentCalculation.editIndex !== undefined) {
-                records[currentCalculation.editIndex] = record;
-            } else {
-                records.unshift(record); // إضافة سجل جديد في البداية
-            }
-
-            localStorage.setItem('steelRecords', JSON.stringify(records));
-
-            // إغلاق النافذة المنبثقة وإعادة التعيين
-            saveTitleModal.style.display = 'none';
-            saveTitleInput.value = '';
-            loadRecords();
-            alert('تم حفظ النتيجة بنجاح');
-        }
-
-        function editRecord(index) {
-            const records = JSON.parse(localStorage.getItem('steelRecords')) || [];
-            if (index >= 0 && index < records.length) {
-                const record = records[index];
-
-                // تعبئة الحقول ببيانات السجل
-                const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-                sizes.forEach(size => {
-                    document.getElementById('size-' + size).value = record.inputs[size] || '';
-                });
-                document.getElementById('price').value = record.inputs.price || 3000;
-
-                // إغلاق نافذة السجلات
-                recordsModal.style.display = 'none';
-
-                // تعيين الحساب الحالي لهذا السجل (للتعديل)
-                currentCalculation = {
-                    inputs: record.inputs,
-                    result: record.result,
-                    pricePerTon: record.inputs.price,
-                    editIndex: index
-                };
-
-                // حساب النتائج لعرضها
-                calculateBundles();
-            }
-        }
-
-        function shareRecord(index) {
-            const records = JSON.parse(localStorage.getItem('steelRecords')) || [];
-            if (index >= 0 && index < records.length) {
-                const record = records[index];
-
-                // إنشاء عنصر مؤقت بنفس تنسيق صفحة الإدخالات
-                const tempDiv = document.createElement('div');
-                tempDiv.style.background = 'var(--glass-bg)';
-                tempDiv.style.backdropFilter = 'blur(16px) saturate(180%)';
-                tempDiv.style.borderRadius = '10px';
-                tempDiv.style.padding = '15px';
-                tempDiv.style.border = '1px solid var(--glass-border)';
-                tempDiv.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.35)';
-                tempDiv.style.maxWidth = '500px';
-                tempDiv.style.margin = '0 auto';
-                tempDiv.style.color = 'var(--text)';
-
-                tempDiv.innerHTML = `
-                    <div style="text-align: center; color: var(--accent); margin-bottom: 15px; font-size: 18px; font-weight: bold; padding-bottom: 10px; border-bottom: 1px solid var(--glass-border);">
-                        ${record.title || 'نتيجة الحساب'}
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 10px;">
-                        <thead>
-                            <tr>
-                                <th style="width: 15%; padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.2); font-weight: bold; position: sticky; top: 0;">المقاس</th>
-                                <th style="width: 20%; padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.2); font-weight: bold; position: sticky; top: 0;">البنادل</th>
-                                <th style="width: 25%; padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.2); font-weight: bold; position: sticky; top: 0;">الأسياخ</th>
-                                <th style="width: 20%; padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.2); font-weight: bold; position: sticky; top: 0;">الوزن (طن)</th>
-                                <th style="width: 20%; padding: 8px 5px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); background-color: rgba(0,0,0,0.2); font-weight: bold; position: sticky; top: 0;">السعر (ر.س)</th>
-                            </tr>
-                        </thead>
-                        <tbody>${record.result.tableContent}</tbody>
-                    </table>
-                    <div style="margin: 10px 0; text-align: center; font-size: 15px;">
-                        <div>إجمالي البنادل: ${formatNumber(record.result.totalBundles)}</div>
-                        <div>الوزن الإجمالي⚖️: ${record.result.totalWeight.toFixed(3)} طن</div>
-                        <div style="font-size: 18px; font-weight: bold; color: #97C09A; margin: 10px 0;">
-                            السعر الإجمالي💵: ${formatNumber(record.result.totalPrice.toFixed(2))} ر.س
-                        </div>
-                        <div style="color: var(--accent); font-weight: bold; margin-bottom: 15px; word-wrap: break-word; max-width: 100%;">
-                            ${record.result.priceInWords}
-                        </div>
-                    </div>
-                    <div style="text-align: center; font-size: 14px; color: #aaa; margin-top: 10px;">
-                        ملاحظة: هذا الحساب بسعر ${formatNumber(record.result.pricePerTon)} ريال سعودي للطن
-                    </div>
-                    <div style="text-align: center; font-size: 12px; margin-top: 10px; opacity: 0.7;">
-                        ${record.calculationDate}
-                    </div>
-                `;
-
-                // استخدام html2canvas لإنشاء صورة
-                html2canvas(tempDiv, {
-                    backgroundColor: '#16213e',
-                    scale: 5,
-                    logging: false,
-                    allowTaint: true,
-                    useCORS: true
-                }).then(canvas => {
-                    const image = canvas.toDataURL('image/png');
-
-                    // إنشاء رابط تحميل
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = image;
-                    downloadLink.download = `حساب_البنادل_${index}.png`;
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-
-                    // مشاركة الصورة إذا كان المتصفح يدعم ذلك
-                    setTimeout(() => {
-                        if (navigator.share) {
-                            canvas.toBlob(function(blob) {
-                                const file = new File([blob], `حساب_البنادل_${index}.png`, { type: "image/png" });
-                                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                                    navigator.share({
-                                        title: record.title || 'نتيجة حساب البنادل',
-                                        files: [file],
-                                        text: 'نتيجة حساب البنادل'
-                                    }).catch(err => console.log('Error sharing:', err));
-                                }
-                            }, 'image/png');
-                        }
-                    }, 1000);
-                });
-            }
-        }
-
-        function deleteRecord(index) {
-            if (confirm('هل أنت متأكد أنك تريد حذف هذا السجل؟ لا يمكن التراجع عن هذا الإجراء.')) {
-                const records = JSON.parse(localStorage.getItem('steelRecords')) || [];
-                if (index >= 0 && index < records.length) {
-                    records.splice(index, 1);
-                    localStorage.setItem('steelRecords', JSON.stringify(records));
-                    loadRecords();
-                }
-            }
         }
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>

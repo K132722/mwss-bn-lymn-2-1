@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-v8'; // تم تحديث رقم الإصدار
+const CACHE_NAME = 'bina-yemen-v9'; // تم تحديث رقم الإصدار
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
