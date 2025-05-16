@@ -97,7 +97,49 @@ window.addEventListener('offline', () => {
   // You can show a message that app is working in offline mode
 });
 
-// Initial check
-if (!navigator.onLine) {
-  console.log('Application started in offline mode');
+// Offline notification
+function showOfflineNotification() {
+  const notification = document.createElement('div');
+  notification.className = 'offline-notification';
+  notification.textContent = 'أنت في وضع عدم الاتصال';
+  document.body.appendChild(notification);
+  notification.style.display = 'block';
+  setTimeout(() => notification.style.display = 'none', 3000);
 }
+
+// Handle image sharing
+async function shareImage(imageFile) {
+  try {
+    const imageData = await imageFile.arrayBuffer();
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SHARE_IMAGE',
+        imageData: imageData
+      });
+    }
+    localStorage.setItem(`shared-image-${Date.now()}`, imageData);
+  } catch (error) {
+    console.error('Error sharing image:', error);
+  }
+}
+
+// Initial check
+window.addEventListener('load', () => {
+  if (!navigator.onLine) {
+    showOfflineNotification();
+  }
+});
+
+window.addEventListener('online', () => {
+  console.log('Application is online');
+});
+
+window.addEventListener('offline', () => {
+  console.log('Application is offline');
+  showOfflineNotification();
+});
+
+// Save data before app closes
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('steelData', JSON.stringify(steelData));
+});
