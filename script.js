@@ -232,3 +232,41 @@ window.addEventListener('click', (event) => {
     closeCalculator();
   }
 });
+
+// Calculator functionality
+function openCalculator() {
+  const modal = document.getElementById('calculatorModal');
+  modal.style.display = 'block';
+}
+
+function closeCalculator() {
+  const modal = document.getElementById('calculatorModal');
+  modal.style.display = 'none';
+}
+
+function appendToDisplay(value) {
+  const display = document.getElementById('calcDisplay');
+  display.value += value;
+}
+
+function clearDisplay() {
+  const display = document.getElementById('calcDisplay');
+  display.value = '';
+}
+
+function calculate() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = eval(display.value);
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+// Close calculator when clicking outside
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById('calculatorModal');
+  if (event.target === modal) {
+    closeCalculator();
+  }
+});
