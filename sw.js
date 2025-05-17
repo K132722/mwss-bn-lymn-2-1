@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'bina-yemen-v14';
+const CACHE_NAME = 'bina-yemen-v15';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -17,6 +17,10 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
 ];
+
+// Additional dynamic caches
+const DYNAMIC_CACHE = 'dynamic-v1';
+const DATA_CACHE = 'data-v1';
 
 const IMAGE_CACHE = 'bina-yemen-images-v1';
 

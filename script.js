@@ -27,13 +27,13 @@ function saveData() {
     ...steelData,
     lastUpdated: timestamp
   };
-  
+
   localStorage.setItem('steelData', JSON.stringify(dataToSave));
   localStorage.setItem('lastSyncTime', timestamp);
-  
+
   if ('indexedDB' in window) {
     const request = indexedDB.open('binaYemenDB', 2);
-    
+
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       if (!db.objectStoreNames.contains('steelData')) {
@@ -190,18 +190,80 @@ window.addEventListener('offline', () => {
   showOfflineNotification();
 });
 
-// Save data before app closes
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('steelData', JSON.stringify(steelData));
-  
-  // Save calculator state
-  const calcDisplay = document.getElementById('calcDisplay');
-  const calcHistory = document.getElementById('calcHistory');
-  if (calcDisplay && calcHistory) {
-    localStorage.setItem('calculatorState', JSON.stringify({
-      display: calcDisplay.value,
-      history: calcHistory.value
-    }));
+// Enhanced data saving function
+function saveAllData() {
+  const timestamp = Date.now();
+  const dataToSave = {
+    steelData,
+    calculatorState: {
+      display: document.getElementById('calcDisplay')?.value || '',
+      history: document.getElementById('calcHistory')?.value || ''
+    },
+    lastUpdated: timestamp
+  };
+
+  // Save to localStorage
+  localStorage.setItem('steelData', JSON.stringify(dataToSave));
+  localStorage.setItem('lastSyncTime', timestamp);
+
+  // Save to IndexedDB
+  if ('indexedDB' in window) {
+    const request = indexedDB.open('binaYemenDB', 2);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('steelData')) {
+        db.createObjectStore('steelData');
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction(['steelData'], 'readwrite');
+      const store = transaction.objectStore('steelData');
+      store.put(dataToSave, 'currentData');
+    };
+  }
+}
+
+// Auto-save data periodically and before app closes
+setInterval(saveAllData, 30000); // Save every 30 seconds
+window.addEventListener('beforeunload', saveAllData);
+
+// Load data when page loads
+window.addEventListener('load', async () => {
+  try {
+    // Try loading from IndexedDB first
+    if ('indexedDB' in window) {
+      const request = indexedDB.open('binaYemenDB', 2);
+      request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction(['steelData'], 'readonly');
+        const store = transaction.objectStore('steelData');
+        const getRequest = store.get('currentData');
+
+        getRequest.onsuccess = () => {
+          if (getRequest.result) {
+            const data = getRequest.result;
+            steelData = data.steelData;
+            if (data.calculatorState) {
+              const calcDisplay = document.getElementById('calcDisplay');
+              const calcHistory = document.getElementById('calcHistory');
+              if (calcDisplay) calcDisplay.value = data.calculatorState.display;
+              if (calcHistory) calcHistory.value = data.calculatorState.history;
+            }
+          }
+        };
+      };
+    }
+  } catch (error) {
+    console.error('Error loading data:', error);
+    // Fallback to localStorage
+    const savedData = localStorage.getItem('steelData');
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      steelData = data.steelData || data;
+    }
   }
 });
 
