@@ -166,6 +166,9 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             border: 1px solid var(--glass-border);
+            max-width: 100%;
+            overflow-x: visible;
+            position: relative;
         }
 
         .result-title {
@@ -176,34 +179,29 @@
             font-weight: bold;
         }
 
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            background-color: rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 14px;
-            direction: rtl;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        .grid-header {
-            font-weight: bold;
-            background-color: rgba(0, 0, 0, 0.2);
+        .result-table th, 
+        .result-table td {
             padding: 8px 5px;
             text-align: center;
-            white-space: nowrap;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .grid-cell {
-            padding: 8px 5px;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: clip;
+            min-width: 60px;
+        }
+
+        .result-table th {
+            background-color: rgba(0,0,0,0.2);
+            font-weight: bold;
+            position: sticky;
+            top: 0;
         }
 
         .total-info {
@@ -250,13 +248,17 @@
                 padding: 15px;
             }
 
-            .result-grid {
+            .result-table {
                 font-size: 12px;
-                grid-template-columns: repeat(5, minmax(0, 1fr));
+                display: table;
+                width: 100%;
             }
 
-            .grid-header, .grid-cell {
+            .result-table th, 
+            .result-table td {
                 padding: 6px 3px;
+                min-width: 55px;
+                font-size: 12px;
             }
 
             .total-info, .price-note {
@@ -321,13 +323,18 @@
 
         <div id="bundlesResult">
             <div class="result-title">نتيجة الحساب</div>
-            <div class="result-grid" id="bundlesResultGrid">
-                <div class="grid-header">المقاس</div>
-                <div class="grid-header">البنادل</div>
-                <div class="grid-header">الأسياخ</div>
-                <div class="grid-header">الوزن (طن)</div>
-                <div class="grid-header">السعر (ر.س)</div>
-            </div>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th style="width: 15%">المقاس</th>
+                        <th style="width: 20%">البنادل</th>
+                        <th style="width: 25%">الأسياخ</th>
+                        <th style="width: 20%">الوزن (طن)</th>
+                        <th style="width: 20%">السعر (ر.س)</th>
+                    </tr>
+                </thead>
+                <tbody id="bundlesResultBody"></tbody>
+            </table>
             <div id="bundlesTotal" class="total-info"></div>
             <div class="price-note" id="bundlesNote"></div>
         </div>
@@ -451,12 +458,8 @@
             let totalRods = 0;
 
             const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-            const resultGrid = document.getElementById('bundlesResultGrid');
-
-            // مسح المحتوى القديم مع الحفاظ على العناوين
-            while (resultGrid.children.length > 5) {
-                resultGrid.removeChild(resultGrid.lastChild);
-            }
+            const resultBody = document.getElementById('bundlesResultBody');
+            resultBody.innerHTML = '';
 
             sizes.forEach(size => {
                 const bundleCount = parseInt(document.getElementById('size-' + size).value) || 0;
@@ -471,35 +474,19 @@
                     totalPrice += parseFloat(price);
                     totalRods += rodsCount;
 
-                    // إضافة صف جديد للشبكة
-                    const sizeCell = document.createElement('div');
-                    sizeCell.className = 'grid-cell';
-                    sizeCell.textContent = `${size} ملم`;
-                    resultGrid.appendChild(sizeCell);
-
-                    const bundleCell = document.createElement('div');
-                    bundleCell.className = 'grid-cell';
-                    bundleCell.textContent = formatNumber(bundleCount);
-                    resultGrid.appendChild(bundleCell);
-
-                    const rodsCell = document.createElement('div');
-                    rodsCell.className = 'grid-cell';
-                    rodsCell.textContent = formatNumber(rodsCount);
-                    resultGrid.appendChild(rodsCell);
-
-                    const weightCell = document.createElement('div');
-                    weightCell.className = 'grid-cell';
-                    weightCell.textContent = weight;
-                    resultGrid.appendChild(weightCell);
-
-                    const priceCell = document.createElement('div');
-                    priceCell.className = 'grid-cell';
-                    priceCell.textContent = formatNumber(price);
-                    resultGrid.appendChild(priceCell);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${size} ملم</td>
+                        <td>${formatNumber(bundleCount)}</td>
+                        <td>${formatNumber(rodsCount)}</td>
+                        <td>${weight}</td>
+                        <td>${formatNumber(price)}</td>
+                    `;
+                    resultBody.appendChild(row);
                 }
             });
 
-            if (resultGrid.children.length <= 5) {
+            if (resultBody.children.length === 0) {
                 alert("الرجاء إدخال الكميات أولاً");
                 return;
             }

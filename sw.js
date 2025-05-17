@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'bina-yemen-v10';
+const CACHE_NAME = 'bina-yemen-v12';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -29,7 +29,7 @@ self.addEventListener('fetch', (event) => {
             if (!networkResponse || networkResponse.status !== 200) {
               return networkResponse;
             }
-            
+
             return caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, networkResponse.clone());
@@ -46,20 +46,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Handle image sharing and caching
-self.addEventListener('message', async (event) => {
-  if (event.data.type === 'CACHE_IMAGE') {
-    const { imageUrl, imageName } = event.data;
-    try {
-      const cache = await caches.open(CACHE_NAME);
-      const response = await fetch(imageUrl);
-      await cache.put(`/cached-images/${imageName}`, response);
-    } catch (error) {
-      console.error('Error caching image:', error);
-    }
-  }
-});
-
+// Install event - cache all initial assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -70,6 +57,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// Activate event - clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
@@ -84,4 +72,15 @@ self.addEventListener('activate', (event) => {
       })
       .then(() => self.clients.claim())
   );
+});
+
+// Handle image sharing
+self.addEventListener('message', (event) => {
+  if (event.data.type === 'SHARE_IMAGE') {
+    const imageData = event.data.imageData;
+    caches.open(CACHE_NAME).then((cache) => {
+      const response = new Response(imageData);
+      cache.put(`/shared-images/${Date.now()}`, response);
+    });
+  }
 });

@@ -97,84 +97,49 @@ window.addEventListener('offline', () => {
   // You can show a message that app is working in offline mode
 });
 
-// Show offline notification
+// Offline notification
 function showOfflineNotification() {
   const notification = document.createElement('div');
   notification.className = 'offline-notification';
   notification.textContent = 'أنت في وضع عدم الاتصال';
   document.body.appendChild(notification);
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
+  notification.style.display = 'block';
+  setTimeout(() => notification.style.display = 'none', 3000);
 }
 
 // Handle image sharing
-async function shareImage(imageUrl, imageName) {
-  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({
-      type: 'CACHE_IMAGE',
-      imageUrl,
-      imageName
-    });
-  }
-  
-  // Also store in localStorage as base64
+async function shareImage(imageFile) {
   try {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      localStorage.setItem(`image_${imageName}`, reader.result);
-    };
-    reader.readAsDataURL(blob);
+    const imageData = await imageFile.arrayBuffer();
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SHARE_IMAGE',
+        imageData: imageData
+      });
+    }
+    localStorage.setItem(`shared-image-${Date.now()}`, imageData);
   } catch (error) {
-    console.error('Error storing image:', error);
+    console.error('Error sharing image:', error);
   }
 }
 
-// Auto-save function
-function autoSaveData() {
-  const data = {
-    steelData,
-    timestamp: new Date().toISOString()
-  };
-  localStorage.setItem('appData', JSON.stringify(data));
-}
-
-// Load saved data
-function loadSavedData() {
-  const savedData = localStorage.getItem('appData');
-  if (savedData) {
-    const data = JSON.parse(savedData);
-    Object.assign(steelData, data.steelData);
-  }
-}
-
-// Event listeners for online/offline status
-window.addEventListener('online', () => {
-  console.log('Application is online');
-  document.body.classList.remove('offline-mode');
-});
-
-window.addEventListener('offline', () => {
-  console.log('Application is offline');
-  document.body.classList.add('offline-mode');
-  showOfflineNotification();
-});
-
-// Initial checks
+// Initial check
 window.addEventListener('load', () => {
-  loadSavedData();
   if (!navigator.onLine) {
-    document.body.classList.add('offline-mode');
     showOfflineNotification();
   }
 });
 
-// Auto-save data periodically
-setInterval(autoSaveData, 30000); // Save every 30 seconds
+window.addEventListener('online', () => {
+  console.log('Application is online');
+});
 
-// Save data before closing
+window.addEventListener('offline', () => {
+  console.log('Application is offline');
+  showOfflineNotification();
+});
+
+// Save data before app closes
 window.addEventListener('beforeunload', () => {
-  autoSaveData();
+  localStorage.setItem('steelData', JSON.stringify(steelData));
 });
