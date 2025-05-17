@@ -209,6 +209,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <button onclick="openCalculator()" class="calc-btn">
+        🔢 الحاسبة
+    </button>
+    
+    <div id="calculatorModal" class="calculator-modal">
+        <input type="text" class="calculator-display" id="calcDisplay" readonly>
+        <div class="calculator-grid">
+            <button class="calc-button" onclick="clearDisplay()">C</button>
+            <button class="calc-button" onclick="appendToDisplay('(')">(</button>
+            <button class="calc-button" onclick="appendToDisplay(')')">)</button>
+            <button class="calc-button" onclick="appendToDisplay('/')">/</button>
+            <button class="calc-button" onclick="appendToDisplay('7')">7</button>
+            <button class="calc-button" onclick="appendToDisplay('8')">8</button>
+            <button class="calc-button" onclick="appendToDisplay('9')">9</button>
+            <button class="calc-button" onclick="appendToDisplay('*')">×</button>
+            <button class="calc-button" onclick="appendToDisplay('4')">4</button>
+            <button class="calc-button" onclick="appendToDisplay('5')">5</button>
+            <button class="calc-button" onclick="appendToDisplay('6')">6</button>
+            <button class="calc-button" onclick="appendToDisplay('-')">-</button>
+            <button class="calc-button" onclick="appendToDisplay('1')">1</button>
+            <button class="calc-button" onclick="appendToDisplay('2')">2</button>
+            <button class="calc-button" onclick="appendToDisplay('3')">3</button>
+            <button class="calc-button" onclick="appendToDisplay('+')">+</button>
+            <button class="calc-button" onclick="appendToDisplay('0')">0</button>
+            <button class="calc-button" onclick="appendToDisplay('.')">.</button>
+            <button class="calc-button" style="grid-column: span 2;" onclick="calculate()">=</button>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="institute-name">مؤسسة بناء اليمن للتجارة</div>
         <h1>حاسبة أسعار الحديد</h1>
