@@ -20,10 +20,54 @@ const steelData = JSON.parse(localStorage.getItem('steelData')) || {
   }
 };
 
-// Save data to localStorage
+// Save data to localStorage and IndexedDB
 function saveData() {
   localStorage.setItem('steelData', JSON.stringify(steelData));
-  console.log('Data saved successfully');
+  
+  if ('indexedDB' in window) {
+    const request = indexedDB.open('binaYemenDB', 1);
+    
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('steelData')) {
+        db.createObjectStore('steelData');
+      }
+      if (!db.objectStoreNames.contains('images')) {
+        db.createObjectStore('images');
+      }
+    };
+
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction(['steelData'], 'readwrite');
+      const store = transaction.objectStore('steelData');
+      store.put(steelData, 'currentData');
+    };
+  }
+}
+
+// Save image offline
+async function saveImageOffline(imageBlob, timestamp) {
+  // Save to IndexedDB
+  if ('indexedDB' in window) {
+    const request = indexedDB.open('binaYemenDB', 1);
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction(['images'], 'readwrite');
+      const store = transaction.objectStore('images');
+      store.put(imageBlob, timestamp);
+    };
+  }
+
+  // Save to ServiceWorker cache
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    const arrayBuffer = await imageBlob.arrayBuffer();
+    navigator.serviceWorker.controller.postMessage({
+      type: 'SAVE_IMAGE',
+      imageData: arrayBuffer,
+      timestamp
+    });
+  }
 }
 
 // تسجيل Service Worker لتثبيت PWA

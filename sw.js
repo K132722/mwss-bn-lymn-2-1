@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'bina-yemen-v12';
+const CACHE_NAME = 'bina-yemen-v13';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16,48 +16,14 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap'
 ];
 
-// Cache first, then network strategy
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request)
-          .then((networkResponse) => {
-            if (!networkResponse || networkResponse.status !== 200) {
-              return networkResponse;
-            }
-
-            return caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, networkResponse.clone());
-                return networkResponse;
-              });
-          })
-          .catch(() => {
-            return new Response('غير متصل بالإنترنت', {
-              status: 503,
-              headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
-            });
-          });
-      })
-  );
-});
-
-// Install event - cache all initial assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activate event - clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
@@ -74,13 +40,42 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Handle image sharing
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request)
+          .then((response) => {
+            if (!response || response.status !== 200) {
+              return response;
+            }
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          })
+          .catch(() => {
+            return new Response('غير متصل بالإنترنت', {
+              status: 503,
+              headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
+            });
+          });
+      })
+  );
+});
+
 self.addEventListener('message', (event) => {
-  if (event.data.type === 'SHARE_IMAGE') {
-    const imageData = event.data.imageData;
+  if (event.data.type === 'SAVE_IMAGE') {
+    const { imageData, timestamp } = event.data;
     caches.open(CACHE_NAME).then((cache) => {
-      const response = new Response(imageData);
-      cache.put(`/shared-images/${Date.now()}`, response);
+      const blob = new Blob([imageData], { type: 'image/png' });
+      const response = new Response(blob);
+      cache.put(`/shared-images/${timestamp}`, response);
     });
   }
 });
