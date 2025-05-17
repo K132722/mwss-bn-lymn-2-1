@@ -1,5 +1,32 @@
+
+.offline-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--offline-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: fadeInOut 3s forwards;
+}
+
+.offline-mode {
+  position: relative;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+
 :root {
   --primary-dark: #0a1423;
+  --offline-color: #ffcc00;
   --primary: #16213e;
   --secondary: #415a77;
   --accent: #778da9;
