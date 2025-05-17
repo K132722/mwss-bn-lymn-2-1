@@ -193,6 +193,33 @@ window.addEventListener('offline', () => {
 // Save data before app closes
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('steelData', JSON.stringify(steelData));
+  
+  // Save calculator state
+  const calcDisplay = document.getElementById('calcDisplay');
+  const calcHistory = document.getElementById('calcHistory');
+  if (calcDisplay && calcHistory) {
+    localStorage.setItem('calculatorState', JSON.stringify({
+      display: calcDisplay.value,
+      history: calcHistory.value
+    }));
+  }
+});
+
+// Load calculator state
+function loadCalculatorState() {
+  const savedState = localStorage.getItem('calculatorState');
+  if (savedState) {
+    const state = JSON.parse(savedState);
+    const calcDisplay = document.getElementById('calcDisplay');
+    const calcHistory = document.getElementById('calcHistory');
+    if (calcDisplay && state.display) calcDisplay.value = state.display;
+    if (calcHistory && state.history) calcHistory.value = state.history;
+  }
+}
+
+// Initialize calculator state when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadCalculatorState();
 });
 
 // Calculator functionality
