@@ -79,3 +79,28 @@ self.addEventListener('message', (event) => {
     });
   }
 });
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.url.includes('/share-target')) {
+    event.respondWith(
+      (async () => {
+        const formData = await event.request.formData();
+        const image = formData.get('image');
+        const timestamp = Date.now();
+        
+        if (image) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(`/shared-images/${timestamp}`, new Response(image));
+        }
+        
+        return Response.redirect('/', 303);
+      })()
+    );
+  }
+});
+
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-images') {
+    event.waitUntil(syncImages());
+  }
+});
