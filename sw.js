@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'bina-yemen-v13';
+const CACHE_NAME = 'bina-yemen-v14';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -12,9 +12,12 @@ const ASSETS_TO_CACHE = [
   '/IMG_4411.png',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
+  '/generated-icon.png',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap'
 ];
+
+const IMAGE_CACHE = 'bina-yemen-images-v1';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

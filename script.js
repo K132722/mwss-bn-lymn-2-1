@@ -20,12 +20,19 @@ const steelData = JSON.parse(localStorage.getItem('steelData')) || {
   }
 };
 
-// Save data to localStorage and IndexedDB
+// Save data to localStorage and IndexedDB with timestamp
 function saveData() {
-  localStorage.setItem('steelData', JSON.stringify(steelData));
+  const timestamp = Date.now();
+  const dataToSave = {
+    ...steelData,
+    lastUpdated: timestamp
+  };
+  
+  localStorage.setItem('steelData', JSON.stringify(dataToSave));
+  localStorage.setItem('lastSyncTime', timestamp);
   
   if ('indexedDB' in window) {
-    const request = indexedDB.open('binaYemenDB', 1);
+    const request = indexedDB.open('binaYemenDB', 2);
     
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
