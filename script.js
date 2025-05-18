@@ -391,9 +391,25 @@ function clearDisplay() {
   display.value = '';
 }
 
+function addNewScreen() {
+  const container = document.getElementById('screensContainer');
+  const screen = document.createElement('div');
+  screen.className = 'calc-screen';
+  screen.innerHTML = `
+    <input type="text" class="calc-display" value="0" readonly>
+    <textarea class="calc-history" readonly></textarea>
+  `;
+  container.appendChild(screen);
+  container.scrollTop = container.scrollHeight;
+}
+
 function calculate() {
-  const display = document.getElementById('calcDisplay');
-  const history = document.getElementById('calcHistory');
+  const activeScreen = document.activeElement.closest('.calc-screen');
+  if (!activeScreen) return;
+
+  const display = activeScreen.querySelector('.calc-display');
+  const history = activeScreen.querySelector('.calc-history');
+
   try {
     const expression = display.value;
     const result = eval(expression);
@@ -407,6 +423,26 @@ function calculate() {
   } catch (error) {
     display.value = 'خطأ';
   }
+}
+
+function appendToDisplay(value) {
+  const activeScreen = document.activeElement.closest('.calc-screen');
+  if (!activeScreen) return;
+
+  const display = activeScreen.querySelector('.calc-display');
+  if (display.value === '0' && value !== '.') {
+    display.value = value;
+  } else {
+    display.value += value;
+  }
+}
+
+function clearDisplay() {
+  const activeScreen = document.activeElement.closest('.calc-screen');
+  if (!activeScreen) return;
+
+  const display = activeScreen.querySelector('.calc-display');
+  display.value = '0';
 }
 
 function clearAll() {

@@ -419,7 +419,16 @@
             </button>
         </div>
 
-        <input type="text" id="calcDisplay" value="0" readonly>
+        <div id="screensContainer">
+            <div class="calc-screen">
+                <input type="text" class="calc-display" value="0" readonly>
+                <textarea class="calc-history" readonly></textarea>
+            </div>
+        </div>
+        
+        <button class="add-screen-btn" onclick="addNewScreen()">
+            <i class="fas fa-plus"></i> إضافة شاشة جديدة
+        </button>
 
         <div class="calculator-buttons">
             <!-- العمليات على اليسار -->
