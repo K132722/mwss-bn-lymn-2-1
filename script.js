@@ -307,8 +307,56 @@ function clearDisplay() {
 
 function calculate() {
   const display = document.getElementById('calcDisplay');
+  const history = document.getElementById('calcHistory');
   try {
-    display.value = eval(display.value);
+    const expression = display.value;
+    const result = eval(expression);
+    if (history.value) {
+      history.value += '\n' + expression + ' = ' + result;
+    } else {
+      history.value = expression + ' = ' + result;
+    }
+    display.value = result;
+    history.scrollTop = history.scrollHeight;
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function clearAll() {
+  const display = document.getElementById('calcDisplay');
+  const history = document.getElementById('calcHistory');
+  display.value = '';
+  history.value = '';
+}
+
+function backspace() {
+  const display = document.getElementById('calcDisplay');
+  display.value = display.value.slice(0, -1);
+}
+
+function percentage() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = eval(display.value) / 100;
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function squareRoot() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = Math.sqrt(eval(display.value));
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function power() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = Math.pow(eval(display.value), 2);
   } catch (error) {
     display.value = 'خطأ';
   }
@@ -345,8 +393,56 @@ function clearDisplay() {
 
 function calculate() {
   const display = document.getElementById('calcDisplay');
+  const history = document.getElementById('calcHistory');
   try {
-    display.value = eval(display.value);
+    const expression = display.value;
+    const result = eval(expression);
+    if (history.value) {
+      history.value += '\n' + expression + ' = ' + result;
+    } else {
+      history.value = expression + ' = ' + result;
+    }
+    display.value = result;
+    history.scrollTop = history.scrollHeight;
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function clearAll() {
+  const display = document.getElementById('calcDisplay');
+  const history = document.getElementById('calcHistory');
+  display.value = '';
+  history.value = '';
+}
+
+function backspace() {
+  const display = document.getElementById('calcDisplay');
+  display.value = display.value.slice(0, -1);
+}
+
+function percentage() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = eval(display.value) / 100;
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function squareRoot() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = Math.sqrt(eval(display.value));
+  } catch (error) {
+    display.value = 'خطأ';
+  }
+}
+
+function power() {
+  const display = document.getElementById('calcDisplay');
+  try {
+    display.value = Math.pow(eval(display.value), 2);
   } catch (error) {
     display.value = 'خطأ';
   }
