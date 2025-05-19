@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'bina-yemen-v15';
+const CACHE_NAME = 'bina-yemen-v16';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -52,6 +52,30 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request)
+          .then((response) => {
+            if (!response || response.status !== 200) {
+              return response;
+            }
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          });
+      })
+      .catch(() => {
+        return new Response('غير متصل بالإنترنت', {
+          status: 503,
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
+        });
+      })
+  );
+});
         if (cachedResponse) {
           return cachedResponse;
         }

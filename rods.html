@@ -487,28 +487,29 @@
          }
 
          .calc-button {
-             height: 60px;
-             font-size: 24px;
-             border: none;
-             border-radius: 10px;
-             background: var(--btn-glass);
-             color: white;
-             cursor: pointer;
-             transition: all 0.2s ease;
-         }
+            height: 60px;
+            font-size: 24px;
+            border: none;
+            border-radius: 10px;
+            background: var(--btn-glass);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
 
-         .calc-button.operator {
-             background: var(--operator-glass);
-         }
+        .calc-button.operator {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
 
-         .calc-button.equal {
-             background: var(--equal-glass);
-         }
+        .calc-button.equal {
+            background: linear-gradient(135deg, #4a8cff, #0062ff);
+        }
 
-         .calc-button.clear {
-             background: var(--clear-glass);
-             grid-column: span 2;
-         }
+        .calc-button.clear {
+            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
+            grid-column: span 2;
+        }
 
          .calc-button.backspace {
              background: var(--operator-glass);
