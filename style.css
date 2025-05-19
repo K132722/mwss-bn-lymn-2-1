@@ -19,6 +19,20 @@
   font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
 }
 
+.zoom-enabled {
+  touch-action: manipulation pinch-zoom;
+}
+
+.zoom-disabled {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body {
   background: 
     linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),

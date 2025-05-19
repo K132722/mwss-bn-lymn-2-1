@@ -491,3 +491,28 @@ window.addEventListener('click', (event) => {
     closeCalculator();
   }
 });
+
+function toggleCalculator() {
+    calculatorOpen = !calculatorOpen;
+    const body = document.body;
+
+    if (calculatorOpen) {
+        calculatorContainer.classList.add('open');
+        mainContainer.classList.add('calculator-open');
+        body.classList.remove('zoom-enabled');
+        body.classList.add('zoom-disabled');
+        document.querySelector('meta[name="viewport"]').content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+    } else {
+        calculatorContainer.classList.remove('open');
+        mainContainer.classList.remove('calculator-open');
+        body.classList.remove('zoom-disabled');
+        body.classList.add('zoom-enabled');
+        document.querySelector('meta[name="viewport"]').content = 'width=device-width, initial-scale=1.0';
+    }
+}
+
+// Initialize zoom state on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+    body.classList.add('zoom-enabled');
+});
