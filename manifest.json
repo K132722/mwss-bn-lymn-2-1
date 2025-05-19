@@ -1,3 +1,4 @@
+
 {
   "name": "مؤسسة بناء اليمن للتجارة",
   "short_name": "بناء اليمن",
@@ -5,7 +6,7 @@
   "display": "standalone",
   "background_color": "#16213e",
   "theme_color": "#415a77",
-  "orientation": "portrait",
+  "orientation": "any",
   "description": "تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح",
   "icons": [
     {
@@ -19,12 +20,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "generated-icon.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any"
     }
   ],
   "share_target": {
@@ -42,8 +37,8 @@
   },
   "lang": "ar",
   "dir": "rtl",
-  "orientation": "any",
   "categories": ["business", "utilities"],
   "prefer_related_applications": false,
-  "scope": "/"
+  "scope": "/",
+  "offline_enabled": true
 }

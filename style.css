@@ -401,4 +401,27 @@ body {
     grid-column: span 2;
 }
 
-/* باقي التنسيقات بنفس النمط */
+.offline-indicator {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 0, 0, 0.2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 9999;
+    display: none;
+}
+
+.offline .offline-indicator {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .offline-indicator {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+    }
+}

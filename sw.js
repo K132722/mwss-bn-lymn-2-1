@@ -1,5 +1,4 @@
-
-const CACHE_NAME = 'bina-yemen-v16';
+const CACHE_NAME = 'bina-yemen-v18';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -17,12 +16,6 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
 ];
-
-// Additional dynamic caches
-const DYNAMIC_CACHE = 'dynamic-v1';
-const DATA_CACHE = 'data-v1';
-
-const IMAGE_CACHE = 'bina-yemen-images-v1';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -66,33 +59,9 @@ self.addEventListener('fetch', (event) => {
                 cache.put(event.request, responseToCache);
               });
             return response;
-          });
-      })
-      .catch(() => {
-        return new Response('غير متصل بالإنترنت', {
-          status: 503,
-          headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
-        });
-      })
-  );
-});
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request)
-          .then((response) => {
-            if (!response || response.status !== 200) {
-              return response;
-            }
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
           })
           .catch(() => {
-            return new Response('غير متصل بالإنترنت', {
+            return new Response('أنت غير متصل بالإنترنت', {
               status: 503,
               headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
             });
@@ -100,6 +69,28 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-data') {
+    event.waitUntil(syncData());
+  }
+});
+
+async function syncData() {
+  const dbName = 'binaYemenDB';
+  const db = await openDB(dbName, 1, {
+    upgrade(db) {
+      db.createObjectStore('steelData');
+      db.createObjectStore('calculatorData');
+    }
+  });
+
+  // Sync logic here when online
+  const allData = await db.getAll('steelData');
+  if (allData.length > 0) {
+    // Sync with server when implemented
+  }
+}
 
 self.addEventListener('message', (event) => {
   if (event.data.type === 'SAVE_IMAGE') {
