@@ -399,33 +399,32 @@
             </button>
         </div>
 
-        <input type="text" id="calcDisplay" value="0" readonly>
+        <div id="calcDisplay" class="calc-display">0</div>
 
         <div class="calculator-buttons">
+            <button class="calc-button function" onclick="clearDisplay()">AC</button>
+            <button class="calc-button function" onclick="toggleSign()">±</button>
+            <button class="calc-button function" onclick="percentage()">%</button>
             <button class="calc-button operator" onclick="press('/')">÷</button>
-            <button class="calc-button" onclick="press('9')">9</button>
-            <button class="calc-button" onclick="press('8')">8</button>
+
             <button class="calc-button" onclick="press('7')">7</button>
-
+            <button class="calc-button" onclick="press('8')">8</button>
+            <button class="calc-button" onclick="press('9')">9</button>
             <button class="calc-button operator" onclick="press('*')">×</button>
-            <button class="calc-button" onclick="press('6')">6</button>
-            <button class="calc-button" onclick="press('5')">5</button>
+
             <button class="calc-button" onclick="press('4')">4</button>
-
+            <button class="calc-button" onclick="press('5')">5</button>
+            <button class="calc-button" onclick="press('6')">6</button>
             <button class="calc-button operator" onclick="press('-')">−</button>
-            <button class="calc-button" onclick="press('3')">3</button>
-            <button class="calc-button" onclick="press('2')">2</button>
+
             <button class="calc-button" onclick="press('1')">1</button>
-
+            <button class="calc-button" onclick="press('2')">2</button>
+            <button class="calc-button" onclick="press('3')">3</button>
             <button class="calc-button operator" onclick="press('+')">+</button>
-            <button class="calc-button equal" onclick="calculate()">=</button>
-            <button class="calc-button" onclick="press('.')">.</button>
-            <button class="calc-button" onclick="press('0')">0</button>
 
-            <div class="clear-buttons-container">
-                <button class="calc-button clear" onclick="clearDisplay()">C</button>
-                <button class="calc-button backspace" onclick="backspace()">⌫</button>
-            </div>
+            <button class="calc-button zero" onclick="press('0')">0</button>
+            <button class="calc-button" onclick="press('.')">.</button>
+            <button class="calc-button operator" onclick="calculate()">=</button>
         </div>
     </div>
 

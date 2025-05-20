@@ -516,3 +516,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     body.classList.add('zoom-enabled');
 });
+
+function clearDisplay() {
+    current = '0';
+    calcDisplay.textContent = current;
+}
+
+function toggleSign() {
+    current = (parseFloat(current) * -1).toString();
+    calcDisplay.textContent = current;
+}
+
+function percentage() {
+    current = (parseFloat(current) / 100).toString();
+    calcDisplay.textContent = current;
+}
+
+function press(val) {
+    if (calcDisplay.textContent === '0' && val !== '.') {
+        current = val;
+    } else {
+        current = calcDisplay.textContent + val;
+    }
+    calcDisplay.textContent = current;
+}
+
+function clearDisplay() {
+    current = '0';
+    calcDisplay.textContent = current;
+}
+
+function toggleSign() {
+    current = (parseFloat(current) * -1).toString();
+    calcDisplay.textContent = current;
+}
+
+function percentage() {
+    current = (parseFloat(current) / 100).toString();
+    calcDisplay.textContent = current;
+}
+
+function press(val) {
+    if (calcDisplay.textContent === '0' && val !== '.') {
+        current = val;
+    } else {
+        current = calcDisplay.textContent + val;
+    }
+    calcDisplay.textContent = current;
+}
