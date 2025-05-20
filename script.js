@@ -532,12 +532,40 @@ function percentage() {
     calcDisplay.textContent = current;
 }
 
+let lastResult = '0';
+
 function press(val) {
     if (calcDisplay.textContent === '0' && val !== '.') {
         current = val;
     } else {
         current = calcDisplay.textContent + val;
     }
+    calcDisplay.textContent = current;
+}
+
+function calculate() {
+    try {
+        current = eval(current).toString();
+        lastResult = current;
+        calcDisplay.textContent = current;
+    } catch {
+        calcDisplay.textContent = "خطأ";
+        current = '';
+    }
+}
+
+function insertAns() {
+    if (calcDisplay.textContent === '0') {
+        current = lastResult;
+    } else {
+        current = calcDisplay.textContent + lastResult;
+    }
+    calcDisplay.textContent = current;
+}
+
+function deleteLastChar() {
+    current = current.slice(0, -1);
+    if (current === '') current = '0';
     calcDisplay.textContent = current;
 }
 
