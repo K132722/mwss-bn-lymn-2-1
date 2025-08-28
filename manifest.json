@@ -2,7 +2,8 @@
 {
   "name": "حاسبة الحديد",
   "short_name": "مؤسسة بناء اليمن",
-  "start_url": "/",
+  "start_url": "/mwss-bn-lymn-2-1/index.html",
+  "scope": "/mwss-bn-lymn-2-1/"
   "display": "standalone",
   "background_color":"#1b263b",
   "theme_color": "#0D1729",
