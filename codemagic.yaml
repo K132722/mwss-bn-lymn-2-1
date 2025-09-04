@@ -1,14 +1,14 @@
 workflows:
-  ios-workflow:
-    name: Build MyPWA iOS App
-    max_build_duration: 120
-    instance_type: mac_mini_m2
-    environment:
-      vars:
-        APP_NAME: "MyPWA"
-    scripts:
-      - name: Install dependencies
-        script: |
-          npm install
-          npx cap sync ios
-    # نشر معطل، لذا حذفنا publishing
+ios-workflow:
+  name: Build MyPWA iOS App
+  max_build_duration: 120
+  instance_type: mac_mini_m2
+  environment:
+    vars:
+      APP_NAME: "MyPWA"
+    node: "20.5.0"  # هذا يثبت Node.js تلقائي
+  scripts:
+    - name: Install dependencies
+      script: |
+        npm install
+        npx cap sync ios
