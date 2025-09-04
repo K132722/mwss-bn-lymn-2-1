@@ -1,14 +1,15 @@
 workflows:
 ios-workflow:
-  name: Build MyPWA iOS App
+  name: Build IronCalculator iOS App
   max_build_duration: 120
   instance_type: mac_mini_m2
   environment:
-    node: "20.5.0"        # <- تثبيت Node.js قبل أي أمر npm
+    node: "20.5.0"       # تثبيت Node.js قبل تشغيل npm
     vars:
-      APP_NAME: "MyPWA"
+      APP_NAME: "IronCalculator"
   scripts:
     - name: Install dependencies
       script: |
         npm install
         npx cap sync ios
+  # نشر معطل، لذا حذفنا publishing
