@@ -4,9 +4,9 @@ ios-workflow:
   max_build_duration: 120
   instance_type: mac_mini_m2
   environment:
+    node: "20.5.0"   # <- هذا يثبت Node.js قبل تشغيل npm
     vars:
       APP_NAME: "MyPWA"
-    node: "20.5.0"
   scripts:
     - name: Install dependencies
       script: |
