@@ -1,0 +1,15 @@
+workflows:
+ios-workflow:
+    name: Build MyPWA iOS App
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+        vars:
+            APP_NAME: "MyPWA"
+    scripts:
+        - name: Install dependencies
+          script: |
+            npm install
+            npx cap sync ios
+    publishing:
+        none: true
