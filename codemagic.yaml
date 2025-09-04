@@ -6,7 +6,7 @@ ios-workflow:
   environment:
     vars:
       APP_NAME: "MyPWA"
-    node: "20.5.0"  # هذا يثبت Node.js تلقائي
+    node: "20.5.0"
   scripts:
     - name: Install dependencies
       script: |
