@@ -1,15 +1,14 @@
 workflows:
 ios-workflow:
-  name: Build IronCalculator iOS App
-  max_build_duration: 120
-  instance_type: mac_mini_m2
+  name: Build MyPWA iOS App           # اسم سير العمل، ممكن تغيّره لأي اسم تحبه
+  max_build_duration: 120             # الوقت الأقصى للبناء بالدقائق
+  instance_type: mac_mini_m2          # نوع جهاز البناء في Codemagic
   environment:
-    node: "20.5.0"       # تثبيت Node.js قبل تشغيل npm
     vars:
-      APP_NAME: "IronCalculator"
+      APP_NAME: "MyPWA"              # اسم التطبيق، غيّره حسب مشروعك
   scripts:
     - name: Install dependencies
       script: |
-        npm install
-        npx cap sync ios
+        npm install                    # تثبيت التبعيات
+        npx cap sync ios               # مزامنة Capacitor مع iOS
   # نشر معطل، لذا حذفنا publishing
