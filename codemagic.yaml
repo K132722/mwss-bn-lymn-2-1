@@ -1,14 +1,14 @@
-workflows:
-ios-workflow:
-  name: Build MyPWA iOS App
+workflows:               # هذا المستوى الأول (0 مسافة)
+ios-workflow:           # المستوى الثاني (مسافتين)
+  name: Build MyPWA iOS App      # المستوى الثالث (4 مسافات)
   max_build_duration: 120
   instance_type: mac_mini_m2
-  environment:
-    node: "20.5.0"   # <- هذا يثبت Node.js قبل تشغيل npm
-    vars:
-      APP_NAME: "MyPWA"
-  scripts:
-    - name: Install dependencies
-      script: |
-        npm install
+  environment:          # المستوى الثالث (4 مسافات)
+    node: "20.5.0"     # المستوى الرابع (6 مسافات)
+    vars:               # المستوى الرابع (6 مسافات)
+      APP_NAME: "MyPWA"   # المستوى الخامس (8 مسافات)
+  scripts:               # المستوى الثالث (4 مسافات)
+    - name: Install dependencies  # المستوى الرابع (6 مسافات)
+      script: |                  # المستوى الخامس (8 مسافات)
+        npm install              # المستوى السادس (10 مسافات)
         npx cap sync ios
