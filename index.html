@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0D1729">
-    <meta name="description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
-    <meta property="og:title" content="مؤسسة بناء اليمن للتجارة">
-    <meta property="og:description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
-    <meta property="og:image" content="android-chrome-512x512.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
+   <meta charset="UTF-8">
+<!-- تم تصحيح علامة التنصيص الزائدة في نهاية السطر التالي -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+
+<meta name="theme-color" content="#0D1729">
+<meta name="description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
+
+<link rel="manifest" href="manifest.json">
+
+
+
+<!-- التعديل الجوهري هنا: تغيير القيمة إلى black-translucent أو black -->
+
+
+
+
+<link rel="apple-touch-icon" href="android-chrome-192x192.png">
+
+<meta property="og:title" content="مؤسسة بناء اليمن للتجارة">
+<meta property="og:description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
+<meta property="og:image" content="android-chrome-512x512.png">
+<meta property="og:image" content="android-chrome-192x192.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
     <title>مؤسسة بناء اليمن للتجارة</title>
-    <link rel="manifest" href="manifest.json">
+
     <style>
         :root {
             --primary-dark: #0a1423;
@@ -22,10 +38,9 @@
             --glass-bg: rgba(22, 33, 62, 0.85);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-highlight: rgba(255, 255, 255, 0.15);
-
-
-              
-            }
+            --error-color: #ff4a5a;
+            --success-color: #2ec4b6;
+        }
 
         * {
             margin: 0;
@@ -37,13 +52,17 @@
             -moz-user-select: none;
             user-select: none;
         }
+html {
+    /* تجبر خلفية الصفحة ككل على أخذ اللون الكحلي تحت شريط الحالة */
+    background-color: #0d1729 !important;
+}
 
         body {
             background: 
                 linear-gradient(rgba(10, 20, 35, 0.85), rgba(22, 33, 62, 0.9)),
                 url('IMG_4411.png') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100vh;
+            min-height: 120vh;
             color: var(--text);
             display: flex;
             justify-content: center;
@@ -70,8 +89,6 @@
             transition: transform 0.3s ease;
         }
 
-      
-
         .container::before {
             content: '';
             position: absolute;
@@ -97,7 +114,7 @@
         .institute-name {
             font-size: 24px;
             text-align: center;
-            top:40px;
+            top: 40px;
             margin-bottom: 45px;
             color: white;
             font-weight: 800;
@@ -121,10 +138,9 @@
         h1 {
             color: white;
             text-align: center;
-               margin-bottom: 16px;
-            padding-bottom:10px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
             font-size: 28px;
-             
             border-bottom: 1px solid var(--glass-border);
             text-shadow: 0 2px 6px rgba(0,0,0,0.3);
             font-weight: 700;
@@ -182,6 +198,30 @@
             left: 100%;
         }
 
+        .otp-input-field {
+            width: 100%;
+            padding: 16px;
+            margin: 15px 0 10px 0;
+            background: rgba(10, 20, 35, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            color: white;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            outline: none;
+        }
+        .otp-input-field:focus { border-color: var(--accent); }
+
+        .lock-desc {
+            font-size: 16px;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #d1d5db;
+        }
+
         .signature {
             text-align: center;
             font-size: 14px;
@@ -205,51 +245,174 @@
 
         .result-logo {
           position: absolute;
-          top: 1px;     /* ← المسافة من الأعلى */
-          right: 173px;   /* ← المسافة من اليمين */
+          top: 1px;     
+          right: 173px;   
           height: 65px;
           z-index: 10;
         }
+
+        .status-msg {
+            text-align: center;
+            font-size: 15px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
     </style>
      
-        <a id="testDataLink" href="/data.json" target="_blank" style="display:none">اختبار البيانات</a>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <a id="testDataLink" href="/data.json" target="_blank" style="display:none">اختبار البيانات</a>
+    <link href="./fonts/tajawal/tajawal.css" rel="stylesheet">
+    <link rel="stylesheet" href="./fa-local.css">
     <link rel="stylesheet" href="calculator.css">
-    
 </head>
 <body>
-    <script type="module" src="generateData.js"></script>
-    <script src="getAllData.js"></script>
+    <script src="generateData.js"></script>
     <script>
       window.addEventListener('load', async () => {
-        await updateDataJson(); // تحدث الملف
-        document.getElementById('testDataLink').click(); // افتح الرابط تلقائي
+        await updateDataJson(); 
+        document.getElementById('testDataLink').click(); 
       });
     </script>
-    <script src="getAllData.js"></script>
-    <!-- الصفحة الرئيسية -->
-    <div class="container" id="mainContainer">
-        <div class="institute-name"> 
-مؤسسة بناء اليمن للتجارة</div>
+
+    <div class="container">
+        <div class="institute-name">مؤسسة بناء اليمن للتجارة</div>
         <img src="png 2.png" class="result-logo" alt="شعار المؤسسة">
-        <h1>حاسبة أسعار الحديد</h1>
+        
+        <h1 id="app-title">🔒 التطبيق مغلق حالياً</h1>
 
-        <button onclick="window.location.href='bundles.html'" class="main-btn">
-            حاسبة البنادل
-        </button>
+        <div id="lock-section">
+            <p class="lock-desc">يرجى إرسال طلب الإذن إلى مالك التطبيق ليقوم بإرسال رمز قبول الإذن لك، ثم قم بإدخاله في الخانة المخصصة بالأسفل.</p>
+            
+            <button onclick="copyEncryptedRequest()" class="main-btn" id="btn-copy">
+                نسخ طلب الإذن
+            </button>
+            <p id="copy-status" class="status-msg" style="color: var(--success-color); display:none;"></p>
 
-        <button onclick="window.location.href='rods.html'" class="main-btn">
-            حاسبة الأسياخ
-        </button>
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 25px 0;">
+
+            <p style="text-align: center; font-weight: bold; font-size: 16px;">أدخل رمز قبول الإذن:</p>
+            <input type="text" id="access-input" class="otp-input-field" placeholder="ضع رمز الدخول هنا">
+            
+            <button onclick="verifyAccessCode()" class="main-btn" style="padding: 16px 0; font-size: 18px; margin-top: 10px;">
+                تأكيد الرمز وفتح التطبيق
+            </button>
+            <p id="error-message" class="status-msg" style="color: var(--error-color);"></p>
+        </div>
+
+        <div id="app-buttons" style="display: none;">
+            <button onclick="window.location.href='bundles.html'" class="main-btn">
+                حاسبة البنادل
+            </button>
+
+            <button onclick="window.location.href='rods.html'" class="main-btn">
+                حاسبة الأسياخ
+            </button>
+        </div>
 
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني
         </div>
     </div>
 
-    <!-- تضمين ملف الآلة الحاسبة -->
     <script src="calculator.js"></script>
+    
+    <script>
+        // دالة لتوليد رقم عشوائي مخفي وحفظه في المتصفح لكي لا يتغير عند تحديث الصفحة
+        function getOrCreateHiddenNumber() {
+            let num = localStorage.getItem('app_hidden_random_num');
+            if (!num) {
+                num = Math.floor(10000 + Math.random() * 90000).toString();
+                localStorage.setItem('app_hidden_random_num', num);
+            }
+            return num;
+        }
+
+        const hiddenRandomNumber = getOrCreateHiddenNumber();
+
+        // فحص حالة التفعيل عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('app_is_unlocked') === 'true') {
+                showApp();
+            }
+        });
+
+        // دالة مخصصة لترميز النصوص لـ Base64 تدعم الـ UTF-8 والأسطر الجديدة بدقة (\n)
+        function utf8_to_b64(str) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
+
+        // دالة النسخ المطورة والمضمونة لجميع الهواتف والمتصفحات
+        function copyEncryptedRequest() {
+            const copyStatus = document.getElementById('copy-status');
+            const plainTextStructure = `${hiddenRandomNumber}\nمرحبا اريد منحي الإذن ورمز الدخول`;
+            const encryptedResult = utf8_to_b64(plainTextStructure);
+            
+            // الطريقة المضمونة: إنشاء عنصر نصي مؤقت لضمان عمل النسخ على الأجهزة القديمة والحديثة ومتصفحات التطبيقات
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = encryptedResult;
+            
+            // جعل الحقل خارج الرؤية لمنع اهتزاز الصفحة
+            tempTextArea.style.position = 'fixed';
+            tempTextArea.style.top = '0';
+            tempTextArea.style.left = '0';
+            tempTextArea.style.opacity = '0';
+            
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            tempTextArea.setSelectionRange(0, 99999); // للهواتف الذكية والأيفون بشكل خاص
+
+            let success = false;
+            try {
+                // تنفيذ عملية النسخ الكلاسيكية والمحمية
+                success = document.execCommand('copy');
+            } catch (err) {
+                success = false;
+            }
+
+            document.body.removeChild(tempTextArea);
+
+            // إذا نجحت الطريقة التقليدية أو الحديثة
+            if (success) {
+                copyStatus.style.display = "block";
+                copyStatus.style.color = "var(--success-color)";
+                copyStatus.innerText = "📋 تم نسخ كود طلب الإذن بنجاح!";
+                setTimeout(() => { copyStatus.style.display = "none"; }, 3000);
+            } else {
+                // محاولة أخيرة بالطريقة الحديثة إذا منعت بعض المتصفحات الطريقة السابقة
+                navigator.clipboard.writeText(encryptedResult).then(() => {
+                    copyStatus.style.display = "block";
+                    copyStatus.style.color = "var(--success-color)";
+                    copyStatus.innerText = "📋 تم نسخ كود طلب الإذن بنجاح!";
+                    setTimeout(() => { copyStatus.style.display = "none"; }, 3000);
+                }).catch(err => {
+                    copyStatus.style.display = "block";
+                    copyStatus.style.color = "var(--error-color)";
+                    copyStatus.innerText = "عذراً، يرجى تفعيل صلاحية النسخ في المتصفح.";
+                });
+            }
+        }
+
+        // التحقق من الرمز الحسابي (الرقم العشوائي * 3)
+        function verifyAccessCode() {
+            const userInput = document.getElementById('access-input').value.trim();
+            const errorMsg = document.getElementById('error-message');
+            const correctCode = (parseInt(hiddenRandomNumber) * 3).toString();
+
+            if (userInput === correctCode) {
+                localStorage.setItem('app_is_unlocked', 'true');
+                showApp();
+            } else {
+                errorMsg.innerText = "❌ رمز قبول الإذن غير صحيح!";
+            }
+        }
+
+        // التبديل إلى واجهة تطبيقك الأصلية النظيفة تماماً
+        function showApp() {
+            document.getElementById('lock-section').style.display = 'none'; 
+            document.getElementById('app-buttons').style.display = 'block'; 
+            document.getElementById('app-title').innerText = 'حاسبة أسعار الحديد'; 
+        }
+    </script>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

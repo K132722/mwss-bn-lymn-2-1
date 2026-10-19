@@ -18,16 +18,52 @@ document.addEventListener('DOMContentLoaded', function() {
     let caretPos = 0;          // موضع المؤشر في شاشة الإدخال الحالية
     let currentExpr = '';      // التعبير الجاري إدخاله في الشاشة الحالية
 
+    // ==========================================
+    // 🔊 دالة توليد صوت نقرة الأزرار (Web Audio API)
+    // ==========================================
+    function playClickSound() {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioCtx = new AudioContext();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.type = 'sine'; 
+            oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); // تردد النغمة
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime); // مستوى الصوت
+
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.05);
+            oscillator.stop(audioCtx.currentTime + 0.05);
+        } catch (e) {
+            console.log("تفاعل المستخدم مطلوب أولاً لتشغيل الصوت");
+        }
+    }
+
+    // ==========================================
+    // 🔢 دالة تنسيق الأرقام بمسافات (كل 3 أرقام)
+    // ==========================================
+    function formatNumbersInExpression(expr) {
+        // نستخدم التعبير النمطي للبحث عن الأرقام وتنسيقها بمسافات دون التأثير على العمليات الحسابية
+        return expr.replace(/\d+(\.\d+)?/g, function(match) {
+            let parts = match.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            return parts.join('.');
+        });
+    }
+
     // إنشاء عناصر DOM لزر الحاسبة والأرشيف والآلة الحاسبة
     const calcTab = document.createElement('div');
     calcTab.className = 'calc-tab';
     calcTab.id = 'calcTab';
     calcTab.innerHTML = '<i class="fas fa-calculator"></i>';
-    // نضبط موقع زر الحاسبة الابتدائي
     calcTab.style.left = '20px';
     calcTab.style.bottom = '20px';
     calcTab.style.position = 'fixed';
-    calcTab.style.zIndex = '1000'; // أعلى من الأوفرلاي
+    calcTab.style.zIndex = '1000'; 
 
     const historyPanel = document.createElement('div');
     historyPanel.className = 'history-panel';
@@ -47,35 +83,28 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div id="historyItems"></div>
     `;
-    // نجعل الأرشيف فوق الحاسبة مباشرة
     historyPanel.style.zIndex = '1003';
-    // نلغي أي انتقال لجعل الفتح فوريًّا
     historyPanel.style.transition = 'none';
 
     const calculatorContainer = document.createElement('div');
     calculatorContainer.className = 'calculator-container';
     calculatorContainer.id = 'calculatorContainer';
-    calculatorContainer.style.zIndex = '1000'; // أقل من الزر حتى لا يحجب الأزرار
-    // نلغي الانتقال الأولي حتى لا ينقرّ الحاوية أثناء التحميل
+    calculatorContainer.style.zIndex = '1000'; 
     calculatorContainer.style.transition = 'none';
     calculatorContainer.innerHTML = `
         <div class="calculator-header">
-        <img src="png 2.png" class="result-logo1" alt="شعار المؤسسة">
-
-            <!-- اسم المؤسسة بشكل مستقل -->
+            <img src="png 2.png" class="result-logo1" alt="شعار المؤسسة">
             <div class="result-inst1">
               مؤسسة بناء اليمن<br>
               لـــــحديـــــد الــتســلـيــح
-
-          </div>
+            </div>
             <div class="calculator-title">الحاسبة</div>
             <button class="calculator-close" id="calculatorClose">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="calc-screens-container" id="calcScreensContainer">
-            <!-- هنا ستظهر كل شاشات العمليات (السابق منها والحالي) -->
-        </div>
+            </div>
         <div class="arrow-controls">
             <div class="arrow-row">
                 <button class="arrow-btn right" onclick="moveCaret('right')">▶</button>
@@ -87,32 +116,27 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
         <div class="calculator-buttons">
-            <!-- الصف الأول -->
             <button class="calc-button clear" onclick="clearCurrentExpr()">C</button>
             <button class="calc-button function" onclick="deleteLastChar()">⌫</button>
             <button class="calc-button" onclick="press('9')">9</button>
             <button class="calc-button" onclick="press('8')">8</button>
             <button class="calc-button" onclick="press('7')">7</button>
-            <!-- الصف الثاني -->
             <button class="calc-button operator" onclick="press('/')">÷</button>
             <button class="calc-button operator" onclick="press('*')">×</button>
             <button class="calc-button" onclick="press('6')">6</button>
             <button class="calc-button" onclick="press('5')">5</button>
             <button class="calc-button" onclick="press('4')">4</button>
-            <!-- الصف الثالث -->
             <button class="calc-button operator" onclick="press('-')">-</button>
             <button class="calc-button operator" onclick="press('+')">+</button>
             <button class="calc-button" onclick="press('3')">3</button>
             <button class="calc-button" onclick="press('2')">2</button>
             <button class="calc-button" onclick="press('1')">1</button>
-            <!-- الصف الرابع -->
             <button class="calc-button equal" id="equalButton">=</button>
             <button class="calc-button function" onclick="insertAns()">Ans</button>
             <button class="calc-button" onclick="press('.')">.</button>
             <button class="calc-button" onclick="press('00')">00</button>
             <button class="calc-button" onclick="press('0')">0</button>
         </div>
-        <!-- نافذة النسخة الاحتياطية -->
         <div id="backupModal" class="backup-modal">
           <h3>📋 النسخة الاحتياطية</h3>
           <textarea id="backupText"></textarea>
@@ -123,12 +147,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
 
-    // إضافة العناصر إلى body
     document.body.appendChild(calcTab);
     document.body.appendChild(historyPanel);
     document.body.appendChild(calculatorContainer);
 
-    // الوصول إلى عناصر DOM
     const calcScreensContainer = document.getElementById('calcScreensContainer');
     const equalButton = document.getElementById('equalButton');
     const calculatorClose = document.getElementById('calculatorClose');
@@ -137,18 +159,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const historyClear = document.getElementById('historyClear');
     const historySearch = document.getElementById('historySearch');
 
-    // بعد إضافة الحاوية للصفحة، نفعّل الانتقال السينمائي
-    // (لأننا أوقفناه أثناء البناء، الآن نعيده حتى لا تكون هناك حركات متقطعة)
     requestAnimationFrame(() => {
         calculatorContainer.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
     });
 
-    // إظهار شاشة تشغيل أولية وتحميل الأرشيف عند التحميل
     createNewScreen();
     loadHistory();
     setupScrollControls();
 
-    // تجعل زر الحاسبة قابلاً للسحب
     calcTab.addEventListener('mousedown', startDrag);
     calcTab.addEventListener('touchstart', startDrag, { passive: false });
 
@@ -170,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const clientY = e.clientY || e.touches[0].clientY;
         if (Math.abs(clientX - startX) > 5 || Math.abs(clientY - startY) > 5) {
             isDragging = true;
-            // نستخدم top بدلاً من bottom أثناء السحب
             calcTab.style.left = (clientX - offsetX) + 'px';
             calcTab.style.top = (clientY - offsetY) + 'px';
             e.preventDefault();
@@ -189,16 +206,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => { isDragging = false; }, 100);
     }
 
-    // دالة الفتح/الإغلاق مع انبثاق من داخل زر الحاسبة، لكن بعد الانبثاق تبقى الحاوية في موقعها الأصلي
     function toggleCalculator() {
         calculatorOpen = !calculatorOpen;
         if (calculatorOpen) {
-            // ===== عند الفتح =====
-            // 1) نحسب مركز زر الحاسبة
+            playClickSound(); 
             const tabRect = calcTab.getBoundingClientRect();
-            // 2) نحسب إحداثيات الحاوية
             const containerRect = calculatorContainer.getBoundingClientRect();
-            // 3) نوجد نقطة الانبثاق (transform-origin) كنسبة مئوية داخل الحاوية
             const buttonCenterX = tabRect.left + tabRect.width / 2;
             const buttonCenterY = tabRect.top + tabRect.height / 2;
             const relX = buttonCenterX - containerRect.left;
@@ -207,17 +220,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const originY = (relY / containerRect.height) * 100;
             calculatorContainer.style.transformOrigin = `${originX}% ${originY}%`;
 
-            // 4) نضيف كلاس "open" ليتم التكبير من scale(0) إلى scale(1)
             calculatorContainer.classList.add('open');
-
-            // 5) نضيف الأوفرلاي لمنع التفاعل بالخلفية
             createOverlay();
-
-            // 6) علامة أن الحاسبة مفتوحة إذا احتجنا
             document.querySelector('.container')?.classList.add('calculator-open');
         } else {
-            // ===== عند الإغلاق =====
-            // 1) نحسب مركز زر الحاسبة الآن (لأن المستخدم قد يكون حركه)
+            playClickSound(); 
             const tabRect = calcTab.getBoundingClientRect();
             const containerRect = calculatorContainer.getBoundingClientRect();
             const buttonCenterX = tabRect.left + tabRect.width / 2;
@@ -226,24 +233,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const relY = buttonCenterY - containerRect.top;
             const originX = (relX / containerRect.width) * 100;
             const originY = (relY / containerRect.height) * 100;
-            // 2) نحدّث transform-origin بحيث يعود التكبير إلى داخل الزر
             calculatorContainer.style.transformOrigin = `${originX}% ${originY}%`;
 
-            // 3) نزيل كلاس "open" فتبدأ الحاوية بالتصغير (scale 0) والشفافية إلى 0
             calculatorContainer.classList.remove('open');
-
-            // 4) نزيل الأوفرلاي بعد بدء الحركة
             removeOverlay();
-
-            // 5) نزيل أي علامة إضافية
             document.querySelector('.container')?.classList.remove('calculator-open');
         }
     }
 
     calculatorClose.addEventListener('click', toggleCalculator);
-    historyClose.addEventListener('click', closeHistory);
+    historyClose.addEventListener('click', function() {
+        playClickSound();
+        closeHistory();
+    });
 
-    // ======== إنشاء شاشة جديدة (فارغة) ========
     function createNewScreen() {
         const screenObj = {
             elem: document.createElement('div'),
@@ -253,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         screenObj.elem.className = 'calc-screen';
 
-        // إنشاء سطر العرض (الإدخال)
         const displayCont = document.createElement('div');
         displayCont.className = 'screen-display-container';
         const displayDiv = document.createElement('div');
@@ -261,16 +263,13 @@ document.addEventListener('DOMContentLoaded', function() {
         displayDiv.id = 'screenDisplay_' + screens.length;
         displayCont.appendChild(displayDiv);
 
-        // إنشاء سطر النتيجة
         const resultDiv = document.createElement('div');
         resultDiv.className = 'screen-result';
         resultDiv.textContent = '';
 
-        // ضمّ العناصر داخل العنصر الرئيسي للشاشة
         screenObj.elem.appendChild(displayCont);
         screenObj.elem.appendChild(resultDiv);
 
-        // إضافة إلى الحاوية الكليّة
         calcScreensContainer.appendChild(screenObj.elem);
 
         screenObj.displayContainer = displayCont;
@@ -284,16 +283,31 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollToBottom();
     }
 
-    // رسم المؤشر الوهمي داخل كل الشاشات لكن يظهر فقط في الشاشة النشطة
+    // دالة رسم الشاشة المعدلة لتقوم بإدراج المسافات بشكل مرئي للمستخدم
     function renderDisplay() {
         screens.forEach(screen => {
             const disp = screen.displayElem;
             const isActive = (screen === activeScreen);
-            const expr = isActive ? currentExpr : disp.textContent.replace(/×/g, '*').replace(/÷/g, '/');
+            
+            // نجلب النص الصافي المخزن في الخلفية
+            let expr = isActive ? currentExpr : disp.textContent.replace(/×/g, '*').replace(/÷/g, '/');
+            
+            // نقوم بتنسيق الأرقام وإضافة المسافات فيها بشكل مؤقت للعرض فقط
+            let formattedExpr = formatNumbersInExpression(expr);
+            
             disp.innerHTML = '';
-            const chars = expr.split('');
+            const chars = formattedExpr.split('');
+            
+            // حساب موضع المؤشر الذكي مع وجود المسافات الجديدة
+            let extraSpacesBeforeCaret = 0;
+            if (isActive) {
+                let subExprBeforeCaret = currentExpr.slice(0, caretPos);
+                let formattedSubExpr = formatNumbersInExpression(subExprBeforeCaret);
+                extraSpacesBeforeCaret = formattedSubExpr.length;
+            }
+
             for (let i = 0; i <= chars.length; i++) {
-                if (i === caretPos && isActive) {
+                if (isActive && i === extraSpacesBeforeCaret) {
                     const caret = document.createElement('span');
                     caret.className = 'fake-caret';
                     caret.id = 'fakeCaret';
@@ -303,18 +317,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     const ch = chars[i] === '*' ? '×' : chars[i] === '/' ? '÷' : chars[i];
                     const span = document.createElement('span');
                     span.textContent = ch;
+                    // إذا كان الحرف عبارة عن مسافة تنسيقية نعطيها كلاس خاص إذا رغبت بالتحكم في حجمها عبر الـ CSS
+                    if (ch === ' ') {
+                        span.className = 'number-space-separator';
+                    }
                     disp.appendChild(span);
                 }
             }
         });
     }
 
-    // تحريك المؤشر بالضغط داخل سطر الإدخال أو نسخ تعبير من شاشة سابقة
     calcScreensContainer.addEventListener('click', function(e) {
-        // إذا نقرنا على شاشة سابقة ننقل التعبير للشاشة الحالية
         const clickedScreen = screens.find(screen => screen.elem.contains(e.target));
         if (clickedScreen && clickedScreen !== activeScreen) {
-            const exprText = clickedScreen.displayElem.textContent.replace(/×/g, '*').replace(/÷/g, '/');
+            playClickSound(); 
+            const exprText = clickedScreen.displayElem.textContent.replace(/ /g, '').replace(/×/g, '*').replace(/÷/g, '/');
             if (exprText) {
                 currentExpr = currentExpr.slice(0, caretPos) + exprText + currentExpr.slice(caretPos);
                 caretPos += exprText.length;
@@ -324,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
         }
-        // إذا النقرة داخل شاشة الإدخال النشطة
         if (!activeScreen) return;
         const dispCont = activeScreen.displayContainer;
         if (!dispCont.contains(e.target)) return;
@@ -334,16 +350,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const x = e.clientX - rect.left;
         let pos = 0, found = false, totalWidth = 0;
 
-        // عنصر مؤقت لقياس عرض الأحرف
         const temp = document.createElement('span');
         document.body.appendChild(temp);
         temp.style.visibility = 'hidden';
         temp.style.whiteSpace = 'nowrap';
         temp.style.font = window.getComputedStyle(disp).font;
 
-        for (let i = 0; i <= currentExpr.length; i++) {
-            if (i < currentExpr.length) {
-                const ch = currentExpr[i] === '*' ? '×' : currentExpr[i] === '/' ? '÷' : currentExpr[i];
+        // نقوم بحساب مكان الضغط بالنسبة للنص المنسق بالمسافات
+        let formattedExpr = formatNumbersInExpression(currentExpr);
+
+        for (let i = 0; i <= formattedExpr.length; i++) {
+            if (i < formattedExpr.length) {
+                const ch = formattedExpr[i] === '*' ? '×' : formattedExpr[i] === '/' ? '÷' : formattedExpr[i];
                 temp.textContent = ch;
                 const w = temp.offsetWidth;
                 if (x >= totalWidth && x <= totalWidth + w / 2) {
@@ -359,13 +377,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         document.body.removeChild(temp);
-        if (!found) pos = currentExpr.length;
-        caretPos = Math.max(0, Math.min(pos, currentExpr.length));
+        
+        if (!found) pos = formattedExpr.length;
+        
+        // تحويل موضع المؤشر من النص الذي يحتوي مسافات إلى موقعه الحقيقي في السلسلة الأصلية
+        let cleanPos = 0;
+        let spacesCount = 0;
+        for (let i = 0; i < pos; i++) {
+            if (formattedExpr[i] === ' ') {
+                spacesCount++;
+            } else {
+                cleanPos++;
+            }
+        }
+
+        caretPos = Math.max(0, Math.min(cleanPos, currentExpr.length));
         renderDisplay();
     });
 
-    // إدخال حرف أو رقم
     window.press = function(val) {
+        playClickSound(); 
         if (currentExpr === '0' && val !== '.') {
             currentExpr = '';
             caretPos = 0;
@@ -377,8 +408,8 @@ document.addEventListener('DOMContentLoaded', function() {
         autoScrollToEndActive();
     }
 
-    // حذف آخر حرف
     window.deleteLastChar = function() {
+        playClickSound(); 
         if (caretPos > 0) {
             currentExpr = currentExpr.slice(0, caretPos - 1) + currentExpr.slice(caretPos);
             caretPos--;
@@ -387,12 +418,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // مسح التعبير الحالي (شاشة جديدة أو مسح كل الشاشات عند الضغط المزدوج)
     let lastClearTime = 0;
     window.clearCurrentExpr = function () {
+        playClickSound(); 
         const now = Date.now();
         if (now - lastClearTime < 600) {
-            // مسح كل الشاشات وإعادة شاشة جديدة فارغة
             calcScreensContainer.innerHTML = '';
             screens = [];
             createNewScreen();
@@ -405,11 +435,16 @@ document.addEventListener('DOMContentLoaded', function() {
         lastClearTime = now;
     };
 
-    // حساب النتيجة في الوقت الحقيقي وعرضها في السطر الثاني للشاشة النشطة
+    // حساب النتيجة وتنسيق الرقم الناتج بالمسافات لراحة العين
     function calculateResult() {
         try {
             const res = eval(currentExpr);
-            activeScreen.resultElem.textContent = res;
+            if (res !== undefined && res !== null) {
+                // تحويل النتيجة لنص وتنسيق خانات الألوف والملايين فيها بمسافات
+                activeScreen.resultElem.textContent = formatNumbersInExpression(res.toString());
+            } else {
+                activeScreen.resultElem.textContent = '';
+            }
             return res;
         } catch {
             activeScreen.resultElem.textContent = '';
@@ -417,32 +452,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // عند الضغط على زر "="
     window.calculate = function() {
+        playClickSound(); 
         const res = calculateResult();
         if (res !== null && currentExpr.trim() !== '') {
-            // إضافة العملية إلى الأرشيف قبل إنشاء شاشة جديدة
             addToHistory(currentExpr, res);
 
-            // نشيّل المؤشر الوهمي من الشاشة الحالية (لأنها ستصبح شاشة سابقة)
             const caretElem = activeScreen.displayElem.querySelector('#fakeCaret');
             if (caretElem) caretElem.remove();
 
-            // نضيف فاصل أسفل الشاشة الحالية
             const separator = document.createElement('div');
             separator.className = 'screen-separator';
             calcScreensContainer.appendChild(separator);
 
-            // ننشئ شاشة جديدة فارغة بعدها
             createNewScreen();
         }
     }
 
-    // إدخال answer السابقة (Ans)
     window.insertAns = function() {
+        playClickSound(); 
         if (screens.length >= 2) {
             const lastScreen = screens[screens.length - 2];
-            const lastResult = lastScreen.resultElem.textContent;
+            // نسحب النتيجة الصافية بدون مسافات للعقدة الحسابية
+            const lastResult = lastScreen.resultElem.textContent.replace(/ /g, '');
             if (lastResult !== '') {
                 currentExpr = currentExpr.slice(0, caretPos) + lastResult + currentExpr.slice(caretPos);
                 caretPos += lastResult.length;
@@ -453,16 +485,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // تفعيل الضغط المطول على زر Ans
     const ansButton = Array.from(document.querySelectorAll('.calc-button.function'))
         .find(btn => btn.textContent.trim() === 'Ans');
 
     let ansLongPressTimer;
     ansButton.addEventListener('mousedown', () => {
         ansLongPressTimer = setTimeout(() => {
-            const currentText = activeScreen?.displayElem?.textContent?.trim();
+            const currentText = activeScreen?.displayElem?.textContent?.trim().replace(/ /g, '');
             if (currentText === '11') {
                 window.location.href = 'box.html';
+            }
+           else if (currentText === '22') {
+                window.location.href = 'hh.html';
+            }
+           else if (currentText === '33') {
+                window.location.href = 'jj.html';
             }
         }, 800);
     });
@@ -471,17 +508,23 @@ document.addEventListener('DOMContentLoaded', function() {
     ansButton.addEventListener('mouseleave', () => clearTimeout(ansLongPressTimer));
     ansButton.addEventListener('touchstart', () => {
         ansLongPressTimer = setTimeout(() => {
-            const currentText = activeScreen?.displayElem?.textContent?.trim();
+            const currentText = activeScreen?.displayElem?.textContent?.trim().replace(/ /g, '');
             if (currentText === '11') {
                 window.location.href = 'box.html';
+            }
+          else if (currentText === '22') {
+                window.location.href = 'hh.html';
+            }
+          else if (currentText === '33') {
+                window.location.href = 'jj.html';
             }
         }, 800);
     }, { passive: true });
 
     ansButton.addEventListener('touchend', () => clearTimeout(ansLongPressTimer));
 
-    // تحريك المؤشر عبر الأزرار
     window.moveCaret = function(direction) {
+        playClickSound(); 
         if (!activeScreen) return;
         if (direction === 'left' && caretPos > 0) {
             caretPos--;
@@ -495,7 +538,6 @@ document.addEventListener('DOMContentLoaded', function() {
         renderDisplay();
     }
 
-    // ضبط تحكم التمرير الأفقي على شاشة الإدخال الحالية
     function setupScrollControls() {
         calcScreensContainer.addEventListener('mousedown', (e) => {
             if (!activeScreen) return;
@@ -556,7 +598,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // تمرير أفقي تلقائي للشاشة الحالية إلى نهاية النص
     function autoScrollToEndActive() {
         if (!activeScreen) return;
         const dispCont = activeScreen.displayContainer;
@@ -568,7 +609,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // تمرير عمودي الحاوية بالكامل إلى الأسفل (لرؤية الشاشة الجديدة فور إنشائها)
     function scrollToBottom() {
         calcScreensContainer.scrollTo({
             top: calcScreensContainer.scrollHeight,
@@ -576,7 +616,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // أحداث الضغط على زر "=": تمييز الضغط القصير والطويل لفتح الأرشيف
     equalButton.addEventListener('mousedown', startLongPress);
     equalButton.addEventListener('touchstart', startLongPress);
     equalButton.addEventListener('mouseup', endLongPress);
@@ -600,15 +639,14 @@ document.addEventListener('DOMContentLoaded', function() {
       calculate();
     });
 
-    // زر 1 - عرض النسخة الشاملة
     const btn1 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '1');
     const btn2 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '2');
 
     let backupLongPressTimer;
 
-    // زر 1 - عرض النسخة الاحتياطية
     btn1.addEventListener('mousedown', () => {
       backupLongPressTimer = setTimeout(() => {
+        playClickSound();
         const calcData = localStorage.getItem('calculatorHistory') || '[]';
         const boxData = localStorage.getItem('abujarrahBoxData') || '{}';
 
@@ -626,6 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
     btn1.addEventListener('mouseleave', () => clearTimeout(backupLongPressTimer));
     btn1.addEventListener('touchstart', () => {
       backupLongPressTimer = setTimeout(() => {
+        playClickSound();
         const calcData = localStorage.getItem('calculatorHistory') || '[]';
         const boxData = localStorage.getItem('abujarrahBoxData') || '{}';
 
@@ -641,8 +680,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
     btn1.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
 
-    // زر "📎 نسخ"
     document.getElementById('copyBackupBtn').addEventListener('click', () => {
+      playClickSound();
       const data = document.getElementById('backupText').value;
       navigator.clipboard.writeText(data).then(() => {
         alert('✅ تم نسخ النسخة الاحتياطية بنجاح!');
@@ -651,14 +690,14 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // زر "✖ إغلاق"
     document.getElementById('closeBackupBtn').addEventListener('click', () => {
+      playClickSound();
       document.getElementById('backupModal').style.display = 'none';
     });
 
-    // زر 2 - استرجاع النسخة
     btn2.addEventListener('mousedown', () => {
       backupLongPressTimer = setTimeout(() => {
+        playClickSound();
         const input = prompt('📥 ألصق النسخة الاحتياطية هنا:');
         if (!input) return;
         try {
@@ -684,6 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
     btn2.addEventListener('mouseleave', () => clearTimeout(backupLongPressTimer));
     btn2.addEventListener('touchstart', () => {
       backupLongPressTimer = setTimeout(() => {
+        playClickSound();
         const input = prompt('📥 ألصق النسخة الاحتياطية هنا:');
         if (!input) return;
         try {
@@ -706,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 800);
     }, { passive: true });
     btn2.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
-    // منع تحديد النص عند الضغط على الأزرار فقط
+
     document.addEventListener('selectstart', function(e) {
         if (e.target.classList.contains('calc-button') ||
             e.target.classList.contains('calc-tab') ||
@@ -715,14 +755,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ========= وظائف الأرشيف =========
     function addToHistory(calculation, result) {
         history.unshift({
             calculation: calculation,
             result: result,
             timestamp: new Date().toLocaleString('ar-EG')
         });
-        if (history.length > 50) history.pop();
+        if (history.length > 100) history.pop();
         localStorage.setItem('calculatorHistory', JSON.stringify(history));
         renderHistory();
     }
@@ -741,11 +780,16 @@ document.addEventListener('DOMContentLoaded', function() {
         history.forEach((item, index) => {
             const itemElement = document.createElement('div');
             itemElement.className = 'history-item';
+            
+            // ننسق العمليات والنتائج المخزنة في الأرشيف أيضاً لتظهر بمسافات مريحة
+            let formattedCalc = formatNumbersInExpression(item.calculation).replace(/\*/g, '×').replace(/\//g, '÷');
+            let formattedRes = formatNumbersInExpression(item.result.toString());
+
             itemElement.innerHTML = `
                 <div class="history-calculation">
-                    <span class="expr">${item.calculation.replace(/\*/g, '×').replace(/\//g, '÷')}</span>
+                    <span class="expr">${formattedCalc}</span>
                     <span class="equals"> = </span>
-                    <span class="result">${item.result}</span>
+                    <span class="result">${formattedRes}</span>
                 </div>
                 <div class="history-date">${item.timestamp}</div>
                 <div class="history-actions">
@@ -762,6 +806,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.useHistoryItem = function(calculation) {
+        playClickSound(); 
         currentExpr = calculation;
         caretPos = currentExpr.length;
         renderDisplay();
@@ -771,12 +816,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.deleteHistoryItem = function(index) {
+        playClickSound(); 
         history.splice(index, 1);
         localStorage.setItem('calculatorHistory', JSON.stringify(history));
         renderHistory();
     }
 
     historyClear.addEventListener('click', () => {
+        playClickSound(); 
         if (confirm('هل تريد حذف كل محفوظات الأرشيف؟')) {
             history = [];
             localStorage.removeItem('calculatorHistory');
@@ -802,7 +849,6 @@ document.addEventListener('DOMContentLoaded', function() {
         historyPanel.classList.remove('open');
     }
 
-    // ======== دوال الأوفرلاي لمنع التفاعل مع الخلفية ========
     function createOverlay() {
         if (document.getElementById('calcOverlay')) return;
         const overlay = document.createElement('div');
@@ -814,9 +860,9 @@ document.addEventListener('DOMContentLoaded', function() {
             width: '100vw',
             height: '100vh',
             background: 'transparent',
-            zIndex: '999', // أقل من الحاوية لكن أعلى من المحتوى الخلفي
-            touchAction: 'none', // منع اللمس
-            userSelect: 'none'  // منع تحديد النص
+            zIndex: '999',
+            touchAction: 'none',
+            userSelect: 'none'
         });
         document.body.appendChild(overlay);
     }

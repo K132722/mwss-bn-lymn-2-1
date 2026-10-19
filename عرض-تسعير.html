@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فاتورة المبيعات - مؤسسة بناء اليمن</title>
+    
+    <!-- استدعاء ملف الشعار الذي يحتوي على المتغير LOGO_BASE64 -->
+    <script src="logoBase64.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #eef2f5;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* زر الطباعة علوي */
+        .no-print {
+            margin-bottom: 15px;
+        }
+
+        .btn-print {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        .btn-print:hover {
+            background-color: #1557b0;
+        }
+
+        /* حاوية الفاتورة ورقة A4 */
+        .invoice-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: #fff;
+            padding: 20px 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            color: #000;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* --- 1. الهيدر (الترويسة العلوية) --- */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .header-left {
+            text-align: left;
+            width: 42%;
+            direction: ltr;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: bold;
+        }
+
+        .header-left h2 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .header-center {
+            text-align: center;
+            width: 16%;
+        }
+
+        .logo {
+            max-width: 95px;
+            max-height: 95px;
+            height: auto;
+            display: block;
+            margin: 0 auto 6px;
+        }
+
+        .header-center .title {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .header-right {
+            text-align: right;
+            width: 42%;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: bold;
+        }
+
+        .header-right h2 {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        /* --- 2. الإطار الداخلي للبيانات --- */
+        .main-box {
+            border: 2px solid #555;
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* بيانات الفاتورة والعميل */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 0 5px;
+            font-size: 13px;
+        }
+
+        .customer-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 0 5px;
+            font-size: 13px;
+        }
+
+        /* --- 3. جدول الاصناف --- */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #000;
+            padding: 5px 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .invoice-table th {
+            background-color: #cce0f1; /* لون الترويسة السماوي المماثل للصورة */
+        }
+
+        /* --- 4. الإجماليات والتفقيط --- */
+        .totals-section {
+            border-top: 1px solid #000;
+            padding-top: 6px;
+            margin-top: auto;
+            margin-bottom: 6px;
+        }
+
+        .totals-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            padding-right: 15%;
+            font-weight: bold;
+        }
+
+        .qty-total {
+            width: 100px;
+            text-align: center;
+        }
+
+        .totals-details {
+            margin-right: 50px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 4px;
+        }
+
+        .total-row .label {
+            width: 100px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .total-row .value {
+            width: 140px;
+            text-align: right;
+        }
+
+        .tafqeet-box {
+            border: 1px solid #777;
+            padding: 6px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+            background-color: #fafafa;
+        }
+
+        /* --- 5. التوقيعات --- */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 15px;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* --- 6. الترويسة السفلى (الفوتر) --- */
+        .invoice-footer {
+            margin-top: 25px;
+            border-top: 2px solid #000;
+            padding-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* للطباعة المباشرة من الصفحة */
+        @media print {
+            body { background: none; padding: 0; }
+            .no-print { display: none; }
+            .invoice-container { border: none; box-shadow: none; width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button class="btn-print" onclick="printInvoice()">طباعة الفاتورة</button>
+    </div>
+
+    <!-- حاوية الفاتورة الشاملة -->
+    <div class="invoice-container" id="printableArea">
+        
+        <!-- الترويسة العلوية -->
+        <div class="invoice-header">
+            <div class="header-left">
+                <h2>Building Of Yemen Foundation For trade -</h2>
+                <p>Sana,a/Fifty st/ before daar salm circle</p>
+                <p>T-No.777710230-781119720-774132722</p>
+                <p>Fax No.01672905</p>
+                <p>Email:a777710230@gmail.com</p>
+            </div>
+
+            <div class="header-center">
+                <img id="headerLogo" src="" alt="شعار المؤسسة" class="logo" />
+                <div class="title">فاتورة المبيعات</div>
+            </div>
+
+            <div class="header-right">
+                <h2>مؤسسة بناء اليمن للإسمنت و الحديد - رئيسي</h2>
+                <p>صنعاء-ش/الخمسين قبل ج/ دارسلم</p>
+                <p>ت.م/777710230/774132722/781119720</p>
+                <p>تلفون 672905-01</p>
+                <p>رقم البريد</p>
+            </div>
+        </div>
+
+        <!-- الإطار الداخلي -->
+        <div class="main-box">
+            <!-- صف البيانات -->
+            <div class="info-row">
+                <div>العملة : YR</div>
+                <div>التاريخ : 28/07/2026</div>
+                <div>نوع الفاتورة : أجل</div>
+                <div>رقم الفاتورة : 1990</div>
+            </div>
+
+            <div class="customer-row">
+                <div>اسم العملاء : عبدربه الخظر/ عمارة عبدالله محمد الملجمي/771226393</div>
+                <div>المخزن : المعرض</div>
+            </div>
+
+            <!-- الجدول -->
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">الإجمالي</th>
+                        <th style="width: 12%;">السعر</th>
+                        <th style="width: 8%;">ك.المجاني</th>
+                        <th style="width: 8%;">الكمية</th>
+                        <th style="width: 6%;">مخزن</th>
+                        <th style="width: 8%;">الوحدة</th>
+                        <th style="width: 36%;">اسم الصنف</th>
+                        <th style="width: 10%;">رقم الصنف</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>231,000.00</td>
+                        <td>7,700.00</td>
+                        <td></td>
+                        <td>30</td>
+                        <td>1</td>
+                        <td>سيخ</td>
+                        <td>حديد مقاس 16م</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>256,666.67</td>
+                        <td>4,277.78</td>
+                        <td></td>
+                        <td>60</td>
+                        <td>1</td>
+                        <td>سيخ</td>
+                        <td>حديد مقاس 12م</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>154,000.00</td>
+                        <td>1,925.00</td>
+                        <td></td>
+                        <td>80</td>
+                        <td>1</td>
+                        <td>سيخ</td>
+                        <td>حديد مقاس 8م</td>
+                        <td>08</td>
+                    </tr>
+                    <tr>
+                        <td>13,500.00</td>
+                        <td>4,500.00</td>
+                        <td></td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>لفه</td>
+                        <td>سلك تربيط 5 كجم</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- الإجماليات -->
+            <div class="totals-section">
+                <div class="totals-wrapper">
+                    <div class="qty-total">173</div>
+                    <div class="totals-details">
+                        <div class="total-row"><span class="label">: الإجمالي</span><span class="value">655,166.67</span></div>
+                        <div class="total-row"><span class="label">: الخصم</span><span class="value">0.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التفقيط -->
+            <div class="tafqeet-box">
+                ستمائة و خمسة و خمسون ألف و مئة و ستة و ستون ريال يمني و سبعة و ستون فلس
+            </div>
+        </div>
+
+        <!-- التوقيعات -->
+        <div class="signatures">
+            <div>العميل</div>
+            <div>المحاسب</div>
+            <div>مندوب المبيعات</div>
+            <div>المخازن</div>
+            <div>مدير الحسابات</div>
+            <div>مدير المبيعات</div>
+        </div>
+
+        <!-- الفوتر السفلي -->
+        <div class="invoice-footer">
+            <div>طبع بواسطة : مدير النظام</div>
+            <div>1 / 1</div>
+            <div>PM 08:02:00 28/07/2026 : تاريخ التقرير</div>
+        </div>
+
+    </div>
+
+    <script>
+        // تحميل الشعار من ملف logoBase64.js تلقائياً فور تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof LOGO_BASE64 !== 'undefined') {
+                document.getElementById('headerLogo').src = LOGO_BASE64;
+            }
+        });
+
+        // دالة الطباعة في نافذة مستقلة بنفس الكود الذي اخترته
+        function printInvoice() {
+            const printContent = document.getElementById('printableArea').innerHTML;
+            const styles = document.getElementsByTagName('style')[0].outerHTML;
+
+            const printWindow = window.open('', '_blank', 'width=900,height=700');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <title>طباعة الفاتورة</title>
+                    ${styles}
+                </head>
+                <body>
+                    <div class="invoice-container">
+                        ${printContent}
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+                setTimeout(() => {
+                    printWindow.close();
+                }, 1000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>

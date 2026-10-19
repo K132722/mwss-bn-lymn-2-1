@@ -1,4 +1,11 @@
 /* calculator.css */
+/* 🎯 استدعاء خط Inter المخصص للحواسب والشاشات الكبيرة */
+@font-face {
+    font-family: 'InterLocal';
+    src: url('inter_24pt-Bold.ttf') format('truetype'); /* تأكد من مطابقة الحروف الكبيرة والصغيرة للاسم */
+    font-weight: 700;
+    font-style: normal;
+}
 
 :root {
     --primary-dark: #0a1423;
@@ -257,7 +264,8 @@
     min-width: 100%;
     padding-right: 10px;
     box-sizing: border-box;
-    font-family: monospace;
+    font-family:monospace;
+ font-weight: 600;
 }
 
 /* مؤشر الكتابة الوهمي */
@@ -279,17 +287,25 @@
 
 /* سطر العرض النهائي للنتيجة (ثابت على يمين الشاشة) */
 .screen-result {
-    font-size: 20px;
+    font-size: 23px;
     text-align: right;
     color: var(--accent);
     min-height: 25px;
-    direction: ltr;
+    direction: ltr; 
+   
     margin-top: 5px;
     padding-right: 5px;
     user-select: text;
-    font-family: monospace;
-    font-weight: bold;
+    font-weight: 700;
+    font-family: 'InterLocal', sans-serif; /* ربط مباشر بالخط المحلي */
 }
+
+
+
+
+     /* هذه القيمة تقوم بشد وضغط الأرقام لتقترب من بعضها وتصغر المسافة تماماً */
+
+
 
 /* ===== أنماط إضافية لأزرار الحاسبة كما كانت ===== */
 .calculator-buttons {
@@ -634,3 +650,10 @@ fraction {
   text-align: right;
   z-index: 10;
 }
+/* التحكم في فراغ أرقام النتيجة بالبكسل */
+.number-space-separator {
+    letter-spacing: -6px; /* يمكنك تعديل القيمة لتكبير أو تصغير الفراغ حسب ذوقك */
+    display: inline-block;
+    width: 3px; /* التحكم بعرض المسافة بالبكسل */
+}
+

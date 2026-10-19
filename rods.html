@@ -640,10 +640,225 @@
             padding: 10px;
             font-size: 14px;
         }
+.form-group22 input {
+    width: 150px;
+    padding: 7px;
+    margin-top: 15px;
+    margin-right: 5px;
+    font-size: 18px;
+    border: 2px solid var(--glass-border);
+    border-radius: 8px;
+    text-align: center;
+    direction: ltr;
+    background: rgba(0,0,0,0.2);
+    color: white;
+}
+
+.printed-client {
+    text-align: right;
+    direction: rtl;
+    margin: 5px 0;
+    font-size: 16px;
+    color: var(--accent);
+}
+
+.smart-input-btn {
+    /* ألوانك ومتغيراتك الأصلية */
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    display: block;      
+    margin: 0 auto;      
+    flex: none !important; 
+    padding: 0;
+    text-align: center;
+    line-height: 50px; 
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+
+
+    /* تشغيل حركة التوهج الاحترافية */
+    animation: ai-glow-fixed 3s infinite ease-in-out;
+}
+
+/* حركة التوهج (الزر ثابت والنور يتحرك) */
+@keyframes ai-glow-fixed {
+    0% {
+        /* توهج خفيف وقريب */
+        box-shadow: 0 0 10px rgba(76, 161, 175, 0.4), 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        /* التوهج يتمدد ويصبح ساطعاً (كأن الزر يشحن طاقة) */
+        box-shadow: 0 0 25px rgba(76, 161, 175, 0.8), 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+    100% {
+        /* يعود للهدوء */
+        box-shadow: 0 0 10px rgba(76, 161, 175, 0.4), 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+}
+
+
+.smart-input-btn:hover {
+    background: linear-gradient(135deg, #ff5722, #ff9800);
+    transform: translateY(-2px);
+}
+
+.smart-input-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.smart-input-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.smart-input-box h3 {
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.smart-input-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    font-size: 20px;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    resize: vertical;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.smart-input-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.smart-input-buttons button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.smart-input-add {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.smart-input-cancel {
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+}
+
+.smart-input-add:hover {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+}
+
+.smart-input-cancel:hover {
+    background: rgba(255, 107, 107, 0.3);
+}
+
+.input-info {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 10px;
+    text-align: center;
+}
+.result-logo111 {
+    /* 1. إلغاء الوضع المطلق لأنه يخرجه من توازن النص */
+    position: relative; 
+
+    /* 2. تحديد الطول (والعرض تلقائي ليحافظ على الأبعاد) */
+    height: 42px; /* جرب 30px أو 35px عشان يكون متناسق داخل دائرة الـ 50px */
+    width: auto;
+
+    /* 3. التوسيط السحري */
+    display: block;
+    margin: 0 auto; /* يوسطه أفقياً */
+
+    /* 4. لضمان التوسيط العمودي تماماً */
+    transform: translateY(0%); /* يدف الصورة للأسفل قليلاً لتعادل الفراغ */
+
+    /* إلغاء أي قيم قديمة */
+    padding: 0;
+    flex: none !important;
+}
+        .pure-paste-btn {
+            /* الألوان والتدرج */
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+
+            /* التصميم الدائري */
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            margin: 10px auto; /* يوسط الزر في مكانه */
+
+            /* حركة التوهج (نفس اللي عجبتك) */
+            animation: paste-glow 3s infinite ease-in-out;
+            transition: transform 0.2s;
+        }
+
+        /* تنسيق الأيقونة داخل الزر */
+        .pure-paste-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .pure-paste-btn:active {
+            transform: scale(0.9); /* تأثير الضغط */
+        }
+
+        /* حركة التوهج */
+        @keyframes paste-glow {
+            0% { box-shadow: 0 0 8px rgba(76, 161, 175, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(0, 210, 255, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(76, 161, 175, 0.4); }
+        }
 
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="./fonts/tajawal/tajawal.css" rel="stylesheet">
+    <link rel="stylesheet" href="./fa-local.css">
     <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
@@ -701,10 +916,16 @@
             <span style="font-size: 18px;">＋</span> إضافة (مقاسات جريد ٦٠ او سلك تربيط)
         </button>
 
+        <button class="smart-input-btn" onclick="showSmartInputDialog()">
+        ‎     <img src="png 2.png" class="result-logo111" alt="شعار المؤسسة">
+        </button>
+
+
         <!-- حاوية العناصر المضافة -->
         <div id="additionalItemsContainer"></div>
 
         <div class="form-group price-input">
+
             <label for="rodPrice">سعر الطن (ريال يمني)</label>
             <!-- حقل السعر أصبح نصي للسماح بالأرقام العربية والإنجليزية -->
             <input type="text" id="rodPrice" placeholder="400000" pattern="[0-9٠-٩]*" inputmode="numeric">
@@ -715,6 +936,10 @@
             <button onclick="copyRodsResult()">نسخ النتيجة</button>
             <button type="button" onclick="printResult()">مشاركة</button>
         </div>
+<div class="form-group22">
+    <input type="text" id="name" placeholder="اسم العميل">
+    <input type="text" id="num" placeholder="رقم الهاتف" pattern="[0-9٠-٩]*" inputmode="numeric">
+</div>
 
         <div id="rodsResult">
             <img src="png 2.png" class="result-logo" alt="شعار المؤسسة">
@@ -757,6 +982,34 @@
             <div class="price-note" id="rodsNote"></div>
         </div>
 
+<div class="smart-input-dialog" id="smartInputDialog">
+    <div class="smart-input-box">
+        <h3>🧠 الإدخال الذكي والسريع</h3>
+        <textarea class="smart-input-textarea" id="smartInputText" 
+                  placeholder="الصق أو اكتب الطلب هنا...
+‎مثال: 
+‎طن ابو ١٦
+‎٢ بندل ابو ١٢
+‎نص طن ابو ١٤ ضغط ٦٠
+‎٣ سيخ ابو ٨ جريد ٦٠"></textarea>
+        <button type="button" id="standalonePasteBtn" class="pure-paste-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            </svg>
+        </button>
+
+        <div class="input-info">
+‎            💡 يفهم: طن، بندل، سيخ، نص، ربع، ابو، مقاس، ضغط ٦٠، جريد ٦٠
+        </div>
+
+        <div class="smart-input-buttons">
+            <button class="smart-input-add" onclick="processSmartInput()">إضافة إلى الحقول</button>
+            <button class="smart-input-cancel" onclick="hideSmartInputDialog()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني
         </div>
@@ -783,17 +1036,34 @@
     </div>
 
     <script>
-        const steelData = {
-            rods: {
-                "20": 32,
-                "18": 40,
-                "16": 50,
-                "14": 66,
-                "12": 90,
-                "10": 130,
-                "8": 200
-            }
-        };
+       const steelData = {
+    rods: {
+        "20": 32,
+        "18": 40,
+        "16": 50,
+        "14": 66,
+        "12": 90,
+        "10": 130,
+        "8": 200
+    }
+};
+
+// === أضف هذه البيانات لتحويل الطن والبندل إلى أسياخ ===
+const bundleSizes = {
+    "8": 420,
+    "10": 270, 
+    "12": 180,
+    "14": 136,
+    "16": 104,
+    "18": 82,
+    "20": 66
+};
+
+// للتوافق مع دوال الإدخال الذكي
+const steelDataExtended = {
+    rodsPerTon: steelData.rods,  // نفس البيانات
+    rodsPerBundle: bundleSizes    // بيانات البنادل
+};
 
         let customItems = [];
         let wireItems = [];
@@ -1149,15 +1419,30 @@
                 `;
             }
 
-            document.getElementById('rodsTotal').innerHTML = `
-                ${totalsHtml}
-                <div>إجمالي الكمية بالطن ⚖️: ${displayedTotalWeight} طن</div>
-                ${wireSummary}
-                <div class="total-price">إجمالي سعر الكمية💵: ${displayedTotalSum} ر.ي</div>
-                <div class="price-in-words" style="font-size": ${fontSize}px">${priceInWords}</div>
-            `;
 
-            document.getElementById('rodsNote').innerText = priceNote;
+
+            // أضف هذه الأسطر في بداية الجزء قبل innerHTML
+const name = document.getElementById("name").value.trim();
+const phone = document.getElementById("num").value.trim();
+
+const clientInfo = `
+    ${name ? `<div class="printed-client">👤: ${name}</div>` : ""}
+    ${phone ? `<div class="printed-client">📞: ${phone}</div>` : ""}
+    ${(name || phone) ? `<hr style="margin: 10px 0; border: 1px solid var(--glass-border)">` : ""}
+`;
+
+document.getElementById('rodsTotal').innerHTML = `
+
+    ${totalsHtml}
+    <div>إجمالي الكمية بالطن ⚖️: ${displayedTotalWeight} طن</div>
+    ${wireSummary}
+    <div class="total-price">إجمالي سعر الكمية💵: ${displayedTotalSum} ر.ي</div>
+    <div class="price-in-words" style="font-size": ${fontSize}px">${priceInWords}</div>
+${clientInfo}
+`;
+
+
+document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
 
             const resultHtml = document.getElementById('rodsResult').innerHTML;
@@ -1413,7 +1698,7 @@
             document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
         }
-        
+
         function showAddItemDialog() {
             document.getElementById('dialogOverlay').style.display = 'flex';
             document.getElementById('itemType').dispatchEvent(new Event('change'));
@@ -1598,40 +1883,72 @@
             updateWireDisplay();
         }
 
-        function copyRodsResult() {
-            const resultElement = document.getElementById('rodsResult');
-            if (resultElement.style.display === 'none') {
-                alert("لا توجد نتيجة لحسابها بعد");
-                return;
-            }
+         function copyRodsResult() {
+    const resultElement = document.getElementById('rodsResult');
+    if (resultElement.style.display === 'none') {
+        alert("لا توجد نتيجة لحسابها بعد");
+        return;
+    }
 
-            let resultText = inventoryMode ? "نتيجة حساب المخزون\n" : "نتيجة حساب الأسياخ\n";
-            resultText += "------------------------\n";
+    // تحديد العنوان بناءً على الوضع الحالي
+    let resultText = inventoryMode ? "نتيجة حساب المخزون\n" : "نتيجة حساب الأسياخ\n";
+    resultText += "----------------------------------\n";
 
-            const rows = document.querySelectorAll('#rodsResultBody tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                resultText += `${cells[0].textContent}\t${cells[1].textContent}\t${cells[2].textContent}\t${cells[3].textContent}\n`;
-            });
+    // تغيير رؤوس الجدول بناءً على الوضع
+    if (inventoryMode) {
+        resultText += "   المقاس   | العدد |         الوزن (طن)           |\n";
+    } else {
+        resultText +=   
+ " المقاس | الكمية |           الاجمالي        |           \n";
+    }
+    resultText += "----------------------------------\n";
 
-            if (wireItems.length > 0 && !inventoryMode) {
-                resultText += "\nنتيجة سلك التربيط\n";
-                resultText += "------------------------\n";
-                wireItems.forEach(item => {
-                    const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
-                    const total = item.qty * item.price;
-                    const displayedTotal = window.inputIsArabic ? toArabicDigits(formatNumber(total)) : formatNumber(total);
-                    resultText += `سلك تربيط\t${displayedQty}\tر.ي ${displayedTotal}\n`;
-                });
-            }
+    // جلب بيانات الجدول
+    const rows = document.querySelectorAll('#rodsResultBody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 4) {
+            const size = cells[0].textContent.trim().padEnd(8);
+            const qty = cells[1].textContent.trim().padEnd(6);
+            // في المخزون نأخذ العمود الثالث (الوزن)، وفي الأسياخ نأخذ العمود الرابع (السعر)
+            const lastCol = inventoryMode ? cells[2].textContent.trim().padEnd(20) : cells[3].textContent.trim().padEnd(20);
 
-            resultText += "\n" + document.getElementById('rodsTotal').innerText.replace(/<[^>]*>/g, '') + "\n";
-            resultText += document.getElementById('rodsNote').innerText;
-
-            navigator.clipboard.writeText(resultText)
-                .then(() => alert("تم نسخ النتيجة"))
-                .catch(() => alert("فشل نسخ النتيجة"));
+            resultText += `${size}|  ${qty}  | ${lastCol} \n`;
+            resultText += "----------------------------------\n";
         }
+    });
+
+    // إضافة سلك التربيط إذا لم نكن في وضع المخزون
+    if (wireItems.length > 0 && !inventoryMode) {
+        wireItems.forEach(item => {
+            const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
+            const total = item.qty * item.price;
+            const displayedTotal = window.inputIsArabic ? toArabicDigits(formatNumber(total)) : formatNumber(total);
+
+            const wName = "سلك تربيط".padEnd(8);
+            const wQty = String(displayedQty).padEnd(6);
+            const wTotal = (displayedTotal + " ر.ي").padEnd(20);
+
+            resultText += `${wName}|  ${wQty}  |  ${wTotal} \n`;
+            resultText += "----------------------------------\n";
+        });
+    }
+
+    // جلب الإجماليات والتفقيط والملاحظة (تعمل مع الوضعين)
+    const totalSection = document.getElementById('rodsTotal').innerText;
+    const noteSection = document.getElementById('rodsNote').innerText;
+
+    resultText += "\n" + totalSection + "\n";
+    if (noteSection.trim() !== "") {
+        resultText += noteSection;
+    }
+
+    // تنفيذ عملية النسخ
+    navigator.clipboard.writeText(resultText)
+        .then(() => alert("✅ تم نسخ النتيجة بنجاح"))
+        .catch(() => alert("❌ فشل نسخ النتيجة"));
+}
+
 
         window.addEventListener('load', () => {
             // ← نطفي أي أوضاع أخرى
@@ -1668,57 +1985,1375 @@
             localStorage.removeItem('inventoryMode');
         });
 
-        function printResult() {
-            const resultElement = document.getElementById('rodsResult');
-            if (resultElement.style.display === 'none') {
-                alert("لا توجد نتيجة للطباعة. الرجاء إجراء الحساب أولاً");
-                return;
-            }
+      function printResult() {
+    const resultElement = document.getElementById('rodsResult');
+    if (resultElement.style.display === 'none') {
+        alert("لا توجد نتيجة للطباعة. الرجاء إجراء الحساب أولاً");
+        return;
+    }
 
-            const originalScroll = window.scrollY;
-            const originalDisplay = resultElement.style.display;
-
-            if (typeof html2canvas !== 'function') {
-                const script = document.createElement('script');
-                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
-                script.onload = function () {
-                    captureAndShare(resultElement, originalScroll, originalDisplay);
-                };
-                document.body.appendChild(script);
-            } else {
-                localStorage.setItem('showRodsResult', 'true');
-                captureAndShare(resultElement, originalScroll, originalDisplay);
-            }
-        }
-
-        function captureAndShare(element) {
-            html2canvas(element, {
-                backgroundColor: '#16213e',
-                scale: 5
-            }).then(canvas => {
-                const image = canvas.toDataURL('image/png');
-
-                const downloadLink = document.createElement('a');
-                downloadLink.href = image;
-                downloadLink.download = inventoryMode ? 'حساب_المخزون.png' : 'حساب_الأسياخ.png';
-                downloadLink.click();
-
-                if (navigator.share && navigator.onLine) {
-                    canvas.toBlob(function (blob) {
-                        const file = new File([blob], inventoryMode ? "حساب_المخزون.png" : "حساب_الأسياخ.png", { type: "image/png" });
-                        navigator.share({
-                            title: inventoryMode ? 'نتيجة حساب المخزون' : 'نتيجة حساب الأسياخ',
-                            files: [file]
-                        }).catch(err => {
-                            console.log('فشل المشاركة:', err);
-                        });
-                    });
-                }
+    // استخراج البيانات من النتيجة المعروضة
+    const totalDiv = document.getElementById('rodsTotal');
+    const totalText = totalDiv ? totalDiv.innerText : '';
+    const noteText = document.getElementById('rodsNote')?.innerText || '';
+    
+    // استخراج اسم العميل ورقم الهاتف
+    const name = document.getElementById("name").value.trim() || "غير محدد";
+    const phone = document.getElementById("num").value.trim() || "غير محدد";
+    
+    // استخراج بيانات الأسياخ من الجدول
+    const rows = document.querySelectorAll('#rodsResultBody tr');
+    const items = [];
+    let totalQty = 0;
+    let totalPrice = 0;
+    let totalWeight = 0;
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 4) {
+            const sizeName = cells[0].textContent.trim();
+            const qtyText = cells[1].textContent.trim();
+            const qty = parseFloat(qtyText.replace(/,/g, '')) || 0;
+            const weightText = cells[2].textContent.trim();
+            const weight = parseFloat(weightText.replace(/,/g, '')) || 0;
+            const priceText = cells[3].textContent.trim().replace(/[^0-9.]/g, '');
+            const price = parseFloat(priceText) || 0;
+            
+            items.push({
+                name: sizeName,
+                qty: qty,
+                weight: weight,
+                price: price  // السعر الإجمالي للصنف
             });
+            totalQty += qty;
+            totalPrice += price;
+            totalWeight += weight;
         }
+    });
+    
+    // استخراج سلك التربيط
+    if (wireItems.length > 0) {
+        wireItems.forEach(item => {
+            items.push({
+                name: "سلك تربيط",
+                qty: item.qty,
+                weight: 0,
+                price: item.qty * item.price
+            });
+            totalQty += item.qty;
+            totalPrice += item.qty * item.price;
+        });
+    }
+    
+    // استخراج السعر الكامل من التفقيط
+    const priceInWords = totalDiv ? totalDiv.querySelector('.price-in-words')?.innerText || '' : '';
+    
+    // الحصول على التاريخ الحالي
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('ar-EG');
+    const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+    // بناء الكود لعرض السعر
+    printQuotation({
+        quoteNo: "ع.س-001",
+        quoteType: "عرض سعر",
+        quoteDate: dateStr,
+        currency: "ر.ي",
+        customerName: name,
+        customerPhone: phone,
+        warehouse: "المعرض",
+        items: items,
+        totalQty: totalQty,
+        totalWeight: totalWeight,
+        total: totalPrice.toFixed(2),
+        discount: "0.00",
+        netTotal: totalPrice.toFixed(2),
+        totalInWords: priceInWords || "لم يتم تحديد المبلغ",
+        printedBy: "مدير النظام",
+        printDate: dateStr,
+        printTime: timeStr,
+        note: noteText
+    });
+}
+
+function printQuotation(data) {
+    // 1. البيانات الافتراضية
+    const quote = Object.assign({
+        quoteNo: "ع.س-001",
+        quoteType: "عرض سعر",
+        quoteDate: "28/07/2026",
+        currency: "ر.ي",
+        customerName: "غير محدد",
+        customerPhone: "غير محدد",
+        warehouse: "المعرض",
+        items: [],
+        totalQty: 0,
+        totalWeight: 0,
+        total: "0.00",
+        discount: "0.00",
+        netTotal: "0.00",
+        totalInWords: "صفر ريال يمني",
+        printedBy: "مدير النظام",
+        printDate: "28/07/2026",
+        printTime: "08:02:00 PM",
+        note: ""
+    }, data || {});
+
+    // 2. بناء صفوف الجدول مع حساب سعر الوحدة والوزن
+    let itemsRows = "";
+    let totalWeightSum = 0;
+    let totalPriceSum = 0;
+    
+    if (quote.items && quote.items.length > 0) {
+        quote.items.forEach((item, index) => {
+            const itemNo = index + 1;
+            const qty = item.qty || 0;
+            
+            // حساب سعر الوحدة (السعر الإجمالي ÷ الكمية)
+            let unitPrice = 0;
+            let totalPrice = 0;
+            
+            if (typeof item.price === 'number' && item.price > 0) {
+                // إذا كان item.price هو السعر الإجمالي للصنف
+                totalPrice = item.price;
+                unitPrice = qty > 0 ? (totalPrice / qty) : 0;
+            } else if (typeof item.unitPrice === 'number') {
+                // إذا تم تمرير سعر الوحدة مباشرة
+                unitPrice = item.unitPrice;
+                totalPrice = unitPrice * qty;
+            } else {
+                // الحالة الافتراضية
+                totalPrice = parseFloat(item.price) || 0;
+                unitPrice = qty > 0 ? (totalPrice / qty) : 0;
+            }
+            
+            // الوزن (نحسبه من البيانات الموجودة أو نقدره)
+            let weight = item.weight || 0;
+            if (weight === 0 && item.name) {
+                // محاولة استخراج الوزن من اسم الصنف أو تقديره
+                const sizeMatch = item.name.match(/(\d+)/);
+                if (sizeMatch) {
+                    const size = parseInt(sizeMatch[1]);
+                    const rodsPerTon = steelData.rods && steelData.rods[size] ? steelData.rods[size] : 0;
+                    if (rodsPerTon > 0 && qty > 0) {
+                        weight = (1 / rodsPerTon) * qty;
+                    }
+                }
+            }
+            
+            totalWeightSum += weight;
+            totalPriceSum += totalPrice;
+            
+            const displayUnitPrice = unitPrice.toFixed(2);
+            const displayTotalPrice = totalPrice.toFixed(2);
+            const displayWeight = weight.toFixed(3);
+            
+            itemsRows += `
+                <tr>
+                    <td style="width: 7%;">${itemNo}</td>
+                    <td style="width: 33%; text-align: right; padding-right: 5px;">${item.name || 'غير محدد'}</td>
+                    <td style="width: 8%;">${item.unit || 'سيخ'}</td>
+                    <td style="width: 10%;">${qty}</td>
+                    <td style="width: 10%;">${displayWeight}</td>
+                    <td style="width: 12%;">${displayUnitPrice}</td>
+                    <td style="width: 10%;">${displayTotalPrice}</td>
+                </tr>`;
+        });
+    }
+
+    // 3. محتوى الطباعة مع ضبط إلغاء الهوامش العلوية
+    let printContent = `
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+    <meta charset="UTF-8">
+    <title>عرض سعر رقم ${quote.quoteNo}</title>
+    <style>
+        /* إلغاء الهوامش التلقائية للمتصفح بالكامل */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            color: #000;
+        }
+
+        body { 
+    padding: 0;  /* ← إلغاء الحشو */
+    margin: 0;   /* ← إلغاء الهوامش */
+    font-size: 13px;
+    width: 100%;
+    min-height: 100vh;
+}
+
+        .invoice-wrapper { 
+            width: 100%; 
+            max-width: 100%; 
+            margin: 0 auto; 
+        }
+
+        /* ---------- 1. الهيدر (إطار بحواف مستديرة) ---------- */
+        .header-box {
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header-right {
+            width: 40%;
+            text-align: right;
+            font-size: 11px;
+            line-height: 1.4;
+            font-weight: bold;
+        }
+        .header-right h2 { font-size: 13.5px; margin-bottom: 2px; }
+
+        .header-center {
+            width: 20%;
+            text-align: center;
+        }
+        .header-center img { 
+            max-width: 85px; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto 3px; 
+        }
+        .header-center .title { 
+            font-size: 16px; 
+            font-weight: bold;
+            color: #1a5276;
+        }
+
+        .header-left {
+            width: 40%;
+            text-align: left;
+            direction: ltr;
+            font-size: 11px;
+            line-height: 1.4;
+            font-weight: bold;
+        }
+        .header-left h2 { font-size: 13px; margin-bottom: 2px; }
+
+        /* ---------- 2. الإطار المربع الرئيسي ---------- */
+        .main-content-box {
+            border: 2px solid #555;
+            padding: 6px;
+        }
+
+        .info-row, .customer-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 6px;
+            padding: 0 4px;
+            flex-wrap: wrap;
+        }
+        .info-row > div, .customer-row > div {
+            padding: 2px 4px;
+        }
+
+        /* ---------- 3. جدول الأصناف ---------- */
+        table.items {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        table.items th, table.items td {
+            border: 1px solid #000;
+            padding: 4px 2px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        table.items th {
+            background-color: #cce0f1;
+        }
+
+        /* ---------- 4. الإجماليات والتفقيط ---------- */
+        .totals-section {
+            border-top: 1px solid #000;
+            padding-top: 4px;
+            margin-bottom: 6px;
+        }
+        .totals-flex {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        .totals-flex .left-group {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .totals-flex .right-group {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .qty-box, .weight-box {
+            text-align: center;
+        }
+        .calc-box {
+            display: flex;
+            gap: 20px;
+        }
+        .calc-row {
+            display: flex;
+            align-items: center;
+        }
+        .calc-row .lbl { 
+            margin-left: 8px; 
+            font-weight: normal;
+        }
+        .calc-row .val { 
+            font-weight: bold;
+        }
+
+        .tafqeet-box {
+            border: 1px solid #777;
+            padding: 4px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 11.5px;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tafqeet-box .total-value {
+            width: 20%;
+            text-align: right;
+        }
+        .tafqeet-box .total-words {
+            width: 80%;
+            text-align: center;
+        }
+
+        /* ملاحظة إضافية */
+        .note-box {
+            margin-top: 6px;
+            padding: 4px 8px;
+            border: 1px dashed #999;
+            font-size: 11px;
+            color: #333;
+            background: #f9f9f9;
+        }
+
+        /* ---------- 5. التوقيعات (خارج الإطار) ---------- */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            padding: 0 10px;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* ---------- 6. الفوتر السفلي (خارج الإطار) ---------- */
+        .footer {
+            margin-top: 20px;
+            border-top: 2px solid #000;
+            padding-top: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10.5px;
+            font-weight: bold;
+        }
+
+        /* إعدادات خاصة بالطباعة لمنع المساحات الزائدة */
+        @media print {
+            html, body {
+                margin: 0 !important;
+                padding: 4mm !important;
+                width: 100% !important;
+            }
+            .invoice-wrapper {
+                width: 100% !important;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <div class="invoice-wrapper">
+
+            <!-- 1. الهيدر -->
+            <div class="header-box">
+                <div class="header-right">
+                    <h2>مؤسسة بناء اليمن للاسمنت والحديد - رئيسي</h2>
+                    <p>صنعاء-ش/الخمسين قبل ج/ دارسلم</p>
+                    <p>ت.م/777710230/774132722/781119720</p>
+                    <p>تلفون 672905-01</p>
+                    <p>رقم البريد</p>
+                </div>
+
+                <div class="header-center">
+                    <img src="${typeof LOGO_BASE64 !== 'undefined' ? LOGO_BASE64 : ''}" alt="شعار المؤسسة" />
+                    <div class="title">عرض سعر</div>
+                </div>
+
+                <div class="header-left">
+                    <h2>Building Of Yemen Foundation For trade -</h2>
+                    <p>Sana,a/Fifty st/ before daar salm circle</p>
+                    <p>T-No.777710230-781119720-774132722</p>
+                    <p>Fax No.01672905</p>
+                    <p>Email:a777710230@gmail.com</p>
+                </div>
+            </div>
+
+            <!-- 2. الإطار المربع الرئيسي للبيانات والجدول -->
+            <div class="main-content-box">
+                <div class="info-row">
+                    <div>العملة : ${quote.currency}</div>
+                    <div>التاريخ : ${quote.quoteDate}</div>
+                    <div>نوع العرض : ${quote.quoteType}</div>
+                    <div>رقم العرض : ${quote.quoteNo}</div>
+                </div>
+
+                <div class="customer-row">
+                    <div>اسم العميل : ${quote.customerName}</div>
+                    <div>رقم الهاتف : ${quote.customerPhone}</div>
+                    <div>المخزن : ${quote.warehouse}</div>
+                </div>
+
+                <!-- جدول الأصناف -->
+                <table class="items">
+                    <thead>
+                        <tr>
+                            <th style="width: 7%;">م</th>
+                            <th style="width: 33%;">البيان</th>
+                            <th style="width: 8%;">الوحدة</th>
+                            <th style="width: 10%;">الكمية</th>
+                            <th style="width: 10%;">الوزن (طن)</th>
+                            <th style="width: 12%;">سعر الوحدة</th>
+                            <th style="width: 10%;">الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsRows}
+                    </tbody>
+                </table>
+
+                <!-- الإجماليات -->
+                <div class="totals-section">
+                    <div class="totals-flex">
+                        <div class="left-group">
+                            <div class="qty-box">
+                                <div>إجمالي الكمية</div>
+                                <div style="font-size: 14px;">${quote.totalQty || 0}</div>
+                            </div>
+                            <div class="weight-box">
+                                <div>إجمالي الوزن</div>
+                                <div style="font-size: 14px;">${totalWeightSum.toFixed(3)} طن</div>
+                            </div>
+                        </div>
+                        <div class="right-group">
+                            <div class="calc-box">
+                                <div class="calc-row">
+                                    <span class="lbl">الإجمالي :</span>
+                                    <span class="val">${totalPriceSum.toFixed(2)}</span>
+                                </div>
+                                <div class="calc-row">
+                                    <span class="lbl">الخصم :</span>
+                                    <span class="val">${quote.discount}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التفقيط ومبلغ الصافي -->
+                <div class="tafqeet-box">
+                    <span class="total-value">${totalPriceSum.toFixed(2)}</span>
+                    <span class="total-words">${quote.totalInWords}</span>
+                </div>
+
+                <!-- ملاحظة إن وجدت -->
+                ${quote.note ? `<div class="note-box">📝 ملاحظة: ${quote.note}</div>` : ''}
+            </div>
+
+            <!-- 3. التوقيعات (خارج الإطار) -->
+            <div class="signatures">
+                <div>العميل</div>
+                <div>المحاسب</div>
+                <div>مندوب المبيعات</div>
+                <div>المخازن</div>
+                <div>مدير الحسابات</div>
+                <div>مدير المبيعات</div>
+            </div>
+
+            <!-- 4. الفوتر السفلي (خارج الإطار) -->
+            <div class="footer">
+                <div>طبع بواسطة : ${quote.printedBy}</div>
+                <div>1 / 1</div>
+                <div>${quote.printTime} ${quote.printDate} : تاريخ التقرير</div>
+            </div>
+
+        </div>
+    </body>
+    </html>
+    `;
+
+    // 4. فتح النافذة وإرسال البيانات
+    const printWindow = window.open('', '_blank', 'width=210,height=297');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+
+    setTimeout(() => {
+        printWindow.print();
+        setTimeout(() => {
+            printWindow.close();
+        }, 1000);
+    }, 800);
+}
+
+// دالة لإظهار نافذة الإدخال الذكي
+/* ============================================================
+   main.js — النسخة المحسّنة (تحليل ذكي للطلبات النصية)
+   -----------------------------------------------------------
+   • تم الحفاظ على كل الوظائف الأصلية وواجهاتها (نفس أسماء الدوال
+     ونفس عناصر الـ DOM المستخدمة) حتى لا ينكسر أي كود آخر يعتمد عليها.
+   • تم دمج الدالتين المكررتين (detectSteelType و arabicToEnglish)
+     في نسخة واحدة فقط لكل منهما بدل نسختين متعارضتين.
+   • تمت إضافة محرك تحليل جديد قادر على:
+       1) تقسيم سطر واحد يحوي عدة أصناف (مثال: "+" أو "و" متبوعة برقم)
+          إلى عدة عناصر منفصلة بدل الاكتفاء بأول تطابق فقط.
+       2) التعرف على أكثر من كمية لنفس المقاس في نفس السطر
+          (مثال: "اثنين طن وعشره اسياخ ابو16" = طنّان + 10 أسياخ، كلاهما مقاس 16).
+       3) استخراج "سلك التربيط" (اللفات) كصنف منفصل تماماً عن الحديد.
+       4) تجاهل أسطر التحية/أسماء العملاء والمشاريع (مثل "سلام"،
+          "عمارة ماجد شملان") بدل محاولة تحليلها كطلبية حديد.
+       5) التقاط ملاحظة "لعمارة فلان" في نهاية السطر كاسم مشروع
+          بدل أن تفسد عملية استخراج الكمية.
+       6) دعم كتابة "قريد" كبديل عامي لكلمة "جريد".
+       7) إصلاح مشكلة برمجية دقيقة: \b في جافاسكربت لا يعمل بشكل
+          صحيح مع الحروف العربية، فتم استبداله بحدود كلمات مخصصة
+          تراعي أيضاً حرف العطف "و" الملتصق (مثل "وعشره"، "ولفتين").
+   
+
+  -----------------------------------------------------------
+   • تم الحفاظ على كل الوظائف الأصلية وواجهاتها (نفس أسماء الدوال
+     ونفس عناصر الـ DOM المستخدمة) حتى لا ينكسر أي كود آخر يعتمد عليها.
+   • تم دمج الدالتين المكررتين (detectSteelType و arabicToEnglish)
+     في نسخة واحدة فقط لكل منهما بدل نسختين متعارضتين.
+   • تمت إضافة محرك تحليل جديد قادر على:
+       1) تقسيم سطر واحد يحوي عدة أصناف (مثال: "+" أو "و" متبوعة برقم)
+          إلى عدة عناصر منفصلة بدل الاكتفاء بأول تطابق فقط.
+       2) التعرف على أكثر من كمية لنفس المقاس في نفس السطر
+          (مثال: "اثنين طن وعشره اسياخ ابو16" = طنّان + 10 أسياخ، كلاهما مقاس 16).
+       3) استخراج "سلك التربيط" (اللفات) كصنف منفصل تماماً عن الحديد.
+       4) تجاهل أسطر التحية/أسماء العملاء والمشاريع (مثل "سلام"،
+          "عمارة ماجد شملان") بدل محاولة تحليلها كطلبية حديد.
+       5) التقاط ملاحظة "لعمارة فلان" في نهاية السطر كاسم مشروع
+          بدل أن تفسد عملية استخراج الكمية.
+       6) دعم كتابة "قريد" كبديل عامي لكلمة "جريد".
+       7) إصلاح مشكلة برمجية دقيقة: \b في جافاسكربت لا يعمل بشكل
+          صحيح مع الحروف العربية، فتم استبداله بحدود كلمات مخصصة
+          تراعي أيضاً حرف العطف "و" الملتصق (مثل "وعشره"، "ولفتين").
+   ============================================================ */
+
+
+/* ================= فتح/إغلاق نافذة الإدخال الذكي ================= */
+
+function showSmartInputDialog() {
+    document.getElementById('smartInputDialog').style.display = 'flex';
+    document.getElementById('smartInputText').focus();
+}
+
+function hideSmartInputDialog() {
+    document.getElementById('smartInputDialog').style.display = 'none';
+    document.getElementById('smartInputText').value = '';
+}
+
+
+/* ================= أدوات أساسية مشتركة ================= */
+
+// تحويل الأرقام العربية (٠-٩) إلى أرقام إنجليزية (0-9) — نسخة واحدة موحدة
+function arabicToEnglish(text) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    let result = text;
+    for (let i = 0; i < arabicDigits.length; i++) {
+        result = result.replace(new RegExp(arabicDigits[i], 'g'), i.toString());
+    }
+    return result;
+}
+
+// جدول موحّد للأرقام العربية المكتوبة (كان مكرراً في أكثر من مكان بالكود القديم)
+const NUMBER_WORDS = {
+    'واحد': 1, 'واحدة': 1, 'احد': 1, 'احدى': 1,
+    'اثنين': 2, 'اثنان': 2, 'اثنتين': 2,
+    'ثلاثة': 3, 'ثلاث': 3, 'ثلاثه': 3,
+    'أربعة': 4, 'أربع': 4, 'اربع': 4, 'اربعه': 4,
+    'خمسة': 5, 'خمس': 5, 'خمسه': 5,
+    'ستة': 6, 'ست': 6, 'سته': 6,
+    'سبعة': 7, 'سبع': 7, 'سبعه': 7,
+    'ثمانية': 8, 'ثمان': 8, 'ثمانيه': 8,
+    'تسعة': 9, 'تسع': 9, 'تسعه': 9,
+    'عشرة': 10, 'عشر': 10, 'عشره': 10,
+    'عشرين': 20, 'عشرون': 20,
+    'ثلاثين': 30, 'ثلاثون': 30,
+    'أربعين': 40, 'اربعين': 40, 'أربعون': 40,
+    'خمسين': 50, 'خمسون': 50,
+    'ستين': 60, 'ستون': 60,
+    'سبعين': 70, 'سبعون': 70,
+    'ثمانين': 80, 'ثمانون': 80,
+    'تسعين': 90, 'تسعون': 90,
+    'مائة': 100, 'مئه': 100, 'مئة': 100,
+    'مائتين': 200, 'مئتين': 200
+};
+
+// دالة تحويل الأرقام العربية المكتوبة إلى أرقام (محفوظة بنفس الاسم القديم للتوافق)
+function convertArabicNumberWord(word) {
+    return NUMBER_WORDS[word.toLowerCase()] || null;
+}
+
+// آحاد وعشرات منفصلة (لبناء الأعداد المركبة مثل "خمسة وأربعين" = 45)
+const UNITS_WORDS = {
+    'واحد': 1, 'واحدة': 1, 'احد': 1,
+    'اثنين': 2, 'اثنان': 2,
+    'ثلاثة': 3, 'ثلاث': 3, 'ثلاثه': 3,
+    'أربعة': 4, 'أربع': 4, 'اربع': 4, 'اربعه': 4,
+    'خمسة': 5, 'خمس': 5, 'خمسه': 5,
+    'ستة': 6, 'ست': 6, 'سته': 6,
+    'سبعة': 7, 'سبع': 7, 'سبعه': 7,
+    'ثمانية': 8, 'ثمان': 8, 'ثمانيه': 8,
+    'تسعة': 9, 'تسع': 9, 'تسعه': 9
+};
+const TENS_WORDS = {
+    'عشرين': 20, 'عشرون': 20,
+    'ثلاثين': 30, 'ثلاثون': 30,
+    'أربعين': 40, 'اربعين': 40, 'أربعون': 40,
+    'خمسين': 50, 'خمسون': 50,
+    'ستين': 60, 'ستون': 60,
+    'سبعين': 70, 'سبعون': 70,
+    'ثمانين': 80, 'ثمانون': 80,
+    'تسعين': 90, 'تسعون': 90
+};
+
+// دمج الأعداد المركبة "آحاد و عشرات" (مثل: خمسة وأربعين، ثلاثة وعشرين) إلى
+// رقمها الصريح داخل النص مباشرة. يتم استدعاء هذا *قبل* أي تقسيم أو تحليل
+// آخر، حتى لا يُفهم حرف العطف الداخلي في العدد المركب على أنه فاصل بين صنفين.
+const UNITS_WORDS_ALT = Object.keys(UNITS_WORDS).sort((a, b) => b.length - a.length).join('|');
+const TENS_WORDS_ALT = Object.keys(TENS_WORDS).sort((a, b) => b.length - a.length).join('|');
+const COMPOUND_NUMBER_REGEX = new RegExp(`(${UNITS_WORDS_ALT})\\s*و\\s*(${TENS_WORDS_ALT})`, 'g');
+
+function mergeCompoundNumbers(text) {
+    return text.replace(COMPOUND_NUMBER_REGEX, (full, unit, tens) => {
+        return String((UNITS_WORDS[unit] || 0) + (TENS_WORDS[tens] || 0));
+    });
+}
+
+// استخراج رقم (صريح أو كلمة مفردة مكتوبة) من نهاية نص قصير، تُستخدم لتحديد
+// كمية الطن أو كمية الأسياخ في نمط "طن إلا كذا سيخ"
+function resolveQuantityText(text) {
+    const t = (text || '').trim();
+    if (!t) return null;
+    const digitMatch = t.match(/(\d+(?:\.\d+)?)$/);
+    if (digitMatch) return parseFloat(digitMatch[1]);
+    const words = t.split(/\s+/).filter(Boolean);
+    const lastWord = words[words.length - 1];
+    if (!lastWord) return null;
+    return convertArabicNumberWord(lastWord);
+}
+
+// بناء نمط "حدود كلمة" يعمل مع الحروف العربية.
+// السبب: \b في جافاسكربت مبني على تعريف \w (إنجليزي/أرقام فقط)، لذلك
+// لا يتعرف بشكل صحيح على حدود الكلمات العربية عندما تكون محاطة بمسافات.
+// كما يسمح هذا النمط أن يسبق الكلمة حرف العطف "و" الملتصق بها مباشرة
+// (مثل "وعشره" أو "ولفتين") باعتباره حرف عطف منفصلاً وليس جزءاً من الكلمة.
+function arabicWordPattern(word) {
+    return `(?:^|(?<=[^\\u0600-\\u06FF])|(?<=و))${word}(?![\\u0600-\\u06FF])`;
+}
+
+// تحويل كلمات الكسور (نص/ربع/ثلث...) إلى قيم عشرية داخل نص معين
+const FRACTION_MAP = {
+    'نصفين': '1', 'ربعين': '0.5',
+    'نصف': '0.5', 'نص': '0.5',
+    'ثلثين': '0.666', 'ثُلثين': '0.666',
+    'ثلث': '0.333', 'ثُلث': '0.333',
+    'ربع': '0.25'
+};
+function applyFractionWords(text) {
+    let result = text;
+    for (const [word, decimal] of Object.entries(FRACTION_MAP)) {
+        result = result.replace(new RegExp(word, 'g'), decimal);
+    }
+    return result;
+}
+
+
+/* ================= تحديد نوع الحديد (جريد ٤٠ / جريد ٦٠) ================= */
+
+function detectSteelType(text) {
+    const arabicText = text.toLowerCase();
+    const searchText = arabicToEnglish(arabicText);
+
+    // الرقم 60 يُعتبر "كمية" وليس "نوع حديد" إذا جاء ملاصقاً لكلمات كمية
+    const quantity60Patterns = [
+        /60\s*(?:سيخ|اسياخ|جريدة|جريده|ابو|مقاس)/i,
+        /^60\s+/i
+    ];
+    const is60Quantity = quantity60Patterns.some(p => p.test(searchText));
+
+    // جريد/ضغط 60 (مع دعم "قريد" كبديل عامي، تمت معالجته مسبقاً في التطبيع)
+    if (!is60Quantity &&
+        /(?:جريد|ضغط)\s*60|60\s*(?:جريد|ضغط)/.test(searchText)) {
+        console.log(`✅ [${text}] نوع الحديد: جريد 60`);
+        return 'gr60';
+    }
+
+    // جريد/ضغط 40
+    if (/(?:جريد|ضغط)\s*40|40\s*(?:جريد|ضغط)/.test(searchText)) {
+        console.log(`✅ [${text}] نوع الحديد: جريد 40`);
+        return 'gr40';
+    }
+
+    // وجود الرقم 40 وحده مع إشارة عامة لنوع حديد
+    if (/\b40\b/.test(searchText) && /(?:جريد|ضغط|gr|g)/i.test(searchText)) {
+        return 'gr40';
+    }
+
+    // كلمة "جريد" فقط بلا رقم (وليست "جريدة/جريده" التي تعني سيخ)
+    if (arabicText.includes('جريد') && !arabicText.includes('جريدة') && !arabicText.includes('جريده')) {
+        return 'gr40';
+    }
+
+    // الافتراضي
+    console.log(`🔵 [${text}] لم يُحدَّد نوع الحديد صراحة — استخدام الافتراضي: جريد 40`);
+    return 'gr40';
+}
+
+
+/* ================= استخراج المقاس من النص ================= */
+
+function extractSizeFromText(text) {
+    const searchText = arabicToEnglish(text.toLowerCase());
+    const writtenSizeAlt = Object.keys(NUMBER_WORDS).sort((a, b) => b.length - a.length).join('|');
+
+    // 1. بعد "ابو" (رقم صريح)
+    let m = searchText.match(/اب[و]?\s*(\d+)/);
+    if (m && steelData.rods[m[1]]) return m[1];
+
+    // 1ب. بعد "ابو" (مقاس مكتوب بالحروف، مثل: ابو ثمانيه = ابو 8)
+    m = searchText.match(new RegExp(`اب[و]?\\s*(${writtenSizeAlt})`));
+    if (m) {
+        const val = convertArabicNumberWord(m[1]);
+        if (val !== null && steelData.rods[val.toString()]) return val.toString();
+    }
+
+    // 2. بعد "مقاس" (رقم صريح)
+    m = searchText.match(/مقاس\s*(\d+)/);
+    if (m && steelData.rods[m[1]]) return m[1];
+
+    // 2ب. بعد "مقاس" (مكتوب بالحروف)
+    m = searchText.match(new RegExp(`مقاس\\s*(${writtenSizeAlt})`));
+    if (m) {
+        const val = convertArabicNumberWord(m[1]);
+        if (val !== null && steelData.rods[val.toString()]) return val.toString();
+    }
+
+    // 3. رقم متبوع بـ"م" أو "ملم"
+    m = searchText.match(/(\d+)\s*م(لم)?/);
+    if (m && steelData.rods[m[1]]) return m[1];
+
+    // 4. أي رقم من مقاسات الحديد المعروفة (نبدأ بالأكبر لتفادي التطابق الجزئي)
+    const allSizes = Object.keys(steelData.rods).sort((a, b) => parseInt(b) - parseInt(a));
+    for (const size of allSizes) {
+        if (new RegExp(`\\b${size}\\b`).test(searchText)) return size;
+    }
+
+    // 5. أي رقم آخر قد يكون مقاساً معروفاً
+    const numberMatches = searchText.match(/\b(\d+)\b/g);
+    if (numberMatches) {
+        for (const num of numberMatches) {
+            if (steelData.rods[num]) return num;
+        }
+    }
+
+    return null;
+}
+
+
+/* ================= سلالم استخراج الكمية (طن / بندل / سيخ) ================= */
+/* كل سلّم يبحث بشكل مستقل تماماً عن نمطه، بحيث يمكن العثور على أكثر
+   من نوع كمية في نفس الجزء النصي (مثال: طن + أسياخ لنفس المقاس)      */
+
+function parseTonQuantity(processedText) {
+    // رقم + طن + و + كسر
+    let m = processedText.match(/(\d+(?:\.\d+)?)\s*طن\s*و\s*(0\.5|0\.25|0\.333|0\.666)/);
+    if (m) return parseFloat(m[1]) + parseFloat(m[2]);
+
+    // رقم مكتوب + طن + و + كسر (مثل: اثنين طن وربع)
+    for (const word of Object.keys(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*طن\\s*و\\s*(0\\.5|0\\.25|0\\.333|0\\.666)', 'i');
+        const wm = processedText.match(re);
+        if (wm) return convertArabicNumberWord(word) + parseFloat(wm[1]);
+    }
+
+    // طن + و + كسر (بلا رقم قبلها، الافتراضي 1)
+    m = processedText.match(/طن\s*و\s*(0\.5|0\.25|0\.333|0\.666)/);
+    if (m) return 1 + parseFloat(m[1]);
+
+    // كسر + طن فقط
+    m = processedText.match(/(0\.5|0\.25|0\.333|0\.666)\s*طن/);
+    if (m) return parseFloat(m[1]);
+
+    // رقم مكتوب + طن إلا/الا كسر (مثل: ثلاثة طن إلا ربع) — يجب فحصها *قبل*
+    // النمط الرقمي أدناه، لأن ذاك النمط له مجموعة رقمية اختيارية قد تتطابق
+    // بقيمة افتراضية (1) حتى مع وجود رقم مكتوب فعلي قبل "طن".
+    for (const word of Object.keys(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*طن\\s*(?:إلا|الا)\\s*(0\\.5|0\\.25|0\\.333|0\\.666)', 'i');
+        const wm = processedText.match(re);
+        if (wm) return convertArabicNumberWord(word) - parseFloat(wm[1]);
+    }
+
+    // رقم + طن إلا/الا كسر
+    m = processedText.match(/(?:(\d+(?:\.\d+)?)\s*)?طن\s*(?:إلا|الا)\s*(0\.5|0\.25|0\.333|0\.666)/);
+    if (m) return (m[1] ? parseFloat(m[1]) : 1) - parseFloat(m[2]);
+
+    // كسر + و + كسر + طن
+    m = processedText.match(/(0\.5|0\.25|0\.333|0\.666)\s*و\s*(0\.5|0\.25|0\.333|0\.666)\s*طن/);
+    if (m) return parseFloat(m[1]) + parseFloat(m[2]);
+
+    // رقم + طن
+    m = processedText.match(/(\d+(?:\.\d+)?)\s*طن/);
+    if (m) return parseFloat(m[1]);
+
+    // رقم مكتوب + طن
+    for (const word of Object.keys(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*طن', 'i');
+        if (re.test(processedText)) return convertArabicNumberWord(word);
+    }
+
+    // طن + ابو/مقاس + رقم => طن واحد
+    if (/طن\s*(?:ابو|مقاس)\s*\d+/.test(processedText)) return 1;
+
+    // طن + رقم مباشرة => طن واحد
+    if (/طن\s*\d+/.test(processedText)) return 1;
+
+    // طن وحدها => طن واحد
+    if (/طن/.test(processedText)) return 1;
+
+    return null;
+}
+
+// نمط خاص: "[كمية] طن إلا/الا [كمية] سيخ/اسياخ/جريدة/جريده"
+// هنا الطرح يكون بعدد أسياخ صريح وليس كسراً (مثل: أربعة طن إلا عشرة اسياخ ابو 16)
+// لذلك يُحسب الناتج مباشرة: (الطن × عدد الأسياخ بالطن) - عدد الأسياخ المطروحة،
+// ويُعامل كنتيجة نهائية مستقلة بدل تمريره للسلالم العادية لتفادي احتساب مضاعف.
+function parseTonMinusRodsQuantity(rawText) {
+    const m = rawText.match(/(.*?)طن\s*(?:إلا|الا)\s*(.+?)\s*(?:سيخ|اسياخ|أسياخ|جريدة|جريده)/);
+    if (!m) return null;
+
+    const afterExcept = m[2].trim();
+    // إن كانت الكمية المطروحة كسراً معروفاً، فهذا ليس طرح أسياخ بل طرح كسر
+    // من الطن، وتتم معالجته في parseTonQuantity العادية وليس هنا.
+    if (/^(?:نص|نصف|ربع|ثلث|ثلثين|نصفين|ربعين)$/.test(afterExcept)) return null;
+
+    const tonsQty = resolveQuantityText(m[1]) ?? 1;
+    const rodsQty = resolveQuantityText(afterExcept);
+    if (rodsQty === null) return null;
+
+    return { tons: tonsQty, rods: rodsQty };
+}
+
+function parseBundleQuantity(text) {
+    // رقم + بندل/بنادل
+    let m = text.match(/(\d+(?:\.\d+)?)\s*(?:بندل|بنادل)/);
+    if (m) return parseFloat(m[1]);
+
+    // رقم مكتوب + بندل/بنادل
+    for (const word of Object.keys(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*(?:بندل|بنادل)', 'i');
+        if (re.test(text)) return convertArabicNumberWord(word);
+    }
+
+    // بندل + رقم (مقاس) => بندل واحد
+    if (/(?:بندل|بنادل)\s*\d+/.test(text)) return 1;
+
+    // بندل وحدها => بندل واحد
+    if (/بندل|بنادل/.test(text)) return 1;
+
+    return null;
+}
+
+function parseRodQuantity(text) {
+    // رقم + ابو/مقاس + رقم (مثل: 30 ابو 16) — الأكثر شيوعاً
+    let m = text.match(/(\d+(?:\.\d+)?)\s*(?:ابو|مقاس)\s*\d+/);
+    if (m) return parseFloat(m[1]);
+
+    // رقم + سيخ/اسياخ/جريدة/جريده
+    m = text.match(/(\d+(?:\.\d+)?)\s*(?:سيخ|اسياخ|أسياخ|جريدة|جريده)/);
+    if (m) return parseFloat(m[1]);
+
+    // رقم مكتوب + سيخ/اسياخ/جريدة/جريده
+    for (const word of Object.keys(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*(?:سيخ|اسياخ|أسياخ|جريدة|جريده)', 'i');
+        if (re.test(text)) return convertArabicNumberWord(word);
+    }
+
+    // سيخ/اسياخ/جريدة/جريده بمفردها (بدون رقم) => سيخ واحد
+    if (/سيخ|اسياخ|جريدة|جريده/.test(text)) return 1;
+
+    return null;
+}
+
+// تجميع كل الكميات الموجودة في جزء نصي واحد (قد يكون أكثر من نوع كمية لنفس المقاس)
+function extractAllQuantities(chunkText) {
+    // الكسور (نص/ربع/ثلث) لها معنى فقط مع "طن"، لذلك نطبّقها فقط عند
+    // فحص الطن؛ إن طُبّقت على النص كله فقد يظهر رقم عشري ملاصق لكلمة
+    // "ابو" فيُفهم خطأً كأنه عدد أسياخ (خطأ تمت ملاحظته أثناء الاختبار).
+    const raw = arabicToEnglish(chunkText.toLowerCase());
+    const forTon = applyFractionWords(raw);
+
+    const items = [];
+
+    const ton = parseTonQuantity(forTon);
+    if (ton !== null && ton > 0) items.push({ quantity: ton, unitType: 'ton' });
+
+    const bundle = parseBundleQuantity(raw);
+    if (bundle !== null && bundle > 0) items.push({ quantity: bundle, unitType: 'bundle' });
+
+    const rod = parseRodQuantity(raw);
+    if (rod !== null && rod > 0) items.push({ quantity: rod, unitType: 'rod' });
+
+    return items;
+}
+
+
+/* ================= تحويل الكمية إلى عدد أسياخ ================= */
+
+function convertToRods(quantity, size, unitType) {
+    const sizeStr = size.toString();
+    let rodsCount = 0;
+
+    switch (unitType) {
+        case 'ton': {
+            const rodsPerTon = steelData.rods[sizeStr] || 0;
+            rodsCount = quantity * rodsPerTon;
+            console.log(`تحويل طن إلى أسياخ: ${quantity} طن × ${rodsPerTon} سيخ/طن = ${rodsCount} سيخ`);
+            break;
+        }
+        case 'bundle': {
+            const bundleSizes = {
+                "8": 420, "10": 270, "12": 180, "14": 136,
+                "16": 104, "18": 82, "20": 66
+            };
+            const rodsPerBundle = bundleSizes[sizeStr] || 0;
+            rodsCount = quantity * rodsPerBundle;
+            console.log(`تحويل بندل إلى أسياخ: ${quantity} بندل × ${rodsPerBundle} سيخ/بندل = ${rodsCount} سيخ`);
+            break;
+        }
+        case 'rod':
+            rodsCount = quantity;
+            console.log(`أسياخ مباشرة: ${quantity} سيخ`);
+            break;
+        default:
+            rodsCount = quantity;
+    }
+
+    return Math.round(rodsCount);
+}
+
+
+/* ================= استخراج سلك التربيط (اللفات) ================= */
+/* صنف مستقل تماماً عن الحديد، لا يرتبط بأي مقاس */
+
+function extractWireMentions(line) {
+    let totalCoils = 0;
+    let remaining = line;
+
+    // رقم + (لفة/لفات اختياري) + سلك + (تربيط/رباط اختياري)
+    // مثال: "30 لفة سلك تربيط" أو "5لفات سلك"
+    remaining = remaining.replace(
+        /(\d+(?:\.\d+)?)\s*(?:لفة|لفات)?\s*سلك(?:\s*(?:تربيط|رباط))?/g,
+        (_, qty) => { totalCoils += parseFloat(qty); return ' '; }
+    );
+
+    // صيغة المثنى "لفتين" = 2 (مع دعم حرف العطف "و" الملتصق: "ولفتين")
+    remaining = remaining.replace(
+        /(?:^|و)\s*لفتين\s*سلك(?:\s*(?:تربيط|رباط))?/g,
+        () => { totalCoils += 2; return ' '; }
+    );
+
+    // رقم مكتوب + لفة/لفات + سلك (مثال: "عشر لفات سلك رباط")
+    for (const [word, value] of Object.entries(NUMBER_WORDS)) {
+        const re = new RegExp(arabicWordPattern(word) + '\\s*(?:لفة|لفات)\\s*سلك(?:\\s*(?:تربيط|رباط))?', 'g');
+        remaining = remaining.replace(re, () => { totalCoils += value; return ' '; });
+    }
+
+    // ذِكر "سلك" بمفرده بلا رقم واضح => نفترض لفة واحدة
+    if (/سلك/.test(remaining)) {
+        totalCoils += 1;
+        remaining = remaining.replace(/سلك(?:\s*(?:تربيط|رباط))?/g, ' ');
+    }
+
+    return { line: remaining, totalCoils };
+}
+
+
+/* ================= استخراج اسم المشروع/العمارة ================= */
+
+// حالة 1: ملاحظة "لعمارة فلان" في نهاية سطر يحوي أصنافاً أيضاً
+function extractTrailingProjectName(line) {
+    const m = line.match(/ل(?:عمارة|عماره)\s+(.+)$/);
+    if (m) {
+        return { line: line.slice(0, m.index), name: 'عمارة ' + m[1].trim() };
+    }
+    return { line, name: null };
+}
+
+// حالة 2: سطر كامل هو مجرد اسم عميل/مشروع أو تحية (بلا أرقام وبلا كلمات مواد)
+const GREETING_WORDS = [
+    'سلام', 'السلام عليكم', 'السلام عليكم ورحمة الله وبركاته',
+    'هلا', 'يا هلا', 'هلا والله', 'مرحبا', 'مرحبتين',
+    'صباح الخير', 'مساء الخير', 'تحياتي', 'تحية طيبة', 'حياك الله'
+];
+const MATERIAL_KEYWORDS_REGEX =
+    /(طن|بندل|بنادل|سيخ|اسياخ|أسياخ|جريدة|جريده|ابو|أبو|مقاس|سلك|لفة|لفات|ضغط|جريد)/;
+
+function isMetaLine(line) {
+    if (/\d/.test(line)) return false;               // فيه رقم => ليس سطر اسم
+    return !MATERIAL_KEYWORDS_REGEX.test(line);       // بلا كلمات مواد => اسم/تحية
+}
+
+
+/* ================= تقسيم السطر إلى عدة أصناف (chunks) ================= */
+
+// كلمات تدل على "بداية صنف جديد" بعد حرف العطف "و" — تُستخدم لتقسيم الأسطر
+// التي تحوي أكثر من صنف مفصول بـ"و" بدل الرقم فقط (مثل: "...ابو 8 وطن ابو 14")
+const ITEM_START_ALT = ['\\d', 'طن\\b', 'سيخ', 'اسياخ', 'جريدة', 'جريده', 'بندل', 'بنادل']
+    .concat(Object.keys(NUMBER_WORDS).sort((a, b) => b.length - a.length))
+    .join('|');
+const ITEM_SPLIT_CANDIDATE_REGEX = new RegExp(`(?<!اب)و(?=\\s*(?:${ITEM_START_ALT}))`, 'g');
+
+// تقسيم ذكي: لا نفصل عند كل "و" مرشحة، بل فقط عندما يكون الجزء المتراكم
+// *قبل* هذه الواو يحتوي بالفعل على مقاس واضح (سواء عبر "ابو/مقاس" أو رقم
+// مقاس معروف صراحة مثل "سيخ 18"). هذا يمنع تقطيع عنصر واحد يشارك مقاساً
+// واحداً مذكوراً في آخره (مثل: "اثنين طن وعشره اسياخ ابو16")، بينما يسمح
+// بالفصل الصحيح متى ما اكتمل عنصر سابق بمقاسه الخاص.
+function smartSplitByAnd(text) {
+    const parts = [];
+    let currentStart = 0;
+    ITEM_SPLIT_CANDIDATE_REGEX.lastIndex = 0;
+    let match;
+    while ((match = ITEM_SPLIT_CANDIDATE_REGEX.exec(text)) !== null) {
+        const before = text.slice(currentStart, match.index);
+        if (before.trim() && extractSizeFromText(before) !== null) {
+            parts.push(before.trim());
+            currentStart = match.index + 1; // تخطّي حرف الواو نفسه
+        }
+    }
+    const rest = text.slice(currentStart).trim();
+    if (rest) parts.push(rest);
+    return parts;
+}
+
+function splitIntoItemChunks(line) {
+    // أولاً: افصل حسب "+" الصريحة (تُستخدم أحياناً للفصل بين أكثر من صنف)
+    const plusParts = line.split('+').map(p => p.trim()).filter(Boolean);
+
+    let chunks = [];
+    plusParts.forEach(part => {
+        chunks.push(...smartSplitByAnd(part));
+    });
+
+    return chunks;
+}
+
+
+/* ================= معالجة جزء نصي واحد وإضافته للنتائج ================= */
+
+function processChunkIntoResults(chunkText, results) {
+    const chunk = chunkText.trim();
+    if (!chunk) return;
+
+    const size = extractSizeFromText(chunk);
+    if (!size) {
+        console.log(`⚠️ تعذر تحديد المقاس لهذا الجزء، تم تجاهله: "${chunk}"`);
+        return;
+    }
+
+    const steelType = detectSteelType(chunk);
+
+    // نمط خاص: "طن إلا كذا سيخ/اسياخ" (طرح عدد أسياخ صريح من الطن، وليس كسراً)
+    const rawForSpecial = arabicToEnglish(chunk.toLowerCase());
+    const tonMinusRods = parseTonMinusRodsQuantity(rawForSpecial);
+    if (tonMinusRods) {
+        const rodsPerTon = steelData.rods[size.toString()] || 0;
+        const totalRods = Math.round(tonMinusRods.tons * rodsPerTon - tonMinusRods.rods);
+        if (!results[steelType][size]) results[steelType][size] = 0;
+        results[steelType][size] += totalRods;
+        console.log(`[${chunk}] => ${steelType} | مقاس ${size} | (${tonMinusRods.tons} طن - ${tonMinusRods.rods} سيخ) = ${totalRods} سيخ`);
+        return;
+    }
+
+    let quantities = extractAllQuantities(chunk);
+
+    // لم يُعثر على أي نمط كمية معروف رغم وجود مقاس => نفترض سيخاً واحداً
+    if (quantities.length === 0) {
+        quantities = [{ quantity: 1, unitType: 'rod' }];
+    }
+
+    quantities.forEach(({ quantity, unitType }) => {
+        const rodsCount = convertToRods(quantity, size, unitType);
+        if (!results[steelType][size]) results[steelType][size] = 0;
+        results[steelType][size] += rodsCount;
+        console.log(`[${chunk}] => ${steelType} | مقاس ${size} | ${quantity} ${unitType} = ${rodsCount} سيخ`);
+    });
+}
+
+
+/* ================= محرك التحليل الشامل للنص كاملاً ================= */
+
+function analyzeOrderText(fullText) {
+    const results = { gr40: {}, gr60: {} };
+    let wireRolls = 0;
+    const projectNames = [];
+
+    const rawLines = fullText.split('\n').map(l => l.trim()).filter(Boolean);
+
+    rawLines.forEach(rawLine => {
+        // تطبيع: تحويل الأرقام العربية لإنجليزية + قبول "قريد" كبديل لـ"جريد"
+        let line = arabicToEnglish(rawLine).replace(/قريد/g, 'جريد');
+
+        // دمج الأعداد المركبة (مثل: خمسة وأربعين => 45) قبل أي تقسيم أو تحليل،
+        // حتى لا يُفهم حرف العطف الداخلي في العدد المركب كفاصل بين صنفين
+        line = mergeCompoundNumbers(line);
+
+        // سطر تحية/اسم بالكامل بلا أرقام ولا كلمات مواد => تجاهل الحساب
+        if (isMetaLine(line)) {
+            const trimmed = line.trim();
+            if (!GREETING_WORDS.includes(trimmed)) {
+                projectNames.push(trimmed);
+            }
+            console.log(`ℹ️ سطر بيانات/اسم (تم استبعاده من الحساب): "${trimmed}"`);
+            return;
+        }
+
+        // استخراج ملاحظة "لعمارة فلان" إن وجدت في نهاية السطر
+        const projectExtraction = extractTrailingProjectName(line);
+        line = projectExtraction.line;
+        if (projectExtraction.name) projectNames.push(projectExtraction.name);
+
+        // استخراج ذكر سلك التربيط (قد يظهر أكثر من مرة، وقد يكون كل السطر)
+        const wireExtraction = extractWireMentions(line);
+        line = wireExtraction.line;
+        wireRolls += wireExtraction.totalCoils;
+
+        line = line.trim();
+        if (!line) return; // كان السطر بالكامل سلك تربيط أو ملاحظة مشروع فقط
+
+        // تقسيم السطر إلى أصناف مستقلة ثم معالجة كل صنف على حدة
+        const chunks = splitIntoItemChunks(line);
+        chunks.forEach(chunk => processChunkIntoResults(chunk, results));
+    });
+
+    return { results, wireRolls, projectNames };
+}
+
+
+/* ================= الدالة الرئيسية لمعالجة الإدخال الذكي ================= */
+
+function processSmartInput() {
+    const inputText = document.getElementById('smartInputText').value.trim();
+    if (!inputText) {
+        alert('الرجاء إدخال نص الطلب أولاً');
+        return;
+    }
+
+    // احفظ النص الأصلي كما كتبه المستخدم لعرضه لاحقاً في رسالة النجاح
+    const savedUserText = inputText;
+
+    const analysis = analyzeOrderText(inputText);
+
+    // ملء الحقول تلقائياً
+    fillInputFields(analysis.results, analysis.wireRolls);
+
+    // إظهار رسالة النجاح مع كل التفاصيل (يشمل السلك وأسماء المشاريع إن وُجدت)
+    showSuccessMessage(analysis, savedUserText);
+
+    // إخفاء النافذة ومسح الحقل
+    hideSmartInputDialog();
+}
+
+
+/* ================= ملء الحقول تلقائياً في الصفحة ================= */
+
+function fillInputFields(results, wireRolls) {
+    // ملء حقول جريد ٤٠
+    Object.keys(results.gr40).forEach(size => {
+        const count = results.gr40[size];
+        const inputElement = document.getElementById(`rod-${size}`);
+        if (inputElement) {
+            const currentValue = parseFloat(inputElement.value) || 0;
+            inputElement.value = currentValue + count;
+            inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    });
+
+    // ملء حقول جريد ٦٠ (عبر نافذة إضافة صنف إن وُجد زر لذلك)
+    if (Object.keys(results.gr60).length > 0) {
+        showAddItemDialog();
+
+        setTimeout(() => {
+            const itemTypeSelect = document.getElementById('itemType');
+            if (itemTypeSelect) {
+                itemTypeSelect.value = 'gr60';
+                itemTypeSelect.dispatchEvent(new Event('change'));
+
+                setTimeout(() => {
+                    Object.keys(results.gr60).forEach(size => {
+                        const count = results.gr60[size];
+                        const inputElement = document.getElementById(`gr60-${size}`);
+                        if (inputElement) {
+                            inputElement.value = count;
+                            inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                    });
+
+                    const priceInput = document.getElementById('gr60Price');
+                    if (priceInput && !priceInput.value) {
+                        priceInput.value = '400000';
+                    }
+                }, 500);
+            }
+        }, 300);
+    }
+
+    // ملء حقل سلك التربيط إن وُجد أحد هذه المعرّفات في الصفحة (ميزة جديدة).
+    // إن لم يوجد أي حقل مطابق، ستظل الكمية معروضة في رسالة النجاح فقط.
+    if (wireRolls && wireRolls > 0) {
+        const wireFieldCandidates = ['wireRolls', 'tieWireCount', 'wireCoils', 'wire-coils', 'sokCount'];
+        for (const id of wireFieldCandidates) {
+            const el = document.getElementById(id);
+            if (el) {
+                const current = parseFloat(el.value) || 0;
+                el.value = current + wireRolls;
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+                break;
+            }
+        }
+    }
+}
+
+
+/* ================= رسالة النجاح ================= */
+
+function showSuccessMessage(analysis, userInputText) {
+    // دعم الاستدعاء القديم (تمرير results فقط بدون wireRolls/projectNames)
+    const results = analysis.results || analysis;
+    const wireRolls = analysis.wireRolls || 0;
+    const projectNames = analysis.projectNames || [];
+
+    if (!userInputText) {
+        userInputText = document.getElementById('smartInputText').value;
+    }
+    if (!userInputText || userInputText.trim() === '') {
+        userInputText = '(لم يتم إدخال نص)';
+    }
+
+    let message = '✅ تم إدخال البيانات بنجاح!\n\n';
+
+    if (projectNames.length > 0) {
+        message += `🏢 المشروع/العميل: ${projectNames.join(' ، ')}\n\n`;
+    }
+
+    message += '📝 النص المدخل:\n────────────────\n';
+    message += userInputText + '\n────────────────\n\n';
+
+    let totalItems = 0;
+    let hasData = false;
+
+    const gr40Items = Object.keys(results.gr40);
+    if (gr40Items.length > 0) {
+        message += '📊 جريد ٤٠:\n';
+        gr40Items.forEach(size => {
+            message += `  • ${size}م: ${results.gr40[size]} سيخ\n`;
+            totalItems += results.gr40[size];
+        });
+        hasData = true;
+    }
+
+    const gr60Items = Object.keys(results.gr60);
+    if (gr60Items.length > 0) {
+        if (hasData) message += '\n';
+        message += '📊 جريد ٦٠:\n';
+        gr60Items.forEach(size => {
+            message += `  • ${size}م: ${results.gr60[size]} سيخ\n`;
+            totalItems += results.gr60[size];
+        });
+        hasData = true;
+    }
+
+    if (wireRolls > 0) {
+        if (hasData) message += '\n';
+        message += `🧵 سلك تربيط: ${wireRolls} لفة\n`;
+        hasData = true;
+    }
+
+    if (hasData) {
+        message += `\n📦 إجمالي الحديد: ${totalItems} سيخ ✅`;
+    }
+
+    alert(message);
+}
+
+
+/* ================= اختصارات لوحة المفاتيح ================= */
+
+document.addEventListener('keydown', function (event) {
+    const dialog = document.getElementById('smartInputDialog');
+    if (dialog.style.display === 'flex') {
+        if (event.key === 'Escape') {
+            hideSmartInputDialog();
+        }
+        if (event.ctrlKey && event.key === 'Enter') {
+            processSmartInput();
+        }
+    }
+});
+
+
+/* ================= زر اللصق من الحافظة ================= */
+
+document.getElementById('standalonePasteBtn').addEventListener('click', async () => {
+    try {
+        const text = await navigator.clipboard.readText();
+        const targetInput = document.getElementById('smartInputText');
+
+        if (text) {
+            targetInput.value = text;
+            targetInput.style.backgroundColor = "rgba(76, 161, 175, 0.1)";
+            setTimeout(() => targetInput.style.backgroundColor = "", 400);
+        }
+    } catch (err) {
+        console.error("فشل اللصق: ", err);
+    }
+});
     </script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="./html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة -->
     <script src="calculator.js"></script>
+ <script src="logoBase64.js"></script>
 </body>
 </html>
