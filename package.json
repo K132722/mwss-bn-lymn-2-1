@@ -1,11 +1,10 @@
 {
   "name": "iron-calculator",
   "version": "1.0.0",
-  "description": "حاسبة أسعار الحديد - PWA",
+  "description": "PWA - حاسبة أسعار الحديد",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve .",
-    "build": "echo 'No build needed for static PWA'"
+    "start": "npx serve ."
   },
   "dependencies": {
     "@capacitor/core": "^5.0.0",
