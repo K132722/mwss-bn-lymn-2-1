@@ -44,33 +44,29 @@ const APP_SHELL = [
   '/android-chrome-512x512.png',
 
   // الخطوط
-  '/fonts/tajawal/tajawal.css',
-
-  '/fonts/tajawal/tajawal-300-arabic.woff2',
-  '/fonts/tajawal/tajawal-300-latin.woff2',
-
-  '/fonts/tajawal/tajawal-400-arabic.woff2',
-  '/fonts/tajawal/tajawal-400-latin.woff2',
-
-  '/fonts/tajawal/tajawal-500-arabic.woff2',
-  '/fonts/tajawal/tajawal-500-latin.woff2',
-
-  '/fonts/tajawal/tajawal-700-arabic.woff2',
-  '/fonts/tajawal/tajawal-700-latin.woff2',
-
-  '/fonts/tajawal/tajawal-800-arabic.woff2',
-  '/fonts/tajawal/tajawal-800-latin.woff2',
+  '  // الخطوط في المجلد الرئيسي مباشرة
+  '/tajawal.css',
+  '/tajawal-300-arabic.woff2',
+  '/tajawal-300-latin.woff2',
+  '/tajawal-400-arabic.woff2',
+  '/tajawal-400-latin.woff2',
+  '/tajawal-500-arabic.woff2',
+  '/tajawal-500-latin.woff2',
+  '/tajawal-700-arabic.woff2',
+  '/tajawal-700-latin.woff2',
+  '/tajawal-800-arabic.woff2',
+  '/tajawal-800-latin.woff2',
   '/inter_24pt-Bold.ttf',
 
-  // FontAwesome
-  '/webfonts/fa-solid-900.woff2',
-  '/webfonts/fa-regular-400.woff2',
-  '/webfonts/fa-brands-400.woff2',
-  '/webfonts/fa-v4compatibility.woff2',
+  // FontAwesome في المجلد الرئيسي مباشرة
+  '/fa-solid-900.woff2',
+  '/fa-regular-400.woff2',
+  '/fa-brands-400.woff2',
+  '/fa-v4compatibility.woff2',
+  '/fa-solid-900.ttf',
+  '/fa-regular-400.ttf',
+  '/fa-brands-400.ttf'
 
-  '/webfonts/fa-solid-900.ttf',
-  '/webfonts/fa-regular-400.ttf',
-  '/webfonts/fa-brands-400.ttf'
  
 ];
 
