@@ -13,6 +13,7 @@ const APP_SHELL = [
 
   '/style.css',
   '/calculator.css',
+  '/tajawal.css',
 
   '/script.js',
   '/calculator.js',
@@ -45,7 +46,7 @@ const APP_SHELL = [
 
   // الخطوط
   '  // الخطوط في المجلد الرئيسي مباشرة
-  '/tajawal.css',
+
   '/tajawal-300-arabic.woff2',
   '/tajawal-300-latin.woff2',
   '/tajawal-400-arabic.woff2',
