@@ -1,7 +1,8 @@
-const CACHE_NAME = 'bina-yemen-cache-v10';
+const CACHE_NAME = 'bina-yemen-cache-v3';
 
 const APP_SHELL = [
-  '/',
+
+ '/',
   '/index.html',
   '/bundles.html',
   '/rods.html',
@@ -63,122 +64,222 @@ const APP_SHELL = [
   '/fa-solid-900.ttf',
   '/fa-regular-400.ttf',
   '/fa-brands-400.ttf'
+
+ 
 ];
+
 
 // =======================
 // INSTALL
 // =======================
+
 self.addEventListener('install', event => {
+
   event.waitUntil(
+
     caches.open(CACHE_NAME)
       .then(cache => {
+
         return cache.addAll(APP_SHELL);
+
       })
       .then(() => self.skipWaiting())
+
   );
+
 });
+
 
 // =======================
 // ACTIVATE
 // =======================
+
 self.addEventListener('activate', event => {
+
   event.waitUntil(
+
     caches.keys().then(keys => {
+
       return Promise.all(
+
         keys.map(key => {
+
           if (key !== CACHE_NAME) {
+
             return caches.delete(key);
+
           }
+
         })
+
       );
+
     }).then(() => self.clients.claim())
+
   );
+
 });
+
 
 // =======================
 // FETCH
 // =======================
+
 self.addEventListener('fetch', event => {
+
   if (event.request.method !== 'GET') return;
 
   const requestURL = new URL(event.request.url);
 
+
   // =======================
   // البيانات المحلية
   // =======================
+
   if (requestURL.pathname === '/data.json') {
+
     event.respondWith(
+
       (async () => {
+
         try {
+
           const db = await openDB('binaYemenDB', 1);
+
           const steelData = await db.getAll('steelData');
           const calculatorData = await db.getAll('calculatorData');
           const otherData = await db.getAll('otherStore');
 
           return new Response(
-            JSON.stringify({ steelData, calculatorData, otherData }),
-            { headers: { 'Content-Type': 'application/json' } }
+
+            JSON.stringify({
+              steelData,
+              calculatorData,
+              otherData
+            }),
+
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+
           );
+
         } catch (err) {
-          return new Response('{}', { headers: { 'Content-Type': 'application/json' } });
+
+          return new Response('{}', {
+
+            headers: {
+              'Content-Type': 'application/json'
+            }
+
+          });
+
         }
+
       })()
+
     );
+
     return;
+
   }
 
+
   // =======================
-  // استراتيجية Cache First (مُعدلة لسفاري)
+  // استراتيجية Cache First
   // =======================
+
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      // 1. إذا وجد في الكاش، رجعه مباشرة
-      if (cachedResponse) {
-        return cachedResponse;
-      }
 
-      // 2. إذا لم يوجد، اطلبه من الشبكة
-      return fetch(event.request).then(networkResponse => {
-        
-        // *** الحل: لا تقم بإرجاع الردود التي تحمل Redirect أو غير أساسية ***
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
+    caches.match(event.request)
+
+      .then(cachedResponse => {
+
+        if (cachedResponse) {
+
+          return cachedResponse;
+
         }
 
-        // تخزين نسخة في الكاش
-        const responseClone = networkResponse.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseClone);
-        });
+        return fetch(event.request)
 
-        return networkResponse;
+          .then(networkResponse => {
 
-      }).catch(() => {
-        // 3. Fallback للصفحات فقط
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
+            if (!networkResponse || networkResponse.status !== 200) {
 
-        // 4. لأي طلب آخر فاشل، أرجع رد فارغ بدون Redirect
-        return new Response('', {
-          status: 200,
-          statusText: 'OK',
-          headers: { 'Content-Type': 'text/plain' }
-        });
-      });
-    })
+              return networkResponse;
+
+            }
+
+            const responseClone = networkResponse.clone();
+
+            caches.open(CACHE_NAME)
+
+              .then(cache => {
+
+                cache.put(event.request, responseClone);
+
+              });
+
+            return networkResponse;
+
+          })
+
+          .catch(() => {
+
+            // fallback للصفحات
+
+            if (event.request.mode === 'navigate') {
+
+              return caches.match('/index.html');
+
+            }
+
+            // منع رسالة offline
+
+            return new Response('', {
+
+              status: 200,
+              statusText: 'OK'
+
+            });
+
+          });
+
+      })
+
   );
+
 });
+
+
 
 // =======================
 // SHARE IMAGE
 // =======================
+
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SHARE_IMAGE') {
+
+  if (
+    event.data &&
+    event.data.type === 'SHARE_IMAGE'
+  ) {
+
     caches.open(CACHE_NAME)
+
       .then(cache => {
+
         const response = new Response(event.data.imageData);
-        cache.put(`/shared-images/${Date.now()}`, response);
+
+        cache.put(
+          `/shared-images/${Date.now()}`,
+          response
+        );
+
       });
+
   }
+
 });
