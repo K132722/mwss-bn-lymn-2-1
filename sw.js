@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-cache-v4';
+const CACHE_NAME = 'bina-yemen-cache-v7';
 
 const APP_SHELL = [
 
