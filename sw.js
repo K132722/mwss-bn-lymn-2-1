@@ -1,8 +1,8 @@
-const CACHE_NAME = 'bina-yemen-cache-v3';
+const CACHE_NAME = 'bina-yemen-cache-v11';
 
 const APP_SHELL = [
 
- '/',
+  '/',
   '/index.html',
   '/bundles.html',
   '/rods.html',
@@ -38,20 +38,26 @@ const APP_SHELL = [
   '/png 2.png',
   '/png.3.png',
 
+
   // أيقونات التطبيق
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
 
   // الخطوط
   '/tajawal.css',
+
   '/tajawal-300-arabic.woff2',
   '/tajawal-300-latin.woff2',
+
   '/tajawal-400-arabic.woff2',
   '/tajawal-400-latin.woff2',
+
   '/tajawal-500-arabic.woff2',
   '/tajawal-500-latin.woff2',
+
   '/tajawal-700-arabic.woff2',
   '/tajawal-700-latin.woff2',
+
   '/tajawal-800-arabic.woff2',
   '/tajawal-800-latin.woff2',
   '/inter_24pt-Bold.ttf',
@@ -61,10 +67,10 @@ const APP_SHELL = [
   '/fa-regular-400.woff2',
   '/fa-brands-400.woff2',
   '/fa-v4compatibility.woff2',
+
   '/fa-solid-900.ttf',
   '/fa-regular-400.ttf',
   '/fa-brands-400.ttf'
-
  
 ];
 
@@ -125,99 +131,136 @@ self.addEventListener('activate', event => {
 // FETCH
 // =======================
 
-
 self.addEventListener('fetch', event => {
-  const request = event.request;
 
-  if (request.method !== 'GET') return;
+  if (event.request.method !== 'GET') return;
 
-  const requestURL = new URL(request.url);
+  const requestURL = new URL(event.request.url);
 
-  // تجاهل الطلبات الخارجية
-  if (requestURL.origin !== self.location.origin) return;
 
+  // =======================
   // البيانات المحلية
+  // =======================
+
   if (requestURL.pathname === '/data.json') {
-    event.respondWith((async () => {
-      try {
-        // يتطلب تعريف openDB في مكان آخر
-        const db = await openDB('binaYemenDB', 1);
 
-        const steelData = await db.getAll('steelData');
-        const calculatorData = await db.getAll('calculatorData');
-        const otherData = await db.getAll('otherStore');
+    event.respondWith(
 
-        return new Response(JSON.stringify({
-          steelData,
-          calculatorData,
-          otherData
-        }), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Cache-Control': 'no-store'
-          }
-        });
-      } catch (err) {
-        return new Response('{}', {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-          }
-        });
-      }
-    })());
+      (async () => {
 
-    return;
-  }
+        try {
 
-  // التخزين المحلي أولًا
-  event.respondWith((async () => {
-    const cachedResponse = await caches.match(request);
+          const db = await openDB('binaYemenDB', 1);
 
-    if (cachedResponse) return cachedResponse;
+          const steelData = await db.getAll('steelData');
+          const calculatorData = await db.getAll('calculatorData');
+          const otherData = await db.getAll('otherStore');
 
-    try {
-      const networkResponse = await fetch(request);
+          return new Response(
 
-      // لا تخزّن استجابة غير ناجحة أو محوّلة
-      if (
-        networkResponse.status === 200 &&
-        networkResponse.type !== 'opaqueredirect' &&
-        !networkResponse.redirected
-      ) {
-        const cache = await caches.open(CACHE_NAME);
-        await cache.put(request, networkResponse.clone());
-      }
+            JSON.stringify({
+              steelData,
+              calculatorData,
+              otherData
+            }),
 
-      // لا نرجع استجابة تحويل من الـ Service Worker
-      if (networkResponse.redirected) {
-        if (request.mode === 'navigate') {
-          const home = await caches.match('/index.html');
-          if (home) return home;
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+
+          );
+
+        } catch (err) {
+
+          return new Response('{}', {
+
+            headers: {
+              'Content-Type': 'application/json'
+            }
+
+          });
+
         }
 
-        return new Response('', {
-          status: 200,
-          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-        });
-      }
+      })()
 
-      return networkResponse;
+    );
 
-    } catch (err) {
-      if (request.mode === 'navigate') {
-        const home = await caches.match('/index.html');
-        if (home) return home;
-      }
+    return;
 
-      return new Response('', {
-        status: 200,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
-    }
-  })());
+  }
+
+
+  // =======================
+  // استراتيجية Cache First
+  // =======================
+
+  event.respondWith(
+
+    caches.match(event.request)
+
+      .then(cachedResponse => {
+
+        if (cachedResponse) {
+
+          return cachedResponse;
+
+        }
+
+        return fetch(event.request)
+
+          .then(networkResponse => {
+
+            if (!networkResponse || networkResponse.status !== 200) {
+
+              return networkResponse;
+
+            }
+
+            const responseClone = networkResponse.clone();
+
+            caches.open(CACHE_NAME)
+
+              .then(cache => {
+
+                cache.put(event.request, responseClone);
+
+              });
+
+            return networkResponse;
+
+          })
+
+          .catch(() => {
+
+            // fallback للصفحات
+
+            if (event.request.mode === 'navigate') {
+
+              return caches.match('/index.html');
+
+            }
+
+            // منع رسالة offline
+
+            return new Response('', {
+
+              status: 200,
+              statusText: 'OK'
+
+            });
+
+          });
+
+      })
+
+  );
+
 });
+
+
 
 // =======================
 // SHARE IMAGE
