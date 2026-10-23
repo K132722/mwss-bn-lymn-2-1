@@ -125,136 +125,99 @@ self.addEventListener('activate', event => {
 // FETCH
 // =======================
 
+
 self.addEventListener('fetch', event => {
+  const request = event.request;
 
-  if (event.request.method !== 'GET') return;
+  if (request.method !== 'GET') return;
 
-  const requestURL = new URL(event.request.url);
+  const requestURL = new URL(request.url);
 
+  // تجاهل الطلبات الخارجية
+  if (requestURL.origin !== self.location.origin) return;
 
-  // =======================
   // البيانات المحلية
-  // =======================
-
   if (requestURL.pathname === '/data.json') {
+    event.respondWith((async () => {
+      try {
+        // يتطلب تعريف openDB في مكان آخر
+        const db = await openDB('binaYemenDB', 1);
 
-    event.respondWith(
+        const steelData = await db.getAll('steelData');
+        const calculatorData = await db.getAll('calculatorData');
+        const otherData = await db.getAll('otherStore');
 
-      (async () => {
-
-        try {
-
-          const db = await openDB('binaYemenDB', 1);
-
-          const steelData = await db.getAll('steelData');
-          const calculatorData = await db.getAll('calculatorData');
-          const otherData = await db.getAll('otherStore');
-
-          return new Response(
-
-            JSON.stringify({
-              steelData,
-              calculatorData,
-              otherData
-            }),
-
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-
-          );
-
-        } catch (err) {
-
-          return new Response('{}', {
-
-            headers: {
-              'Content-Type': 'application/json'
-            }
-
-          });
-
-        }
-
-      })()
-
-    );
+        return new Response(JSON.stringify({
+          steelData,
+          calculatorData,
+          otherData
+        }), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store'
+          }
+        });
+      } catch (err) {
+        return new Response('{}', {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        });
+      }
+    })());
 
     return;
-
   }
 
+  // التخزين المحلي أولًا
+  event.respondWith((async () => {
+    const cachedResponse = await caches.match(request);
 
-  // =======================
-  // استراتيجية Cache First
-  // =======================
+    if (cachedResponse) return cachedResponse;
 
-  event.respondWith(
+    try {
+      const networkResponse = await fetch(request);
 
-    caches.match(event.request)
+      // لا تخزّن استجابة غير ناجحة أو محوّلة
+      if (
+        networkResponse.status === 200 &&
+        networkResponse.type !== 'opaqueredirect' &&
+        !networkResponse.redirected
+      ) {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, networkResponse.clone());
+      }
 
-      .then(cachedResponse => {
-
-        if (cachedResponse) {
-
-          return cachedResponse;
-
+      // لا نرجع استجابة تحويل من الـ Service Worker
+      if (networkResponse.redirected) {
+        if (request.mode === 'navigate') {
+          const home = await caches.match('/index.html');
+          if (home) return home;
         }
 
-        return fetch(event.request)
+        return new Response('', {
+          status: 200,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
+      }
 
-          .then(networkResponse => {
+      return networkResponse;
 
-            if (!networkResponse || networkResponse.status !== 200) {
+    } catch (err) {
+      if (request.mode === 'navigate') {
+        const home = await caches.match('/index.html');
+        if (home) return home;
+      }
 
-              return networkResponse;
-
-            }
-
-            const responseClone = networkResponse.clone();
-
-            caches.open(CACHE_NAME)
-
-              .then(cache => {
-
-                cache.put(event.request, responseClone);
-
-              });
-
-            return networkResponse;
-
-          })
-
-          .catch(() => {
-
-            // fallback للصفحات
-
-            if (event.request.mode === 'navigate') {
-
-              return caches.match('/index.html');
-
-            }
-
-            // منع رسالة offline
-
-            return new Response('', {
-
-              status: 200,
-              statusText: 'OK'
-
-            });
-
-          });
-
-      })
-
-  );
-
+      return new Response('', {
+        status: 200,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+      });
+    }
+  })());
 });
-
-
 
 // =======================
 // SHARE IMAGE
