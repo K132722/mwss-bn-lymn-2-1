@@ -2,7 +2,7 @@ const CACHE_NAME = 'bina-yemen-cache-v8';
 
 const APP_SHELL = [
 
-  '/',
+ '/',
   '/index.html',
   '/bundles.html',
   '/rods.html',
@@ -64,12 +64,13 @@ const APP_SHELL = [
   '/fa-solid-900.ttf',
   '/fa-regular-400.ttf',
   '/fa-brands-400.ttf'
+
  
 ];
 
 
 // =======================
-// INSTALL (إصلاح مشكلة إعادة التوجيه في Safari)
+// INSTALL
 // =======================
 
 self.addEventListener('install', event => {
@@ -77,33 +78,9 @@ self.addEventListener('install', event => {
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-      .then(async cache => {
+      .then(cache => {
 
-        return Promise.all(
-
-          APP_SHELL.map(url => {
-
-            const request = new Request(url, { redirect: 'follow' });
-
-            return fetch(request).then(response => {
-
-              if (!response.ok && response.status !== 0) {
-
-                throw new Error(`Failed to fetch ${url}`);
-
-              }
-
-              return cache.put(url, response);
-
-            }).catch(err => {
-
-              console.warn('Failed to cache resource:', url, err);
-
-            });
-
-          })
-
-        );
+        return cache.addAll(APP_SHELL);
 
       })
       .then(() => self.skipWaiting())
@@ -252,7 +229,7 @@ self.addEventListener('fetch', event => {
 
           .catch(() => {
 
-            // fallback للصفحات عند انقطاع النت
+            // fallback للصفحات
 
             if (event.request.mode === 'navigate') {
 
@@ -276,6 +253,7 @@ self.addEventListener('fetch', event => {
   );
 
 });
+
 
 
 // =======================
