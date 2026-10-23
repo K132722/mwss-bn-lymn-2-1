@@ -13,7 +13,6 @@ const APP_SHELL = [
 
   '/style.css',
   '/calculator.css',
-  '/tajawal.css',
 
   '/script.js',
   '/calculator.js',
@@ -39,14 +38,12 @@ const APP_SHELL = [
   '/png 2.png',
   '/png.3.png',
 
-
   // أيقونات التطبيق
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
 
-  // الخطوط
-  '  // الخطوط في المجلد الرئيسي مباشرة
-
+  // الخطوط في المجلد الرئيسي مباشرة
+  '/tajawal.css',
   '/tajawal-300-arabic.woff2',
   '/tajawal-300-latin.woff2',
   '/tajawal-400-arabic.woff2',
@@ -67,7 +64,6 @@ const APP_SHELL = [
   '/fa-solid-900.ttf',
   '/fa-regular-400.ttf',
   '/fa-brands-400.ttf'
-
  
 ];
 
