@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-cache-v7';
+const CACHE_NAME = 'bina-yemen-cache-v8';
 
 const APP_SHELL = [
 
@@ -42,7 +42,7 @@ const APP_SHELL = [
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
 
-  // الخطوط في المجلد الرئيسي مباشرة
+  // الخطوط
   '/tajawal.css',
   '/tajawal-300-arabic.woff2',
   '/tajawal-300-latin.woff2',
@@ -56,7 +56,7 @@ const APP_SHELL = [
   '/tajawal-800-latin.woff2',
   '/inter_24pt-Bold.ttf',
 
-  // FontAwesome في المجلد الرئيسي مباشرة
+  // FontAwesome
   '/fa-solid-900.woff2',
   '/fa-regular-400.woff2',
   '/fa-brands-400.woff2',
@@ -69,7 +69,7 @@ const APP_SHELL = [
 
 
 // =======================
-// INSTALL
+// INSTALL (إصلاح مشكلة إعادة التوجيه في Safari)
 // =======================
 
 self.addEventListener('install', event => {
@@ -77,9 +77,33 @@ self.addEventListener('install', event => {
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-      .then(cache => {
+      .then(async cache => {
 
-        return cache.addAll(APP_SHELL);
+        return Promise.all(
+
+          APP_SHELL.map(url => {
+
+            const request = new Request(url, { redirect: 'follow' });
+
+            return fetch(request).then(response => {
+
+              if (!response.ok && response.status !== 0) {
+
+                throw new Error(`Failed to fetch ${url}`);
+
+              }
+
+              return cache.put(url, response);
+
+            }).catch(err => {
+
+              console.warn('Failed to cache resource:', url, err);
+
+            });
+
+          })
+
+        );
 
       })
       .then(() => self.skipWaiting())
@@ -228,7 +252,7 @@ self.addEventListener('fetch', event => {
 
           .catch(() => {
 
-            // fallback للصفحات
+            // fallback للصفحات عند انقطاع النت
 
             if (event.request.mode === 'navigate') {
 
@@ -252,7 +276,6 @@ self.addEventListener('fetch', event => {
   );
 
 });
-
 
 
 // =======================
