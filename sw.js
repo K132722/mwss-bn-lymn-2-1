@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-cache-v12'; // رفع الإصدار لضمان التحديث
+const CACHE_NAME = 'bina-yemen-cache-v22'; // رفع الإصدار بشكل كبير لضمان التحديث
 
 const APP_SHELL = [
   '/',
@@ -53,10 +53,13 @@ const APP_SHELL = [
   '/fa-brands-400.ttf'
 ];
 
-// دالة لتنظيف أي Redirect من أي رد (حماية سفاري)
+// دالة لتنظيف أي Redirect من أي رد
 function cleanResponse(response) {
   if (!response) return response;
+  // إذا لم يكن هناك redirect، أرجعه كما هو
   if (!response.redirected) return response;
+
+  // إذا كان هناك redirect، نعيد بناء الرد لمسح العلامة
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -96,15 +99,14 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
 
-  // ✅ تجاهل أي طلب ليس GET (مثل رفع الملفات)
   if (request.method !== 'GET') return;
 
   const requestURL = new URL(request.url);
 
-  // ✅ تجاهل الطلبات الخارجية
+  // تجاهل الطلبات الخارجية
   if (requestURL.origin !== self.location.origin) return;
 
-  // ✅ البيانات المحلية (data.json)
+  // البيانات المحلية
   if (requestURL.pathname === '/data.json') {
     event.respondWith((async () => {
       try {
@@ -126,41 +128,33 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // ✅ استثناءات مهمة: لا تعترض طلبات النسخ الاحتياطي أو الملفات التي يقرأها التطبيق
-  if (
-    requestURL.pathname.endsWith('.json') ||
-    requestURL.pathname.endsWith('.txt') ||
-    requestURL.pathname.includes('backup') ||
-    requestURL.pathname.includes('export') ||
-    requestURL.pathname.includes('import') ||
-    requestURL.pathname.includes('restore')
-  ) {
-    // اترك المتصفح يتعامل معها بشكل طبيعي
-    return;
-  }
-
-  // ✅ إذا كان الطلب ليس من نوع "navigate" (فتح صفحة)، اتركه للشبكة ولا تعترضه
-  // هذا يحل مشكلة الملفات التي يقرأها التطبيق من جهاز المستخدم
-  if (request.mode !== 'navigate') {
-    return;
-  }
-
-  // ✅ الآن فقط نتعامل مع طلبات فتح الصفحات (navigate)
+  // التخزين المحلي أولًا مع المعالجة النهائية لسفاري
   event.respondWith((async () => {
     try {
       const cachedResponse = await caches.match(request);
       if (cachedResponse) {
+        // نظف أي رد مخزن يحتوي على redirect
         return cleanResponse(cachedResponse);
       }
 
+      // جلب من الشبكة
       const networkResponse = await fetch(request);
+
+      // إذا كان الرد ناجحاً ولا يحتوي redirect، نخزنه
+      if (networkResponse.status === 200 && !networkResponse.redirected && networkResponse.type === 'basic') {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, networkResponse.clone());
+      }
+
+      // في كل الحالات، نرجع الرد بعد تنظيفه
       return cleanResponse(networkResponse);
 
     } catch (err) {
-      // في حالة الفشل، أرجع index.html
-      const home = await caches.match('/index.html');
-      if (home) return cleanResponse(home);
-      
+      // في حالة الفشل (انقطاع الشبكة)
+      if (request.mode === 'navigate') {
+        const home = await caches.match('/index.html');
+        if (home) return cleanResponse(home);
+      }
       return new Response('', {
         status: 200,
         headers: { 'Content-Type': 'text/plain; charset=utf-8' }
