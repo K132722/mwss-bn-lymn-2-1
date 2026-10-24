@@ -644,39 +644,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let backupLongPressTimer;
 
-    btn1.addEventListener('mousedown', () => {
-      backupLongPressTimer = setTimeout(() => {
-        playClickSound();
+    // ✅ زر 1: تحميل ملف النسخة الاحتياطية
+    function downloadBackup() {
+      playClickSound();
+      try {
         const calcData = localStorage.getItem('calculatorHistory') || '[]';
         const boxData = localStorage.getItem('abujarrahBoxData') || '{}';
+        const otherData = localStorage.getItem('otherStore') || '[]';
 
         const backup = {
           calculatorHistory: JSON.parse(calcData),
-          abujarrahBoxData: JSON.parse(boxData)
+          abujarrahBoxData: JSON.parse(boxData),
+          otherStore: JSON.parse(otherData)
         };
 
         const backupString = JSON.stringify(backup, null, 2);
-        document.getElementById('backupText').value = backupString;
-        document.getElementById('backupModal').style.display = 'block';
-      }, 800);
+        const blob = new Blob([backupString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bina-yemen-backup-' + new Date().toISOString().slice(0,10) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('❌ فشل إنشاء النسخة: ' + err.message);
+      }
+    }
+
+    btn1.addEventListener('mousedown', () => {
+      backupLongPressTimer = setTimeout(downloadBackup, 800);
     });
     btn1.addEventListener('mouseup', () => clearTimeout(backupLongPressTimer));
     btn1.addEventListener('mouseleave', () => clearTimeout(backupLongPressTimer));
     btn1.addEventListener('touchstart', () => {
-      backupLongPressTimer = setTimeout(() => {
-        playClickSound();
-        const calcData = localStorage.getItem('calculatorHistory') || '[]';
-        const boxData = localStorage.getItem('abujarrahBoxData') || '{}';
-
-        const backup = {
-          calculatorHistory: JSON.parse(calcData),
-          abujarrahBoxData: JSON.parse(boxData)
-        };
-
-        const backupString = JSON.stringify(backup, null, 2);
-        document.getElementById('backupText').value = backupString;
-        document.getElementById('backupModal').style.display = 'block';
-      }, 800);
+      backupLongPressTimer = setTimeout(downloadBackup, 800);
     }, { passive: true });
     btn1.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
 
@@ -695,65 +698,74 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('backupModal').style.display = 'none';
     });
 
+    // ✅ زر 2: استرجاع النسخة من ملف
+    function restoreBackup() {
+      playClickSound();
+
+      // إنشاء input مخفي لاختيار الملف
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.json,application/json';
+      fileInput.style.display = 'none';
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const parsed = JSON.parse(event.target.result);
+
+            if (!parsed || typeof parsed !== 'object') {
+              throw new Error('الملف غير صالح');
+            }
+
+            // استرجاع سجل الحاسبة
+            if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
+              history = parsed.calculatorHistory;
+              localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
+              renderHistory();
+            }
+
+            // استرجاع بيانات الصندوق
+            if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
+              localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
+            }
+
+            // استرجاع بيانات أخرى إن وجدت
+            if (parsed.otherStore && Array.isArray(parsed.otherStore)) {
+              localStorage.setItem('otherStore', JSON.stringify(parsed.otherStore));
+            }
+
+            alert('✅ تم استرجاع البيانات بنجاح!\n🔄 سيتم تحديث الصفحة الآن لتطبيق التغييرات.');
+
+            // إعادة تحميل الصفحة لتطبيق البيانات الجديدة
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+
+          } catch (err) {
+            alert('❌ فشل في الاسترجاع: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      document.body.appendChild(fileInput);
+      fileInput.click();
+      document.body.removeChild(fileInput);
+    }
+
     btn2.addEventListener('mousedown', () => {
-      backupLongPressTimer = setTimeout(() => {
-        playClickSound();
-        const input = prompt('📥 ألصق النسخة الاحتياطية هنا:');
-        if (!input) return;
-        try {
-          const parsed = JSON.parse(input);
-
-          if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
-            history = parsed.calculatorHistory;
-            localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
-            renderHistory();
-          }
-
-          if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
-            localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
-          }
-
-          alert('✅ تم استرجاع البيانات بنجاح!');
-        } catch (err) {
-          alert('❌ فشل في الاسترجاع: الصيغة غير صالحة!');
-        }
-      }, 800);
+      backupLongPressTimer = setTimeout(restoreBackup, 800);
     });
     btn2.addEventListener('mouseup', () => clearTimeout(backupLongPressTimer));
     btn2.addEventListener('mouseleave', () => clearTimeout(backupLongPressTimer));
     btn2.addEventListener('touchstart', () => {
-      backupLongPressTimer = setTimeout(() => {
-        playClickSound();
-        const input = prompt('📥 ألصق النسخة الاحتياطية هنا:');
-        if (!input) return;
-        try {
-          const parsed = JSON.parse(input);
-
-          if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
-            history = parsed.calculatorHistory;
-            localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
-            renderHistory();
-          }
-
-          if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
-            localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
-          }
-
-          alert('✅ تم استرجاع البيانات بنجاح!');
-        } catch (err) {
-          alert('❌ فشل في الاسترجاع: الصيغة غير صالحة!');
-        }
-      }, 800);
+      backupLongPressTimer = setTimeout(restoreBackup, 800);
     }, { passive: true });
     btn2.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
-
-    document.addEventListener('selectstart', function(e) {
-        if (e.target.classList.contains('calc-button') ||
-            e.target.classList.contains('calc-tab') ||
-            e.target.classList.contains('arrow-btn')) {
-            e.preventDefault();
-        }
-    });
 
     function addToHistory(calculation, result) {
         history.unshift({
