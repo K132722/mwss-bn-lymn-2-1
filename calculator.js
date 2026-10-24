@@ -642,6 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const btn1 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '1');
     const btn2 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '2');
 
+    // ✅ تعريف واحد فقط للمتغير
     let backupLongPressTimer;
 
     // ✅ زر 1: تحميل ملف النسخة الاحتياطية
@@ -703,14 +704,6 @@ document.addEventListener('DOMContentLoaded', function() {
       playClickSound();
 
       // إنشاء input مخفي لاختيار الملف
-      // ✅ تعريف المتغير المشترك بين زر 1 وزر 2
-    let backupLongPressTimer;
-
-    // ✅ زر 2: استرجاع النسخة من ملف
-    function restoreBackup() {
-      playClickSound();
-
-      // إنشاء input مخفي لاختيار الملف
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.accept = '.json,application/json';
@@ -762,7 +755,6 @@ document.addEventListener('DOMContentLoaded', function() {
       // ✅ مهم جداً: نضيف العنصر للصفحة قبل الضغط عليه
       document.body.appendChild(fileInput);
       fileInput.click();
-      // نتركه في الصفحة حتى لا يفشل الـ click في سفاري
     }
 
     btn2.addEventListener('mousedown', () => {
