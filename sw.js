@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-cache-v20'; // رفع الإصدار بشكل كبير لضمان التحديث
+const CACHE_NAME = 'bina-yemen-cache-v11';
 
 const APP_SHELL = [
   '/',
@@ -53,13 +53,13 @@ const APP_SHELL = [
   '/fa-brands-400.ttf'
 ];
 
+// =======================
 // دالة لتنظيف أي Redirect من أي رد
+// =======================
 function cleanResponse(response) {
   if (!response) return response;
-  // إذا لم يكن هناك redirect، أرجعه كما هو
   if (!response.redirected) return response;
 
-  // إذا كان هناك redirect، نعيد بناء الرد لمسح العلامة
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -106,7 +106,7 @@ self.addEventListener('fetch', event => {
   // تجاهل الطلبات الخارجية
   if (requestURL.origin !== self.location.origin) return;
 
-  // البيانات المحلية
+  // 1. البيانات المحلية (data.json)
   if (requestURL.pathname === '/data.json') {
     event.respondWith((async () => {
       try {
@@ -128,29 +128,35 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // التخزين المحلي أولًا مع المعالجة النهائية لسفاري
+  // 2. استثناءات مهمة: لا تعترض طلبات النسخ الاحتياطي أو ملفات البيانات
+  if (
+    requestURL.pathname.endsWith('.json') ||
+    requestURL.pathname.endsWith('.txt') ||
+    requestURL.pathname.includes('backup') ||
+    requestURL.pathname.includes('export') ||
+    requestURL.pathname.includes('import')
+  ) {
+    return;
+  }
+
+  // 3. التخزين المحلي أولًا مع المعالجة النهائية لسفاري
   event.respondWith((async () => {
     try {
       const cachedResponse = await caches.match(request);
       if (cachedResponse) {
-        // نظف أي رد مخزن يحتوي على redirect
         return cleanResponse(cachedResponse);
       }
 
-      // جلب من الشبكة
       const networkResponse = await fetch(request);
 
-      // إذا كان الرد ناجحاً ولا يحتوي redirect، نخزنه
       if (networkResponse.status === 200 && !networkResponse.redirected && networkResponse.type === 'basic') {
         const cache = await caches.open(CACHE_NAME);
         await cache.put(request, networkResponse.clone());
       }
 
-      // في كل الحالات، نرجع الرد بعد تنظيفه
       return cleanResponse(networkResponse);
 
     } catch (err) {
-      // في حالة الفشل (انقطاع الشبكة)
       if (request.mode === 'navigate') {
         const home = await caches.match('/index.html');
         if (home) return cleanResponse(home);
