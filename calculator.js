@@ -703,6 +703,14 @@ document.addEventListener('DOMContentLoaded', function() {
       playClickSound();
 
       // إنشاء input مخفي لاختيار الملف
+      // ✅ تعريف المتغير المشترك بين زر 1 وزر 2
+    let backupLongPressTimer;
+
+    // ✅ زر 2: استرجاع النسخة من ملف
+    function restoreBackup() {
+      playClickSound();
+
+      // إنشاء input مخفي لاختيار الملف
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.accept = '.json,application/json';
@@ -740,7 +748,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             alert('✅ تم استرجاع البيانات بنجاح!\n🔄 سيتم تحديث الصفحة الآن لتطبيق التغييرات.');
 
-            // إعادة تحميل الصفحة لتطبيق البيانات الجديدة
             setTimeout(() => {
               window.location.reload();
             }, 1000);
@@ -752,9 +759,10 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsText(file);
       });
 
+      // ✅ مهم جداً: نضيف العنصر للصفحة قبل الضغط عليه
       document.body.appendChild(fileInput);
       fileInput.click();
-      document.body.removeChild(fileInput);
+      // نتركه في الصفحة حتى لا يفشل الـ click في سفاري
     }
 
     btn2.addEventListener('mousedown', () => {
