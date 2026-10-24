@@ -145,6 +145,18 @@ document.addEventListener('DOMContentLoaded', function() {
             <button id="closeBackupBtn">✖ إغلاق</button>
           </div>
         </div>
+
+        <!-- ✅ نافذة استرجاع النسخة الاحتياطية الجديدة -->
+        <div id="restoreModal" class="backup-modal" style="display:none;">
+          <h3>📥 استرجاع النسخة الاحتياطية</h3>
+          <p style="font-size:13px; color:#555; margin-bottom:10px;">اختر ملف النسخة الاحتياطية (JSON)</p>
+          <input type="file" id="restoreFileInput" accept=".json,application/json" 
+                 style="display:block; width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; background:#f9f9f9;">
+          <div class="modal-actions">
+            <button id="confirmRestoreBtn" style="background:#28a745; color:#fff;">✅ تأكيد الاسترجاع</button>
+            <button id="cancelRestoreBtn">✖ إلغاء</button>
+          </div>
+        </div>
     `;
 
     document.body.appendChild(calcTab);
@@ -699,73 +711,83 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('backupModal').style.display = 'none';
     });
 
-    // ✅ زر 2: استرجاع النسخة من ملف
-    function restoreBackup() {
+    // ✅ زر 2: فتح نافذة الاسترجاع
+    const restoreModal = document.getElementById('restoreModal');
+    const restoreFileInput = document.getElementById('restoreFileInput');
+    const confirmRestoreBtn = document.getElementById('confirmRestoreBtn');
+    const cancelRestoreBtn = document.getElementById('cancelRestoreBtn');
+
+    function openRestoreModal() {
       playClickSound();
-
-      // إنشاء input مخفي لاختيار الملف
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = '.json,application/json';
-      fileInput.style.display = 'none';
-
-      fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            const parsed = JSON.parse(event.target.result);
-
-            if (!parsed || typeof parsed !== 'object') {
-              throw new Error('الملف غير صالح');
-            }
-
-            // استرجاع سجل الحاسبة
-            if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
-              history = parsed.calculatorHistory;
-              localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
-              renderHistory();
-            }
-
-            // استرجاع بيانات الصندوق
-            if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
-              localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
-            }
-
-            // استرجاع بيانات أخرى إن وجدت
-            if (parsed.otherStore && Array.isArray(parsed.otherStore)) {
-              localStorage.setItem('otherStore', JSON.stringify(parsed.otherStore));
-            }
-
-            alert('✅ تم استرجاع البيانات بنجاح!\n🔄 سيتم تحديث الصفحة الآن لتطبيق التغييرات.');
-
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-
-          } catch (err) {
-            alert('❌ فشل في الاسترجاع: ' + err.message);
-          }
-        };
-        reader.readAsText(file);
-      });
-
-      // ✅ مهم جداً: نضيف العنصر للصفحة قبل الضغط عليه
-      document.body.appendChild(fileInput);
-      fileInput.click();
+      restoreFileInput.value = ''; // تصفير الملف المختار
+      restoreModal.style.display = 'block';
     }
 
     btn2.addEventListener('mousedown', () => {
-      backupLongPressTimer = setTimeout(restoreBackup, 800);
+      backupLongPressTimer = setTimeout(openRestoreModal, 800);
     });
     btn2.addEventListener('mouseup', () => clearTimeout(backupLongPressTimer));
     btn2.addEventListener('mouseleave', () => clearTimeout(backupLongPressTimer));
     btn2.addEventListener('touchstart', () => {
-      backupLongPressTimer = setTimeout(restoreBackup, 800);
+      backupLongPressTimer = setTimeout(openRestoreModal, 800);
     }, { passive: true });
     btn2.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
+
+    // زر التأكيد: قراءة الملف واسترجاع البيانات
+    confirmRestoreBtn.addEventListener('click', () => {
+      const file = restoreFileInput.files[0];
+      if (!file) {
+        alert('⚠️ الرجاء اختيار ملف النسخة الاحتياطية أولاً.');
+        return;
+      }
+      playClickSound();
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+
+          if (!parsed || typeof parsed !== 'object') {
+            throw new Error('الملف غير صالح');
+          }
+
+          // استرجاع سجل الحاسبة
+          if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
+            history = parsed.calculatorHistory;
+            localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
+            renderHistory();
+          }
+
+          // استرجاع بيانات الصندوق
+          if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
+            localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
+          }
+
+          // استرجاع بيانات أخرى إن وجدت
+          if (parsed.otherStore && Array.isArray(parsed.otherStore)) {
+            localStorage.setItem('otherStore', JSON.stringify(parsed.otherStore));
+          }
+
+          restoreModal.style.display = 'none';
+          alert('✅ تم استرجاع البيانات بنجاح!\n🔄 سيتم تحديث الصفحة الآن لتطبيق التغييرات.');
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+
+        } catch (err) {
+          alert('❌ فشل في الاسترجاع: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // زر الإلغاء
+    cancelRestoreBtn.addEventListener('click', () => {
+      playClickSound();
+      restoreModal.style.display = 'none';
+      restoreFileInput.value = '';
+    });
 
     function addToHistory(calculation, result) {
         history.unshift({
