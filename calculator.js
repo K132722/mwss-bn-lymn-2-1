@@ -795,7 +795,7 @@ document.addEventListener('DOMContentLoaded', function() {
             result: result,
             timestamp: new Date().toLocaleString('ar-EG')
         });
-        if (history.length > 100) history.pop();
+        if (history.length >250) history.pop();
         localStorage.setItem('calculatorHistory', JSON.stringify(history));
         renderHistory();
     }
