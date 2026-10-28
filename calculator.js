@@ -19,6 +19,46 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentExpr = '';      // التعبير الجاري إدخاله في الشاشة الحالية
 
     // ==========================================
+    // 🎨 إعدادات الخطوط الافتراضية
+    // ==========================================
+    let fontSettings = {
+        buttons: { family: "'Input1', sans-serif", size: "30px" },
+        display: { family: "'Input1', sans-serif", size: "22px" },
+        result: { family: "'Input', sans-serif", size: "23px" }
+    };
+
+    // تحميل الإعدادات المحفوظة إن وجدت
+    if (localStorage.getItem('calcFontSettings')) {
+        try {
+            fontSettings = JSON.parse(localStorage.getItem('calcFontSettings'));
+        } catch(e) { console.log("خطأ في تحميل الإعدادات"); }
+    }
+
+    // دالة تطبيق الخطوط على العناصر
+    function applyFontSettings() {
+        // 1. الأزرار
+        document.querySelectorAll('.calc-button').forEach(btn => {
+            btn.style.fontFamily = fontSettings.buttons.family;
+            btn.style.fontSize = fontSettings.buttons.size;
+        });
+
+        // 2. شاشة الإدخال
+        document.querySelectorAll('.screen-display').forEach(disp => {
+            disp.style.fontFamily = fontSettings.display.family;
+            disp.style.fontSize = fontSettings.display.size;
+        });
+
+        // 3. شاشة النتيجة
+        document.querySelectorAll('.screen-result').forEach(res => {
+            res.style.fontFamily = fontSettings.result.family;
+            res.style.fontSize = fontSettings.result.size;
+        });
+
+        // حفظ الإعدادات
+        localStorage.setItem('calcFontSettings', JSON.stringify(fontSettings));
+    }
+
+    // ==========================================
     // 🔊 دالة توليد صوت نقرة الأزرار (Web Audio API)
     // ==========================================
     function playClickSound() {
@@ -47,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 🔢 دالة تنسيق الأرقام بمسافات (كل 3 أرقام)
     // ==========================================
     function formatNumbersInExpression(expr) {
-        // نستخدم التعبير النمطي للبحث عن الأرقام وتنسيقها بمسافات دون التأثير على العمليات الحسابية
         return expr.replace(/\d+(\.\d+)?/g, function(match) {
             let parts = match.split('.');
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
@@ -146,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         </div>
 
-        <!-- ✅ نافذة استرجاع النسخة الاحتياطية الجديدة -->
+        <!-- ✅ نافذة استرجاع النسخة الاحتياطية -->
         <div id="restoreModal" class="backup-modal" style="display:none;">
           <h3>📥 استرجاع النسخة الاحتياطية</h3>
           <p style="font-size:13px; color:#555; margin-bottom:10px;">اختر ملف النسخة الاحتياطية (JSON)</p>
@@ -156,6 +195,58 @@ document.addEventListener('DOMContentLoaded', function() {
             <button id="confirmRestoreBtn" style="background:#28a745; color:#fff;">✅ تأكيد الاسترجاع</button>
             <button id="cancelRestoreBtn">✖ إلغاء</button>
           </div>
+        </div>
+
+        <!-- ✅ نافذة إعدادات الخطوط الجديدة -->
+        <div id="fontSettingsModal" class="backup-modal" style="display:none; direction: rtl;">
+            <h3>🎨 إعدادات المظهر والخطوط</h3>
+            
+            <div class="settings-group">
+                <label>🔢 خط أزرار الحاسبة</label>
+                <select id="fontButtonsSelect" style="width:100%; padding:5px; margin-bottom:5px; background:#222; color:#fff; border:1px solid #555;">
+                    <option value="'Input1', sans-serif">Input1 (RobotoMono)</option>
+                    <option value="'Input', sans-serif">Input (DSEG7)</option>
+                    <option value="'InterLocal', sans-serif">InterLocal</option>
+                    <option value="'Tajawal', sans-serif">Tajawal</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                </select>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="range" id="sizeButtons" min="12" max="60" style="flex:1;"> <span id="sizeButtonsVal" style="width:40px; text-align:center;">30px</span>
+                </div>
+            </div>
+
+            <div class="settings-group" style="margin-top:15px;">
+                <label>📝 خط أرقام الإدخال (العمليات)</label>
+                <select id="fontDisplaySelect" style="width:100%; padding:5px; margin-bottom:5px; background:#222; color:#fff; border:1px solid #555;">
+                    <option value="'Input1', sans-serif">Input1 (RobotoMono)</option>
+                    <option value="'Input', sans-serif">Input (DSEG7)</option>
+                    <option value="'InterLocal', sans-serif">InterLocal</option>
+                    <option value="'Tajawal', sans-serif">Tajawal</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                </select>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="range" id="sizeDisplay" min="12" max="50" style="flex:1;"> <span id="sizeDisplayVal" style="width:40px; text-align:center;">22px</span>
+                </div>
+            </div>
+
+            <div class="settings-group" style="margin-top:15px;">
+                <label>📊 خط أرقام النتيجة</label>
+                <select id="fontResultSelect" style="width:100%; padding:5px; margin-bottom:5px; background:#222; color:#fff; border:1px solid #555;">
+                    <option value="'Input1'">Input1 (RobotoMono)</option>
+                    <option value="'Input'">Input (DSEG7)</option>
+                    <option value="'InterLocal'">InterLocal</option>
+                    <option value="'Tajawal'">Tajawal</option>
+                    <option value="Arial">Arial</option>
+                </select>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="range" id="sizeResult" min="12" max="50" style="flex:1;"> <span id="sizeResultVal" style="width:40px; text-align:center;">23px</span>
+                </div>
+            </div>
+            
+            <div class="modal-actions" style="margin-top:20px;">
+                <button id="saveFontSettings" style="background:#28a745; color:#fff;">💾 حفظ وإغلاق</button>
+                <button id="cancelFontSettings">✖ إلغاء</button>
+            </div>
         </div>
     `;
 
@@ -178,6 +269,10 @@ document.addEventListener('DOMContentLoaded', function() {
     createNewScreen();
     loadHistory();
     setupScrollControls();
+    
+    // تطبيق الخطوط فور التحميل
+    applyFontSettings();
+    setupFontSettingsUI();
 
     calcTab.addEventListener('mousedown', startDrag);
     calcTab.addEventListener('touchstart', startDrag, { passive: false });
@@ -293,24 +388,21 @@ document.addEventListener('DOMContentLoaded', function() {
         caretPos = 0;
         renderDisplay();
         scrollToBottom();
+        applyFontSettings(); // تطبيق الخطوط على الشاشة الجديدة
     }
 
-    // دالة رسم الشاشة المعدلة لتقوم بإدراج المسافات بشكل مرئي للمستخدم
+    // دالة رسم الشاشة المعدلة
     function renderDisplay() {
         screens.forEach(screen => {
             const disp = screen.displayElem;
             const isActive = (screen === activeScreen);
             
-            // نجلب النص الصافي المخزن في الخلفية
             let expr = isActive ? currentExpr : disp.textContent.replace(/×/g, '*').replace(/÷/g, '/');
-            
-            // نقوم بتنسيق الأرقام وإضافة المسافات فيها بشكل مؤقت للعرض فقط
             let formattedExpr = formatNumbersInExpression(expr);
             
             disp.innerHTML = '';
             const chars = formattedExpr.split('');
             
-            // حساب موضع المؤشر الذكي مع وجود المسافات الجديدة
             let extraSpacesBeforeCaret = 0;
             if (isActive) {
                 let subExprBeforeCaret = currentExpr.slice(0, caretPos);
@@ -329,9 +421,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const ch = chars[i] === '*' ? '×' : chars[i] === '/' ? '÷' : chars[i];
                     const span = document.createElement('span');
                     span.textContent = ch;
-                    // إذا كان الحرف عبارة عن مسافة تنسيقية نعطيها كلاس خاص إذا رغبت بالتحكم في حجمها عبر الـ CSS
+                    
                     if (ch === ' ') {
                         span.className = 'number-space-separator';
+                    } else {
+                        // إجبار الخط على الظهور من الإعدادات المحفوظة
+                        span.style.fontFamily = fontSettings.display.family;
                     }
                     disp.appendChild(span);
                 }
@@ -368,7 +463,6 @@ document.addEventListener('DOMContentLoaded', function() {
         temp.style.whiteSpace = 'nowrap';
         temp.style.font = window.getComputedStyle(disp).font;
 
-        // نقوم بحساب مكان الضغط بالنسبة للنص المنسق بالمسافات
         let formattedExpr = formatNumbersInExpression(currentExpr);
 
         for (let i = 0; i <= formattedExpr.length; i++) {
@@ -392,13 +486,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!found) pos = formattedExpr.length;
         
-        // تحويل موضع المؤشر من النص الذي يحتوي مسافات إلى موقعه الحقيقي في السلسلة الأصلية
         let cleanPos = 0;
-        let spacesCount = 0;
         for (let i = 0; i < pos; i++) {
-            if (formattedExpr[i] === ' ') {
-                spacesCount++;
-            } else {
+            if (formattedExpr[i] !== ' ') {
                 cleanPos++;
             }
         }
@@ -447,12 +537,10 @@ document.addEventListener('DOMContentLoaded', function() {
         lastClearTime = now;
     };
 
-    // حساب النتيجة وتنسيق الرقم الناتج بالمسافات لراحة العين
     function calculateResult() {
         try {
             const res = eval(currentExpr);
             if (res !== undefined && res !== null) {
-                // تحويل النتيجة لنص وتنسيق خانات الألوف والملايين فيها بمسافات
                 activeScreen.resultElem.textContent = formatNumbersInExpression(res.toString());
             } else {
                 activeScreen.resultElem.textContent = '';
@@ -485,7 +573,6 @@ document.addEventListener('DOMContentLoaded', function() {
         playClickSound(); 
         if (screens.length >= 2) {
             const lastScreen = screens[screens.length - 2];
-            // نسحب النتيجة الصافية بدون مسافات للعقدة الحسابية
             const lastResult = lastScreen.resultElem.textContent.replace(/ /g, '');
             if (lastResult !== '') {
                 currentExpr = currentExpr.slice(0, caretPos) + lastResult + currentExpr.slice(caretPos);
@@ -501,38 +588,32 @@ document.addEventListener('DOMContentLoaded', function() {
         .find(btn => btn.textContent.trim() === 'Ans');
 
     let ansLongPressTimer;
-    ansButton.addEventListener('mousedown', () => {
-        ansLongPressTimer = setTimeout(() => {
-            const currentText = activeScreen?.displayElem?.textContent?.trim().replace(/ /g, '');
-            if (currentText === '11') {
-                window.location.href = 'box.html';
-            }
-           else if (currentText === '22') {
-                window.location.href = 'hh.html';
-            }
-           else if (currentText === '33') {
-                window.location.href = 'jj.html';
-            }
-        }, 800);
-    });
+    
+    // حدث الضغط المطول لـ Ans
+    function handleAnsLongPress() {
+        const currentText = activeScreen?.displayElem?.textContent?.trim().replace(/ /g, '');
+        if (currentText === '000') {
+            openFontSettings();
+        }
+        else if (currentText === '11') {
+            window.location.href = 'box.html';
+        }
+        else if (currentText === '22') {
+            window.location.href = 'hh.html';
+        }
+        else if (currentText === '33') {
+            window.location.href = 'jj.html';
+        }
+    }
 
+    ansButton.addEventListener('mousedown', () => {
+        ansLongPressTimer = setTimeout(handleAnsLongPress, 800);
+    });
     ansButton.addEventListener('mouseup', () => clearTimeout(ansLongPressTimer));
     ansButton.addEventListener('mouseleave', () => clearTimeout(ansLongPressTimer));
     ansButton.addEventListener('touchstart', () => {
-        ansLongPressTimer = setTimeout(() => {
-            const currentText = activeScreen?.displayElem?.textContent?.trim().replace(/ /g, '');
-            if (currentText === '11') {
-                window.location.href = 'box.html';
-            }
-          else if (currentText === '22') {
-                window.location.href = 'hh.html';
-            }
-          else if (currentText === '33') {
-                window.location.href = 'jj.html';
-            }
-        }, 800);
+        ansLongPressTimer = setTimeout(handleAnsLongPress, 800);
     }, { passive: true });
-
     ansButton.addEventListener('touchend', () => clearTimeout(ansLongPressTimer));
 
     window.moveCaret = function(direction) {
@@ -654,10 +735,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const btn1 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '1');
     const btn2 = Array.from(document.querySelectorAll('.calc-button')).find(btn => btn.textContent.trim() === '2');
 
-    // ✅ تعريف واحد فقط للمتغير
     let backupLongPressTimer;
 
-    // ✅ زر 1: تحميل ملف النسخة الاحتياطية
     function downloadBackup() {
       playClickSound();
       try {
@@ -668,7 +747,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const backup = {
           calculatorHistory: JSON.parse(calcData),
           abujarrahBoxData: JSON.parse(boxData),
-          otherStore: JSON.parse(otherData)
+          otherStore: JSON.parse(otherData),
+          calcFontSettings: JSON.parse(localStorage.getItem('calcFontSettings') || '{}') // إضافة إعدادات الخطوط للنسخة الاحتياطية
         };
 
         const backupString = JSON.stringify(backup, null, 2);
@@ -711,7 +791,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('backupModal').style.display = 'none';
     });
 
-    // ✅ زر 2: فتح نافذة الاسترجاع
     const restoreModal = document.getElementById('restoreModal');
     const restoreFileInput = document.getElementById('restoreFileInput');
     const confirmRestoreBtn = document.getElementById('confirmRestoreBtn');
@@ -719,7 +798,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openRestoreModal() {
       playClickSound();
-      restoreFileInput.value = ''; // تصفير الملف المختار
+      restoreFileInput.value = '';
       restoreModal.style.display = 'block';
     }
 
@@ -733,7 +812,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
     btn2.addEventListener('touchend', () => clearTimeout(backupLongPressTimer));
 
-    // زر التأكيد: قراءة الملف واسترجاع البيانات
     confirmRestoreBtn.addEventListener('click', () => {
       const file = restoreFileInput.files[0];
       if (!file) {
@@ -751,21 +829,23 @@ document.addEventListener('DOMContentLoaded', function() {
             throw new Error('الملف غير صالح');
           }
 
-          // استرجاع سجل الحاسبة
           if (parsed.calculatorHistory && Array.isArray(parsed.calculatorHistory)) {
             history = parsed.calculatorHistory;
             localStorage.setItem('calculatorHistory', JSON.stringify(parsed.calculatorHistory));
             renderHistory();
           }
 
-          // استرجاع بيانات الصندوق
           if (parsed.abujarrahBoxData && typeof parsed.abujarrahBoxData === 'object') {
             localStorage.setItem('abujarrahBoxData', JSON.stringify(parsed.abujarrahBoxData));
           }
 
-          // استرجاع بيانات أخرى إن وجدت
           if (parsed.otherStore && Array.isArray(parsed.otherStore)) {
             localStorage.setItem('otherStore', JSON.stringify(parsed.otherStore));
+          }
+          
+          // استرجاع إعدادات الخطوط إن وجدت
+          if (parsed.calcFontSettings && typeof parsed.calcFontSettings === 'object') {
+            localStorage.setItem('calcFontSettings', JSON.stringify(parsed.calcFontSettings));
           }
 
           restoreModal.style.display = 'none';
@@ -782,7 +862,6 @@ document.addEventListener('DOMContentLoaded', function() {
       reader.readAsText(file);
     });
 
-    // زر الإلغاء
     cancelRestoreBtn.addEventListener('click', () => {
       playClickSound();
       restoreModal.style.display = 'none';
@@ -815,7 +894,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemElement = document.createElement('div');
             itemElement.className = 'history-item';
             
-            // ننسق العمليات والنتائج المخزنة في الأرشيف أيضاً لتظهر بمسافات مريحة
             let formattedCalc = formatNumbersInExpression(item.calculation).replace(/\*/g, '×').replace(/\//g, '÷');
             let formattedRes = formatNumbersInExpression(item.result.toString());
 
@@ -904,5 +982,66 @@ document.addEventListener('DOMContentLoaded', function() {
     function removeOverlay() {
         const overlay = document.getElementById('calcOverlay');
         if (overlay) overlay.remove();
+    }
+
+    // ==========================================
+    // 🎨 دوال واجهة إعدادات الخطوط
+    // ==========================================
+    function setupFontSettingsUI() {
+        const fontModal = document.getElementById('fontSettingsModal');
+        const btnSel = document.getElementById('fontButtonsSelect');
+        const dispSel = document.getElementById('fontDisplaySelect');
+        const resSel = document.getElementById('fontResultSelect');
+        
+        const btnSize = document.getElementById('sizeButtons');
+        const dispSize = document.getElementById('sizeDisplay');
+        const resSize = document.getElementById('sizeResult');
+
+        // دالة تحديث القيم المعروضة في الواجهة لتطابق المحفوظ
+        function syncUI() {
+            btnSel.value = fontSettings.buttons.family;
+            dispSel.value = fontSettings.display.family;
+            resSel.value = fontSettings.result.family;
+            
+            btnSize.value = parseInt(fontSettings.buttons.size) || 30;
+            dispSize.value = parseInt(fontSettings.display.size) || 22;
+            resSize.value = parseInt(fontSettings.result.size) || 23;
+            
+            document.getElementById('sizeButtonsVal').textContent = fontSettings.buttons.size;
+            document.getElementById('sizeDisplayVal').textContent = fontSettings.display.size;
+            document.getElementById('sizeResultVal').textContent = fontSettings.result.size;
+        }
+
+        // ربط أحداث التغيير لتحديث الشاشة مباشرة
+        btnSel.onchange = () => { fontSettings.buttons.family = btnSel.value; applyFontSettings(); };
+        dispSel.onchange = () => { fontSettings.display.family = dispSel.value; applyFontSettings(); renderDisplay(); };
+        resSel.onchange = () => { fontSettings.result.family = resSel.value; applyFontSettings(); };
+
+        btnSize.oninput = () => { fontSettings.buttons.size = btnSize.value + 'px'; document.getElementById('sizeButtonsVal').textContent = fontSettings.buttons.size; applyFontSettings(); };
+        dispSize.oninput = () => { fontSettings.display.size = dispSize.value + 'px'; document.getElementById('sizeDisplayVal').textContent = fontSettings.display.size; applyFontSettings(); renderDisplay(); };
+        resSize.oninput = () => { fontSettings.result.size = resSize.value + 'px'; document.getElementById('sizeResultVal').textContent = fontSettings.result.size; applyFontSettings(); };
+
+        // أزرار الحفظ والإلغاء
+        document.getElementById('saveFontSettings').onclick = () => {
+            playClickSound();
+            fontModal.style.display = 'none';
+        };
+
+        document.getElementById('cancelFontSettings').onclick = () => {
+            playClickSound();
+            fontModal.style.display = 'none';
+            // استرجاع القيم القديمة من الذاكرة إذا ألغى المستخدم
+            if (localStorage.getItem('calcFontSettings')) {
+                fontSettings = JSON.parse(localStorage.getItem('calcFontSettings'));
+                applyFontSettings();
+                renderDisplay();
+            }
+        };
+
+        window.openFontSettings = function() {
+            playClickSound();
+            syncUI();
+            fontModal.style.display = 'block';
+        };
     }
 });

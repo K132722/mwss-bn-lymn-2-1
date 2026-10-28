@@ -6,6 +6,23 @@
     font-weight: 700;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Input';
+    src: url('DSEG7Classic-Bold.ttf') format('truetype'); /* تأكد من مطابقة الحروف الكبيرة والصغيرة للاسم */
+    font-weight: 700;
+    font-style: normal;
+    font-style: normal; font-display: swap;
+
+}
+
+@font-face {
+    font-family: 'Input1';
+    src: url('wHLSy3TKEvkCF.ttf') format('truetype'); /* تأكد من مطابقة الحروف الكبيرة والصغيرة للاسم */
+    font-weight: 700;
+    font-style: normal;
+    font-style: normal; font-display: swap;
+
+}
 
 :root {
     --primary-dark: #0a1423;
@@ -264,8 +281,8 @@
     min-width: 100%;
     padding-right: 10px;
     box-sizing: border-box;
-    font-family:monospace;
- font-weight: 600;
+    font-family:'Input1';
+ font-weight: 700;
 }
 
 /* مؤشر الكتابة الوهمي */
@@ -297,7 +314,7 @@
     padding-right: 5px;
     user-select: text;
     font-weight: 700;
-    font-family: 'InterLocal', sans-serif; /* ربط مباشر بالخط المحلي */
+    font-family: 'Input'; /* ربط مباشر بالخط المحلي */
 }
 
 
@@ -315,6 +332,7 @@
     gap: 8px;
     margin-top: 0px;
     margin-bottom: 20px;
+ 
 }
 
 .calc-button {
@@ -338,6 +356,7 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+font-family: 'Input1';
 }
 
 .calc-button:hover {
@@ -652,8 +671,33 @@ fraction {
 }
 /* التحكم في فراغ أرقام النتيجة بالبكسل */
 .number-space-separator {
-    letter-spacing: -6px; /* يمكنك تعديل القيمة لتكبير أو تصغير الفراغ حسب ذوقك */
+    letter-spacing: 3px; /* يمكنك تعديل القيمة لتكبير أو تصغير الفراغ حسب ذوقك */
     display: inline-block;
     width: 3px; /* التحكم بعرض المسافة بالبكسل */
 }
 
+/* ===== أنماط إضافية لواجهة إعدادات الخطوط الجديدة ===== */
+.settings-group {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}
+
+.settings-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.settings-group select {
+    border-radius: 5px;
+    outline: none;
+    font-family: inherit;
+}
+
+.settings-group input[type="range"] {
+    accent-color: #4CAF50;
+    cursor: pointer;
+}
