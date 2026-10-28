@@ -51,7 +51,7 @@ const APP_SHELL = [
   '/fa-solid-900.ttf',
   '/fa-regular-400.ttf',
   '/RobotoMono[wght].ttf',
-  '/wHLSy3TKEvkCF.ttf',
+  '/DSEG7Classic-Bold.ttf',
   '/fa-brands-400.ttf'
 ];
 
