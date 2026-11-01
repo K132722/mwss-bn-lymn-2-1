@@ -1,5 +1,5 @@
 // ==========================================
-// مركز الذكاء الاصطناعي - ai.js (آمن تماماً لـ GitHub)
+// مركز الذكاء الاصطناعي - ai.js (مصحح وشغال تماماً)
 // ==========================================
 
 let selectedBase64Image = null;
@@ -121,7 +121,7 @@ async function sendToAI() {
         document.querySelector('.bot-temp').remove();
         appendMessage(response.text, 'bot');
 
-    }чы catch (err) {
+    } catch (err) {
         console.error(err);
         const temp = document.querySelector('.bot-temp');
         if(temp) temp.remove();
