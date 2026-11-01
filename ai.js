@@ -1,11 +1,20 @@
 // ==========================================
-// مركز الذكاء الاصطناعي - ai.js (محدث لمفاتيح AQ)
+// مركز الذكاء الاصطناعي - ai.js (آمن تماماً لـ GitHub)
 // ==========================================
 
 let selectedBase64Image = null;
 
 // حقن واجهة الشات تلقائياً في الصفحة بمجرد تحميلها
 document.addEventListener("DOMContentLoaded", function() {
+    // حقن مكتبة جوجل الرسمية (Google Gen AI SDK)
+    if (!document.getElementById('google-genai-sdk')) {
+        const script = document.createElement('script');
+        script.id = 'google-genai-sdk';
+        script.src = "https://esm.run/@google/genai";
+        script.type = "module";
+        document.head.appendChild(script);
+    }
+
     const widgetHTML = `
         <button id="aiToggleBtn" onclick="toggleAIChat()">🤖</button>
         <div id="aiChatBox" class="ai-modal" style="display: none;">
@@ -44,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML('beforeend', widgetHTML);
 });
 
-// دالة الفتح والإغلاق مع طلب المفتاح عند الضغط لأول مرة
+// طلب المفتاح سراً عند الضغط لأول مرة وحفظه في المتصفح
 function toggleAIChat() {
     let apiKey = localStorage.getItem("my_gemini_key");
     
@@ -87,11 +96,11 @@ async function sendToAI() {
     appendMessage(text || "📷 [مرفق صورة]", 'user');
     inputEl.value = '';
 
-    const parts = [];
-    if (text) parts.push({ text: text });
+    const contents = [];
+    if (text) contents.push(text);
     if (selectedBase64Image) {
-        parts.push({
-            inline_data: { mime_type: "image/jpeg", data: selectedBase64Image }
+        contents.push({
+            inlineData: { mimeType: "image/jpeg", data: selectedBase64Image }
         });
     }
 
@@ -101,31 +110,22 @@ async function sendToAI() {
     const currentApiKey = localStorage.getItem("my_gemini_key");
 
     try {
-        // تم تحديث طريقة الاتصال لتناسب مفاتيح المصادقة الحديثة
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentApiKey}`
-            },
-            body: JSON.stringify({ contents: [{ parts: parts }] })
+        const { GoogleGenAI } = await import("https://esm.run/@google/genai");
+        const ai = new GoogleGenAI({ apiKey: currentApiKey });
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: contents,
         });
 
-        const data = await response.json();
-        
-        if (data.candidates && data.candidates[0].content) {
-            const reply = data.candidates[0].content.parts[0].text;
-            document.querySelector('.bot-temp').remove();
-            appendMessage(reply, 'bot');
-        } else {
-            document.querySelector('.bot-temp').remove();
-            appendMessage("تأكد أن مفتاح الـ API صحيح وصالح.", 'bot');
-        }
+        document.querySelector('.bot-temp').remove();
+        appendMessage(response.text, 'bot');
 
-    } catch (err) {
+    }чы catch (err) {
+        console.error(err);
         const temp = document.querySelector('.bot-temp');
         if(temp) temp.remove();
-        appendMessage("حدث خطأ في الاتصال بالذكاء الاصطناعي.", 'bot');
+        appendMessage("حدث خطأ، تأكد أن المفتاح المدخل صحيح.", 'bot');
     }
 }
 
