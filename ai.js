@@ -112,7 +112,7 @@ async function sendToAI() {
                 'Authorization': `Bearer ${currentApiKey}`
             },
                         body: JSON.stringify({
-               model: "llama-3.1-8b-instant", // عدلها إلى هذا الاسم
+               model: "llama-3.3-70b-versatile", // عدلها إلى هذا الاسم
                 messages: messages
             })
 
