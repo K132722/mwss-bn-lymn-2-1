@@ -1,5 +1,5 @@
 // ==========================================
-// مركز الذكاء الاصطناعي - ai.js (يطلب المفتاح عند الضغط فقط)
+// مركز الذكاء الاصطناعي - ai.js (محدث لمفاتيح AQ)
 // ==========================================
 
 let selectedBase64Image = null;
@@ -44,17 +44,16 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML('beforeend', widgetHTML);
 });
 
-// دالة الفتح والإغلاق مع التحقق من المفتاح عند الضغط لأول مرة
+// دالة الفتح والإغلاق مع طلب المفتاح عند الضغط لأول مرة
 function toggleAIChat() {
     let apiKey = localStorage.getItem("my_gemini_key");
     
-    // إذا لم يكن المفتاح موجوداً، يطلبه منه عند الضغط فقط
     if (!apiKey) {
         apiKey = prompt("أدخل مفتاح Gemini API الخاص بك لأول مرة فقط:");
         if (apiKey && apiKey.trim() !== "") {
             localStorage.setItem("my_gemini_key", apiKey.trim());
         } else {
-            return; // إذا ضغط إلغاء لن يفتح النافذة
+            return;
         }
     }
 
@@ -99,19 +98,21 @@ async function sendToAI() {
     removeImage();
     appendMessage("جاري التفكير...", 'bot-temp');
 
-    // سحب المفتاح وقت الإرسال من الذاكرة المحلية
     const currentApiKey = localStorage.getItem("my_gemini_key");
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${currentApiKey}`, {
+        // تم تحديث طريقة الاتصال لتناسب مفاتيح المصادقة الحديثة
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentApiKey}`
+            },
             body: JSON.stringify({ contents: [{ parts: parts }] })
         });
 
         const data = await response.json();
         
-        // التحقق من وجود الرد بشكل سليم
         if (data.candidates && data.candidates[0].content) {
             const reply = data.candidates[0].content.parts[0].text;
             document.querySelector('.bot-temp').remove();
