@@ -1,29 +1,20 @@
 // ==========================================
-// مركز الذكاء الاصطناعي - ai.js (مصحح وشغال تماماً)
+// مركز الذكاء الاصطناعي - ai.js (مخصص لمنصة Groq السريعة)
 // ==========================================
 
 let selectedBase64Image = null;
 
 // حقن واجهة الشات تلقائياً في الصفحة بمجرد تحميلها
 document.addEventListener("DOMContentLoaded", function() {
-    // حقن مكتبة جوجل الرسمية (Google Gen AI SDK)
-    if (!document.getElementById('google-genai-sdk')) {
-        const script = document.createElement('script');
-        script.id = 'google-genai-sdk';
-        script.src = "https://esm.run/@google/genai";
-        script.type = "module";
-        document.head.appendChild(script);
-    }
-
     const widgetHTML = `
         <button id="aiToggleBtn" onclick="toggleAIChat()">🤖</button>
         <div id="aiChatBox" class="ai-modal" style="display: none;">
             <div class="ai-header">
-                <span>🤖 المساعد الذكي (Gemini)</span>
+                <span>🤖 المساعد الذكي (Groq AI)</span>
                 <button onclick="toggleAIChat()" class="close-btn">✕</button>
             </div>
             <div class="ai-body" id="chatHistory">
-                <div class="ai-msg bot">مرحباً أبا جراح! كيف أستطيع مساعدتك في الحسابات أو قراءة الفواتير اليوم؟</div>
+                <div class="ai-msg bot">مرحباً أبا جراح! جاهز لمساعدتك في الحسابات وقراءة الفواتير.</div>
             </div>
             <div id="imagePreviewContainer" style="display:none; padding: 5px; text-align: center;">
                 <img id="imagePreview" src="" style="max-height: 80px; border-radius: 6px;">
@@ -53,14 +44,14 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML('beforeend', widgetHTML);
 });
 
-// طلب المفتاح سراً عند الضغط لأول مرة وحفظه في المتصفح
+// طلب المفتاح وحفظه في ذاكرة المتصفح محلياً لأمان GitHub
 function toggleAIChat() {
-    let apiKey = localStorage.getItem("my_gemini_key");
+    let apiKey = localStorage.getItem("groq_api_key");
     
     if (!apiKey) {
-        apiKey = prompt("أدخل مفتاح Gemini API الخاص بك لأول مرة فقط:");
+        apiKey = prompt("أدخل مفتاح Groq API الخاص بك (يبدأ بـ gsk_):");
         if (apiKey && apiKey.trim() !== "") {
-            localStorage.setItem("my_gemini_key", apiKey.trim());
+            localStorage.setItem("groq_api_key", apiKey.trim());
         } else {
             return;
         }
@@ -96,36 +87,54 @@ async function sendToAI() {
     appendMessage(text || "📷 [مرفق صورة]", 'user');
     inputEl.value = '';
 
-    const contents = [];
-    if (text) contents.push(text);
+    const messages = [];
+    let contentParts = [];
+    if (text) contentParts.push({ type: "text", text: text });
     if (selectedBase64Image) {
-        contents.push({
-            inlineData: { mimeType: "image/jpeg", data: selectedBase64Image }
+        contentParts.push({
+            type: "image_url",
+            image_url: { url: `data:image/jpeg;base64,${selectedBase64Image}` }
         });
     }
+
+    messages.push({ role: "user", content: contentParts.length === 1 && contentParts[0].type === "text" ? text : contentParts });
 
     removeImage();
     appendMessage("جاري التفكير...", 'bot-temp');
 
-    const currentApiKey = localStorage.getItem("my_gemini_key");
+    const currentApiKey = localStorage.getItem("groq_api_key");
 
     try {
-        const { GoogleGenAI } = await import("https://esm.run/@google/genai");
-        const ai = new GoogleGenAI({ apiKey: currentApiKey });
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentApiKey}`
+            },
+                        body: JSON.stringify({
+               model: "llama-3.1-8b-instant", // عدلها إلى هذا الاسم
+                messages: messages
+            })
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: contents,
+
         });
 
+        const data = await response.json();
+        
         document.querySelector('.bot-temp').remove();
-        appendMessage(response.text, 'bot');
+        
+        if (data.choices && data.choices[0].message) {
+            appendMessage(data.choices[0].message.content, 'bot');
+        } else if (data.error) {
+            appendMessage("خطأ من الخادم: " + (data.error.message || "تأكد من صحة المفتاح."), 'bot');
+        } else {
+            appendMessage("لم يتم استلام رد صحيح.", 'bot');
+        }
 
     } catch (err) {
-        console.error(err);
         const temp = document.querySelector('.bot-temp');
         if(temp) temp.remove();
-        appendMessage("حدث خطأ، تأكد أن المفتاح المدخل صحيح.", 'bot');
+        appendMessage("حدث خطأ في الاتصال بالشبكة.", 'bot');
     }
 }
 
