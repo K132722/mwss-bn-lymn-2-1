@@ -863,6 +863,44 @@ justify-content: center;
             100% { box-shadow: 0 0 8px rgba(76, 161, 175, 0.4); }
         }
 
+    
+        /* نسب المقاسات (للعرض داخل الصفحة فقط) */
+        #rodsPercentBox {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+        .pct-title {
+            text-align: center;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .pct-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .pct-label { width: 38%; text-align: right; white-space: nowrap; }
+        .pct-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .pct-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--highlight));
+            border-radius: 4px;
+        }
+        .pct-value { width: 52px; text-align: left; direction: ltr; font-weight: bold; color: #97C09A; }
     </style>
     <link href="tajawal.css" rel="stylesheet">
 
@@ -990,6 +1028,9 @@ justify-content: center;
             <div class="price-note" id="rodsNote"></div>
         </div>
 
+        <!-- نسب المقاسات: للعرض داخل الصفحة فقط (خارج حاوية النتائج فلا تُنسخ ولا تُطبع) -->
+        <div id="rodsPercentBox"></div>
+
 <div class="smart-input-dialog" id="smartInputDialog">
     <div class="smart-input-box">
         <h3>🧠 الإدخال الذكي والسريع</h3>
@@ -1076,6 +1117,7 @@ const steelDataExtended = {
         let customItems = [];
         let wireItems = [];
         let inventoryMode = false;
+        let pctEntries = [];   // بيانات نسب المقاسات (للعرض فقط)
         // تحت السطور اللي فيها:
         // let customItems = [];
         // let wireItems = [];
@@ -1281,6 +1323,7 @@ const steelDataExtended = {
             const sizes = ['20', '18', '16', '14', '12', '10', '8'];
             const resultBody = document.getElementById('rodsResultBody');
             resultBody.innerHTML = '';
+            pctEntries = [];
 
             // حساب الأسياخ الأساسية
             let hasBasicItems = false;
@@ -1299,6 +1342,7 @@ const steelDataExtended = {
                     totalWeight += weightInTon;
                     basicSum += totalPriceItem;
                     basicWeight += weightInTon;
+                    pctEntries.push({ label: size + ' ملم', weight: weightInTon });
 
                     const displayedSize = window.inputIsArabic ? toArabicDigits(size) : size;
                     const displayedCount = window.inputIsArabic ? toArabicDigits(count) : count;
@@ -1336,6 +1380,7 @@ const steelDataExtended = {
                 totalWeight += weightInTon;
                 gr60Sum += totalPriceItem;
                 gr60Weight += weightInTon;
+                pctEntries.push({ label: item.size + ' ملم جريد ٦٠', weight: weightInTon });
 
                 const displayedSize = window.inputIsArabic ? toArabicDigits(item.size) : item.size;
                 const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
@@ -1457,6 +1502,7 @@ document.getElementById('rodsNote').innerText = priceNote;
             localStorage.setItem('savedRodsResult', resultHtml);
             localStorage.setItem('showRodsResult', 'true');
             localStorage.setItem('inventoryMode', inventoryMode ? 'true' : 'false');
+            renderSizePercentages();
         }
 
         function calculateInventory() {
@@ -1468,6 +1514,7 @@ document.getElementById('rodsNote').innerText = priceNote;
             const sizes = ['20','18','16','14','12','10','8'];
             const resultBody = document.getElementById('rodsResultBody');
             resultBody.innerHTML = '';
+            pctEntries = [];
 
             let totalBundles = 0;
             let totalWeight = 0;
@@ -1493,6 +1540,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 totalBundles += bundles;
                 basicBundles += bundles;
                 basicWeight += weight;
+                pctEntries.push({ label: size + ' ملم', weight: weight });
 
                 const displayedSize = window.inputIsArabic ? toArabicDigits(size) : size;
                 const displayedBundles = window.inputIsArabic ? toArabicDigits(bundles) : bundles;
@@ -1522,6 +1570,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 totalBundles += bundles;
                 gr60Bundles += bundles;
                 gr60Weight += weight;
+                pctEntries.push({ label: item.size + ' ملم جريد ٦٠', weight: weight });
 
                 const displayedSize = window.inputIsArabic ? toArabicDigits(item.size) : item.size;
                 const displayedBundles = window.inputIsArabic ? toArabicDigits(bundles) : bundles;
@@ -1578,6 +1627,7 @@ document.getElementById('rodsNote').innerText = priceNote;
             localStorage.setItem('savedRodsResult', resultHtml);
             localStorage.setItem('showRodsResult', 'true');
             localStorage.setItem('inventoryMode', 'true');
+            renderSizePercentages();
         }
         function calculateWeightMode() {
             const rawPricePerTon = document.getElementById('rodPrice').value.trim();
@@ -1588,6 +1638,7 @@ document.getElementById('rodsNote').innerText = priceNote;
             const sizes = ['20','18','16','14','12','10','8'];
             const tbody = document.getElementById('rodsResultBody');
             tbody.innerHTML = '';
+            pctEntries = [];
 
             let totalSum = 0, totalWeightTon = 0;
 
@@ -1610,6 +1661,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 const totalPrice = pricePerRod * count;
 
                 basicWeight += realTon;
+                pctEntries.push({ label: size + ' ملم', weight: realTon });
                 basicSum += totalPrice;
                 totalWeightTon += realTon;
                 totalSum += totalPrice;
@@ -1637,6 +1689,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 const totalPrice = pricePerRod * count;
 
                 customWeight += realTon;
+                pctEntries.push({ label: item.size + ' ملم جريد ٦٠', weight: realTon });
                 customSum += totalPrice;
                 totalWeightTon += realTon;
                 totalSum += totalPrice;
@@ -1695,6 +1748,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                         ? `ملاحظة: الحساب بسعر ${formatNumber(customItems[0].price)} ر.ي/طن`
                         : '';
 
+            renderSizePercentages();
             // 🎯 عرض النتائج
             document.getElementById('rodsTotal').innerHTML = `
                 ${breakdownHtml}
@@ -1705,6 +1759,41 @@ document.getElementById('rodsNote').innerText = priceNote;
             `;
             document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
+        }
+
+        // عرض نسبة وزن كل مقاس من إجمالي الوزن (للعرض داخل الصفحة فقط)
+        function renderSizePercentages() {
+            const box = document.getElementById('rodsPercentBox');
+            if (!box) return;
+
+            // دمج المقاسات المتكررة بنفس الاسم
+            const merged = {};
+            pctEntries.forEach(e => { merged[e.label] = (merged[e.label] || 0) + e.weight; });
+            const labels = Object.keys(merged);
+            const total = labels.reduce((s, l) => s + merged[l], 0);
+
+            if (!labels.length || total <= 0) {
+                box.style.display = 'none';
+                box.innerHTML = '';
+                try { localStorage.removeItem('savedRodsPercent'); } catch (e) {}
+                return;
+            }
+
+            const fmt = v => window.inputIsArabic ? toArabicDigits(v) : v;
+            let rows = '';
+            labels.forEach(label => {
+                const pct = (merged[label] / total) * 100;
+                rows += `
+                    <div class="pct-row">
+                        <div class="pct-label">${fmt(label)}</div>
+                        <div class="pct-bar"><div class="pct-fill" style="width:${pct.toFixed(2)}%"></div></div>
+                        <div class="pct-value">${fmt(pct.toFixed(1))}%</div>
+                    </div>`;
+            });
+
+            box.innerHTML = `<div class="pct-title">نسبة كل مقاس من إجمالي الوزن</div>${rows}`;
+            box.style.display = 'block';
+            try { localStorage.setItem('savedRodsPercent', box.innerHTML); } catch (e) {}
         }
 
         function showAddItemDialog() {
@@ -1984,6 +2073,14 @@ document.getElementById('rodsNote').innerText = priceNote;
                     resultElement.innerHTML = savedHtml;
                     resultElement.style.display = 'block';
                 }
+
+                const savedPct = localStorage.getItem('savedRodsPercent');
+                const pctEl = document.getElementById('rodsPercentBox');
+                if (savedPct && pctEl) {
+                    pctEl.innerHTML = savedPct;
+                    pctEl.style.display = 'block';
+                }
+                localStorage.removeItem('savedRodsPercent');
 
                 localStorage.removeItem('savedRodsResult');
                 localStorage.removeItem('showRodsResult');
@@ -3360,6 +3457,7 @@ document.getElementById('standalonePasteBtn').addEventListener('click', async ()
 });
     </script>
     <script src="./html2canvas.min.js"></script>
+
     <!-- تضمين ملف الآلة الحاسبة -->
     <script src="calculator.js"></script>
  <script src="logoBase64.js"></script>
