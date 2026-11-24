@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-cache-v25'; // رفع الإصدار بشكل كبير لضمان التحديث
+const CACHE_NAME = 'bina-yemen-cache-v27'; // رفع الإصدار بشكل كبير لضمان التحديث
 
 const APP_SHELL = [
   '/',
